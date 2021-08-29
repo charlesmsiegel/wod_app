@@ -12,4 +12,21 @@ class Database:
         self.connection = sqlite3.connect(self.filename)
 
     def create_data_tables(self):
+        # TODO: write function create_data_tables
         pass
+
+    def create_record(self, table_name, object):
+        # TODO: write function to create_record
+        pass
+    
+    def load_table(self, table_name):
+        query = f"""
+        SELECT * FROM {table_name}
+        """
+        return self.connection.execute(query)
+
+    def get_record(self, table_name, object_id):
+        query = f"""
+        SELECT * from {table_name} WHERE id = {object_id}
+        """
+        return self.connection.execute(query)
