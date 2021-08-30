@@ -8,6 +8,8 @@ class Character:
         self.nature = ""
         self.demeanor = ""
 
+        self.specialties = dict()
+
         # Attributes
         self.strength = 1
         self.dexterity = 1
