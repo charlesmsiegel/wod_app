@@ -1,22 +1,16 @@
 class Story:
-    def __init__(self) -> None:
-        # Chronicle
-        # locations
-        # characters
-        # npcs
-        # concepts
-        # plot archetypes
-        # start date
-        # subplots
-        # theme
-        # mood
-        # plot summary
-        # key situations
-        # troubleshooting
-        # rewards
-        # reward conditions
-        # opening
-        # ending
-        # conditions for success
-        # conditions for failure
-        pass
+    def __init__(
+        self,
+        name,
+        chronicle,
+        plot_summary,
+        key_npcs,
+        pcs,
+        key_locations,
+        ) -> None:
+        self.name = name
+        self.chronicle = chronicle
+        self.plot_summary = plot_summary
+        self.key_npcs = key_npcs
+        self.pcs = pcs
+        self.key_locations = key_locations

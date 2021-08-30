@@ -8,7 +8,7 @@ class Chronicle:
         theme,
         mood,
         game_lines,
-        permitted_books
+        permitted_books,
         ) -> None:
         self.name = name
         self.storyteller = storyteller
