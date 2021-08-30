@@ -1,11 +1,12 @@
 import sqlite3
 import os
 
+
 class Database:
     def __init__(
         self,
         database_file: str,
-        ) -> None:
+    ) -> None:
         self.filename = database_file
         self.connection = sqlite3.connect(self.filename)
         self.cursor = self.connection.cursor()
@@ -13,6 +14,7 @@ class Database:
 
     def create_data_tables(self):
         # TODO: write function create_data_tables
+        # TODO: Write function so that it creates a table from args
         query = """
         CREATE TABLE IF NOT EXISTS chronicles (
             chronicle_id INTEGER PRIMARY KEY,
@@ -37,7 +39,7 @@ class Database:
         """
         self.cursor.execute(query)
         self.connection.commit()
-    
+
     def load_table(self, table_name):
         query = f"""
         SELECT * FROM {table_name}
