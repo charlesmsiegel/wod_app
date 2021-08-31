@@ -1,4 +1,4 @@
-from database import Database
+from wod_app.database import Database
 
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
                              QListWidget, QMainWindow, QPushButton,
