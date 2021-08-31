@@ -1,19 +1,20 @@
-from PyQt5.QtWidgets import (
-    QApplication, 
-    QLabel, 
-    QMainWindow, 
-    QPushButton, 
-    QGridLayout,
-    QStackedWidget, 
-    QWidget, 
-    QListWidget, 
-    QLineEdit,
-)
+from database import Database
+
+from PyQt5.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
+                             QListWidget, QMainWindow, QPushButton,
+                             QStackedWidget, QWidget)
 
 
 class ChronicleWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
+
+        self.db = Database('db.sqlite')
+
+        print(self.db.load_table("chronicles"))
+
+        self.list_of_chronicles = []
+
 
         self.setWindowTitle("Chronicle Manager")
 
