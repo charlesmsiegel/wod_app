@@ -37,6 +37,8 @@ class ChronicleWindow(QMainWindow):
         for chron in self.list_of_chronicles:
             self.chronicle_list.addItem(chron.name)
 
+        self.chronicle_list.itemClicked.connect(self.on_chronicle_select)
+
         self.new_chronicle_button = QPushButton("New Chronicle")
 
         self.name_label = QLabel("Name:")
@@ -100,6 +102,18 @@ class ChronicleWindow(QMainWindow):
         self.storyteller_stacked.setCurrentIndex(1)
         self.theme_stacked.setCurrentIndex(1)
         self.mood_stacked.setCurrentIndex(1)
+
+    def on_chronicle_select(self, item):
+        self.name_stacked.setCurrentIndex(0)
+        self.storyteller_stacked.setCurrentIndex(0)
+        self.theme_stacked.setCurrentIndex(0)
+        self.mood_stacked.setCurrentIndex(0)
+        print(item.text())
+        chron = [x for x in self.list_of_chronicles if x.name == item.text()][0]
+        self.name_display.setText(chron.name)
+        self.storyteller_display.setText(chron.storyteller)
+        self.theme_display.setText(chron.theme)
+        self.mood_display.setText(chron.mood)
 
 
 if __name__ == "__main__":
