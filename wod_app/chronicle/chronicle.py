@@ -18,3 +18,6 @@ class Chronicle:
         self.mood = mood
         self.game_lines = game_lines
         self.permitted_books = permitted_books
+
+    def __repr__(self) -> str:
+        return f"{self.name}"

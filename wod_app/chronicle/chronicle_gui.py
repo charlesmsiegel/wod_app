@@ -1,4 +1,6 @@
 from wod_app.database import Database
+from .chronicle import Chronicle
+
 
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
                              QListWidget, QMainWindow, QPushButton,
@@ -11,16 +13,30 @@ class ChronicleWindow(QMainWindow):
 
         self.db = Database('db.sqlite')
 
-        print(self.db.load_table("chronicles"))
+        cursor = self.db.load_table("chronicles").fetchall()
 
         self.list_of_chronicles = []
-
+        for row in cursor:
+            c = Chronicle(
+                row[1],
+                row[2],
+                [],
+                [],
+                row[3],
+                row[4],
+                [],
+                [],
+            )
+            self.list_of_chronicles.append(c)
 
         self.setWindowTitle("Chronicle Manager")
 
         self.layout = QGridLayout()
 
         self.chronicle_list = QListWidget()
+        for chron in self.list_of_chronicles:
+            self.chronicle_list.addItem(chron.name)
+
         self.new_chronicle_button = QPushButton("New Chronicle")
 
         self.name_label = QLabel("Name:")
@@ -86,9 +102,10 @@ class ChronicleWindow(QMainWindow):
         self.mood_stacked.setCurrentIndex(1)
 
 
-app = QApplication([])
+if __name__ == "__main__":
+    app = QApplication([])
 
-window = ChronicleWindow()
-window.show()
+    window = ChronicleWindow()
+    window.show()
 
-app.exec_()
+    app.exec_()
