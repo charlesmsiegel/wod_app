@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from wod_app.database import Database
+from wod_app.utils import Database
 
 
 class TestDatabase(unittest.TestCase):

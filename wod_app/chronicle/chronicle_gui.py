@@ -1,4 +1,4 @@
-from wod_app.database import Database
+from wod_app.utils import Database
 from .chronicle import Chronicle
 
 
