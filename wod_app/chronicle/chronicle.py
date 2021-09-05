@@ -17,7 +17,7 @@ Base = declarative_base()
 class Chronicle(Base):
     __tablename__ = "chronicles"
 
-    chronicle_id = Column(Integer(), primary_key=True)
+    id = Column(Integer(), primary_key=True)
     name = Column(Text(), unique=True)
     storyteller = Column(Text())
     mood = Column(Text())

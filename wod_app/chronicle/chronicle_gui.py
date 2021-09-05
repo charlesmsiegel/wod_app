@@ -22,19 +22,7 @@ class ChronicleWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
 
-        # self.db = Database('db.sqlite')
-
-        # cursor = self.db.load_table("chronicles").fetchall()
-
         self.list_of_chronicles = session.query(Chronicle).all()
-        # for row in cursor:
-            # c = Chronicle(
-                # row[1],
-                # row[2],
-                # row[3],
-                # row[4],
-            # )
-            # self.list_of_chronicles.append(c)
 
         self.setWindowTitle("Chronicle Manager")
 
@@ -117,26 +105,25 @@ class ChronicleWindow(QMainWindow):
         self.new_chronicle_stack.setCurrentIndex(1)
 
     def save_chronicle_clicked(self):
-        c = Chronicle()
-        c.name = self.name_writer.text()
-        c.storyteller = self.storyteller_writer.text()
-        c.theme = self.theme_writer.text()
-        c.mood = self.mood_writer.text() 
+        new_chronicle = Chronicle()
+        new_chronicle.name = self.name_writer.text()
+        new_chronicle.storyteller = self.storyteller_writer.text()
+        new_chronicle.theme = self.theme_writer.text()
+        new_chronicle.mood = self.mood_writer.text()
 
-        session.add(c)
+        session.add(new_chronicle)
         session.commit()
-        # self.db.create_record('chronicles', ["chronicle_id", "name", "storyteller", "theme", "mood"], [len(self.list_of_chronicles)+1, c.name, c.storyteller, c.theme, c.mood])
         self.list_of_chronicles = session.query(Chronicle).all()
-        self.chronicle_list.addItem(c.name)
+        self.chronicle_list.addItem(new_chronicle.name)
         self.name_stacked.setCurrentIndex(0)
         self.storyteller_stacked.setCurrentIndex(0)
         self.theme_stacked.setCurrentIndex(0)
         self.mood_stacked.setCurrentIndex(0)
         self.new_chronicle_stack.setCurrentIndex(0)
-        self.name_display.setText(c.name)
-        self.storyteller_display.setText(c.storyteller)
-        self.theme_display.setText(c.theme)
-        self.mood_display.setText(c.mood)
+        self.name_display.setText(new_chronicle.name)
+        self.storyteller_display.setText(new_chronicle.storyteller)
+        self.theme_display.setText(new_chronicle.theme)
+        self.mood_display.setText(new_chronicle.mood)
 
     def on_chronicle_select(self, item):
         self.name_stacked.setCurrentIndex(0)
@@ -144,9 +131,7 @@ class ChronicleWindow(QMainWindow):
         self.theme_stacked.setCurrentIndex(0)
         self.mood_stacked.setCurrentIndex(0)
         self.new_chronicle_stack.setCurrentIndex(0)
-        # print(item.text())
         chron = session.query(Chronicle).filter_by(name=item.text()).first()
-        # chron = [x for x in self.list_of_chronicles if x.name == item.text()][0]
         self.name_display.setText(chron.name)
         self.storyteller_display.setText(chron.storyteller)
         self.theme_display.setText(chron.theme)
