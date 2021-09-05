@@ -1,66 +1,86 @@
+import json
+from sqlalchemy import Table, Column, Integer, Text, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 from character import Character
+
+with open('config.json', 'r') as f:
+    config = json.load(f)
+
+
+engine = create_engine(config['DB_NAME'])
+Session = sessionmaker(bind=engine)
+session = Session()
+
+Base = declarative_base()
 
 
 class M20MageCharacter(Character):
-    def __init__(
-        self
-        ) -> None:
-        super().__init__()
+    """Class for Mage characters under M20 rules. Provides the
+    m20_mage_character table.
+    """
+    __tablename__ = "m20_mage_character"
+    # Abilities
+    ## Talents
+    alertness = Column(Integer(), default=0)
+    art = Column(Integer(), default=0)
+    athletics = Column(Integer(), default=0)
+    awareness = Column(Integer(), default=0)
+    brawl = Column(Integer(), default=0)
+    empathy = Column(Integer(), default=0)
+    expression = Column(Integer(), default=0)
+    intimidation = Column(Integer(), default=0)
+    leadership = Column(Integer(), default=0)
+    streetwise = Column(Integer(), default=0)
+    subterfuge = Column(Integer(), default=0)
+    ## Skills
+    crafts = Column(Integer(), default=0)
+    drive = Column(Integer(), default=0)
+    etiquette = Column(Integer(), default=0)
+    firearms = Column(Integer(), default=0)
+    martial_arts = Column(Integer(), default=0)
+    meditation = Column(Integer(), default=0)
+    melee = Column(Integer(), default=0)
+    research = Column(Integer(), default=0)
+    stealth = Column(Integer(), default=0)
+    survival = Column(Integer(), default=0)
+    technology = Column(Integer(), default=0)
+    ## Knowledges
+    academics = Column(Integer(), default=0)
+    computer = Column(Integer(), default=0)
+    cosmology = Column(Integer(), default=0)
+    enigmas = Column(Integer(), default=0)
+    esoterica = Column(Integer(), default=0)
+    investigation = Column(Integer(), default=0)
+    law = Column(Integer(), default=0)
+    medicine = Column(Integer(), default=0)
+    occult = Column(Integer(), default=0)
+    politics = Column(Integer(), default=0)
+    science = Column(Integer(), default=0)
 
-        # Abilities
-        ## Talents
-        self.alertness = 0
-        self.art = 0
-        self.athletics = 0
-        self.awareness = 0
-        self.brawl = 0
-        self.empathy = 0
-        self.expression = 0
-        self.intimidation = 0
-        self.leadership = 0
-        self.streetwise = 0
-        self.subterfuge = 0
-        ## Skills
-        self.crafts = 0
-        self.drive = 0
-        self.etiquette = 0
-        self.firearms = 0
-        self.martial_arts = 0
-        self.meditation = 0
-        self.melee = 0
-        self.research = 0
-        self.stealth = 0
-        self.survival = 0
-        self.technology = 0
-        ## Knowledges
-        self.academics = 0
-        self.computer = 0
-        self.cosmology = 0
-        self.enigmas = 0
-        self.esoterica = 0
-        self.investigation = 0
-        self.law = 0
-        self.medicine = 0
-        self.occult = 0
-        self.politics = 0
-        self.science = 0
+    arete = Column(Integer(), default=1)
 
-        self.arete = 1
+    # Spheres
+    correspondence = Column(Integer(), default=0)
+    entropy = Column(Integer(), default=0)
+    forces = Column(Integer(), default=0)
+    life = Column(Integer(), default=0)
+    matter = Column(Integer(), default=0)
+    mind = Column(Integer(), default=0)
+    prime = Column(Integer(), default=0)
+    spirit = Column(Integer(), default=0)
+    time = Column(Integer(), default=0)
 
-        # Spheres
-        self.correspondence = 0
-        self.entropy = 0
-        self.forces = 0
-        self.life = 0
-        self.matter = 0
-        self.mind = 0
-        self.prime = 0
-        self.spirit = 0
-        self.time = 0
+    willpower = Column(Integer(), default=5)
+    temporary_willpower = Column(Integer(), default=5)
 
-        self.willpower = 5
-        self.temporary_willpower = 5
+    quintessences = Column(Integer(), default=0)
+    paradox = Column(Integer(), default=0)
+    permanent_paradox = Column(Integer(), default=0)
 
-        self.quintessences = 0
-        self.paradox = 0
-        self.permanent_paradox = 0
+    __mapper_args__ = {
+        'polymorphic_identity':'m20_mage_character',
+    }
+
+Base.metadata.create_all(engine)

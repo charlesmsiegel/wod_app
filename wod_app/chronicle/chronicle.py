@@ -1,8 +1,9 @@
+import json
 from sqlalchemy import Table, Column, Integer, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-import json
+
 
 with open('config.json', 'r') as f:
     config = json.load(f)
@@ -15,6 +16,14 @@ session = Session()
 Base = declarative_base()
 
 class Chronicle(Base):
+    """Base Class that establishes the table 'chronicles'. This stores the
+    information for a Chroncile. The rows of the chronicles table are:
+        id              Integer     primary key
+        name            Text        unique
+        storyteller     Text
+        mood            Text
+        theme           Text
+    """
     __tablename__ = "chronicles"
 
     id = Column(Integer(), primary_key=True)
@@ -22,10 +31,10 @@ class Chronicle(Base):
     storyteller = Column(Text())
     mood = Column(Text())
     theme = Column(Text())
-    # Location
-    # Characters
-    # Game Lines
-    # Permitted Books
+    # TODO: Location
+    # TODO: Characters
+    # TODO: Game Lines
+    # TODO: Permitted Books
 
     def __repr__(self) -> str:
         return f"{self.name}"

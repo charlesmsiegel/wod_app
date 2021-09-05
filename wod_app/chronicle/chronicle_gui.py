@@ -1,8 +1,11 @@
-# from wod_app.utils import Database
-from .chronicle import Chronicle
+import json
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-import json
+from PyQt5.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
+                             QListWidget, QMainWindow, QPushButton,
+                             QStackedWidget, QWidget)
+from .chronicle import Chronicle
+
 
 with open('config.json', 'r') as f:
     config = json.load(f)
@@ -13,12 +16,9 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-from PyQt5.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
-                             QListWidget, QMainWindow, QPushButton,
-                             QStackedWidget, QWidget)
-
-
 class ChronicleWindow(QMainWindow):
+    """Constructs the Chronicle GUI
+    """
     def __init__(self) -> None:
         super().__init__()
 

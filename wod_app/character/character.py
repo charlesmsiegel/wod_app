@@ -16,6 +16,9 @@ Base = declarative_base()
 
 
 class Character(Base):
+    """Provides the base class Character on the table characters. Will be
+    extended to every other character type
+    """
     __tablename__ = "characters"
     character_id = Column(Integer(), primary_key=True)
     name = Column(Text(), unique=True)
@@ -51,6 +54,11 @@ class Character(Base):
 
     def health_penalty(self) -> int:
         return self.health_tracker[self.health()]
+
+    __mapper_args__ = {
+        'polymorphic_identity':'character',
+        'polymorphic_on':type
+    }
 
 
 Base.metadata.create_all(engine)
