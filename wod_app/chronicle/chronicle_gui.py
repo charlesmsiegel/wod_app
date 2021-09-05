@@ -1,5 +1,16 @@
-from wod_app.utils import Database
+# from wod_app.utils import Database
 from .chronicle import Chronicle
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+import json
+
+with open('config.json', 'r') as f:
+    config = json.load(f)
+
+
+engine = create_engine(config['DB_NAME'])
+Session = sessionmaker(bind=engine)
+session = Session()
 
 
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
@@ -11,23 +22,19 @@ class ChronicleWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
 
-        self.db = Database('db.sqlite')
+        # self.db = Database('db.sqlite')
 
-        cursor = self.db.load_table("chronicles").fetchall()
+        # cursor = self.db.load_table("chronicles").fetchall()
 
-        self.list_of_chronicles = []
-        for row in cursor:
-            c = Chronicle(
-                row[1],
-                row[2],
-                [],
-                [],
-                row[3],
-                row[4],
-                [],
-                [],
-            )
-            self.list_of_chronicles.append(c)
+        self.list_of_chronicles = session.query(Chronicle).all()
+        # for row in cursor:
+            # c = Chronicle(
+                # row[1],
+                # row[2],
+                # row[3],
+                # row[4],
+            # )
+            # self.list_of_chronicles.append(c)
 
         self.setWindowTitle("Chronicle Manager")
 
@@ -110,18 +117,16 @@ class ChronicleWindow(QMainWindow):
         self.new_chronicle_stack.setCurrentIndex(1)
 
     def save_chronicle_clicked(self):
-        c = Chronicle(
-            self.name_writer.text(), 
-            self.storyteller_writer.text(), 
-            [], 
-            [], 
-            self.theme_writer.text(), 
-            self.mood_writer.text(), 
-            [], 
-            []
-            )
-        self.db.create_record('chronicles', ["chronicle_id", "name", "storyteller", "theme", "mood"], [len(self.list_of_chronicles)+1, c.name, c.storyteller, c.theme, c.mood])
-        self.list_of_chronicles.append(c)
+        c = Chronicle()
+        c.name = self.name_writer.text()
+        c.storyteller = self.storyteller_writer.text()
+        c.theme = self.theme_writer.text()
+        c.mood = self.mood_writer.text() 
+
+        session.add(c)
+        session.commit()
+        # self.db.create_record('chronicles', ["chronicle_id", "name", "storyteller", "theme", "mood"], [len(self.list_of_chronicles)+1, c.name, c.storyteller, c.theme, c.mood])
+        self.list_of_chronicles = session.query(Chronicle).all()
         self.chronicle_list.addItem(c.name)
         self.name_stacked.setCurrentIndex(0)
         self.storyteller_stacked.setCurrentIndex(0)
@@ -140,7 +145,8 @@ class ChronicleWindow(QMainWindow):
         self.mood_stacked.setCurrentIndex(0)
         self.new_chronicle_stack.setCurrentIndex(0)
         # print(item.text())
-        chron = [x for x in self.list_of_chronicles if x.name == item.text()][0]
+        chron = session.query(Chronicle).filter_by(name=item.text()).first()
+        # chron = [x for x in self.list_of_chronicles if x.name == item.text()][0]
         self.name_display.setText(chron.name)
         self.storyteller_display.setText(chron.storyteller)
         self.theme_display.setText(chron.theme)
