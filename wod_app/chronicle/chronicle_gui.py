@@ -39,7 +39,11 @@ class ChronicleWindow(QMainWindow):
 
         self.chronicle_list.itemClicked.connect(self.on_chronicle_select)
 
+        self.new_chronicle_stack = QStackedWidget()
         self.new_chronicle_button = QPushButton("New Chronicle")
+        self.save_chronicle_button = QPushButton("Save Chronicle")
+        self.new_chronicle_stack.addWidget(self.new_chronicle_button)
+        self.new_chronicle_stack.addWidget(self.save_chronicle_button)
 
         self.name_label = QLabel("Name:")
         self.name_writer = QLineEdit()
@@ -78,7 +82,7 @@ class ChronicleWindow(QMainWindow):
         # self.name_label = QLabel("Permitted Books:")
 
         self.layout.addWidget(self.chronicle_list, 0, 0, 3, 1)
-        self.layout.addWidget(self.new_chronicle_button, 3, 0)
+        self.layout.addWidget(self.new_chronicle_stack, 3, 0)
 
         self.layout.addWidget(self.name_label, 0, 1)
         self.layout.addWidget(self.storyteller_label, 1, 1)
@@ -94,6 +98,7 @@ class ChronicleWindow(QMainWindow):
         self.widget.setLayout(self.layout)
 
         self.new_chronicle_button.clicked.connect(self.new_chronicle_clicked)
+        self.save_chronicle_button.clicked.connect(self.save_chronicle_clicked)
 
         self.setCentralWidget(self.widget)
 
@@ -102,13 +107,39 @@ class ChronicleWindow(QMainWindow):
         self.storyteller_stacked.setCurrentIndex(1)
         self.theme_stacked.setCurrentIndex(1)
         self.mood_stacked.setCurrentIndex(1)
+        self.new_chronicle_stack.setCurrentIndex(1)
+
+    def save_chronicle_clicked(self):
+        c = Chronicle(
+            self.name_writer.text(), 
+            self.storyteller_writer.text(), 
+            [], 
+            [], 
+            self.theme_writer.text(), 
+            self.mood_writer.text(), 
+            [], 
+            []
+            )
+        self.db.create_record('chronicles', ["chronicle_id", "name", "storyteller", "theme", "mood"], [len(self.list_of_chronicles)+1, c.name, c.storyteller, c.theme, c.mood])
+        self.list_of_chronicles.append(c)
+        self.chronicle_list.addItem(c.name)
+        self.name_stacked.setCurrentIndex(0)
+        self.storyteller_stacked.setCurrentIndex(0)
+        self.theme_stacked.setCurrentIndex(0)
+        self.mood_stacked.setCurrentIndex(0)
+        self.new_chronicle_stack.setCurrentIndex(0)
+        self.name_display.setText(c.name)
+        self.storyteller_display.setText(c.storyteller)
+        self.theme_display.setText(c.theme)
+        self.mood_display.setText(c.mood)
 
     def on_chronicle_select(self, item):
         self.name_stacked.setCurrentIndex(0)
         self.storyteller_stacked.setCurrentIndex(0)
         self.theme_stacked.setCurrentIndex(0)
         self.mood_stacked.setCurrentIndex(0)
-        print(item.text())
+        self.new_chronicle_stack.setCurrentIndex(0)
+        # print(item.text())
         chron = [x for x in self.list_of_chronicles if x.name == item.text()][0]
         self.name_display.setText(chron.name)
         self.storyteller_display.setText(chron.storyteller)
