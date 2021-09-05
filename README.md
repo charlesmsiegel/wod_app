@@ -1,5 +1,8 @@
 # World of Darkness: Apps
 
+![](https://www.code-inspector.com/project/27402/score/svg)
+![](https://www.code-inspector.com/project/27402/status/svg)
+
 For now, this repo will collect various apps I am constructing to help in my World of Darkness games. Eventually, they will be merged with an interface in order to integrate them into an ST Toolkit. The following apps are planned:
 
 * Mage: the Ascension Tarot Reader
