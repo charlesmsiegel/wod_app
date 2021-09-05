@@ -1,5 +1,5 @@
 from .character import Character
-import mage as mage
+from . import mage
 
 
 # TODO: Character - name, player, creation_status, minor_character, concept, chronicle

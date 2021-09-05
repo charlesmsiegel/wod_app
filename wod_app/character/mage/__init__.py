@@ -1,1 +1,1 @@
-import faction_picker as faction_picker
+from . import faction_picker
