@@ -31,10 +31,6 @@ class Chronicle(Base):
     storyteller = Column(Text())
     mood = Column(Text())
     theme = Column(Text())
-    # TODO: Location
-    # TODO: Characters
-    # TODO: Game Lines
-    # TODO: Permitted Books
 
     def __repr__(self) -> str:
         return f"{self.name}"

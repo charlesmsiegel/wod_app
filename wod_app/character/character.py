@@ -23,11 +23,11 @@ class Character(Base):
     character_id = Column(Integer(), primary_key=True)
     name = Column(Text(), unique=True)
     player = Column(Text())
+    concept = Column(Text())
     chronicle = Column(ForeignKey('chronicle.id'))
     nature = Column(Text())
     demeanor = Column(Text())
 
-    # TODO: How to make specialties part of table?
     specialties = dict()
 
     # Attributes
