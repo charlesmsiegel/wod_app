@@ -2,3 +2,7 @@ from . import utils
 from . import chronicle
 from . import character
 from . import tarot_reader
+from . import actions
+from . import locations
+from . import objects
+from . import combat

@@ -2,6 +2,7 @@ import sqlite3
 import os
 
 
+# TODO: Replace with ORM, likely SQLAlchemy
 class Database:
     def __init__(
         self,
