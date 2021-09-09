@@ -63,7 +63,7 @@ class Character(Base):
 
     __mapper_args__ = {
         'polymorphic_identity': 'character',
-        'polymorphic_on': type
+        'polymorphic_on': "type"
     }
 
 

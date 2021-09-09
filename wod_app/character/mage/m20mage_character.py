@@ -1,9 +1,10 @@
 import json
-from sqlalchemy import Table, Column, Integer, Text, ForeignKey
+from sqlalchemy import Table, Column, Integer, Text, ForeignKey, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from character import Character
+from ..character import Character
+
 
 with open('config.json', 'r') as f:
     config = json.load(f)
@@ -12,6 +13,9 @@ with open('config.json', 'r') as f:
 engine = create_engine(config['DB_NAME'])
 Session = sessionmaker(bind=engine)
 session = Session()
+md = MetaData(bind=engine)
+md.reflect()
+
 
 Base = declarative_base()
 
@@ -21,8 +25,11 @@ class M20MageCharacter(Character):
     m20_mage_character table.
     """
     __tablename__ = "m20_mage_character"
+
+    id = Column(Integer, ForeignKey('characters.id'), primary_key=True)
+
     # Abilities
-    ## Talents
+    # Talents
     alertness = Column(Integer(), default=0)
     art = Column(Integer(), default=0)
     athletics = Column(Integer(), default=0)
@@ -34,7 +41,7 @@ class M20MageCharacter(Character):
     leadership = Column(Integer(), default=0)
     streetwise = Column(Integer(), default=0)
     subterfuge = Column(Integer(), default=0)
-    ## Skills
+    # Skills
     crafts = Column(Integer(), default=0)
     drive = Column(Integer(), default=0)
     etiquette = Column(Integer(), default=0)
@@ -46,7 +53,7 @@ class M20MageCharacter(Character):
     stealth = Column(Integer(), default=0)
     survival = Column(Integer(), default=0)
     technology = Column(Integer(), default=0)
-    ## Knowledges
+    # Knowledges
     academics = Column(Integer(), default=0)
     computer = Column(Integer(), default=0)
     cosmology = Column(Integer(), default=0)
@@ -80,7 +87,8 @@ class M20MageCharacter(Character):
     permanent_paradox = Column(Integer(), default=0)
 
     __mapper_args__ = {
-        'polymorphic_identity':'m20_mage_character',
+        'polymorphic_identity': 'm20_mage_character',
     }
+
 
 Base.metadata.create_all(engine)
