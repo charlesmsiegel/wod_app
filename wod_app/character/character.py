@@ -3,20 +3,14 @@ from sqlalchemy import Table, Column, Integer, Text, ForeignKey, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
+from ..utils import load_config, load_tables
 
 
-with open('config.json', 'r') as f:
-    config = json.load(f)
-
+config = load_config()
 engine = create_engine(config['DB_NAME'])
 Session = sessionmaker(bind=engine)
 session = Session()
-
-md = MetaData(bind=engine)
-md.reflect()
-
-chronicles = md.tables['chronicles']
-
+chronicles = load_tables(engine)['chronicles']
 Base = declarative_base()
 
 

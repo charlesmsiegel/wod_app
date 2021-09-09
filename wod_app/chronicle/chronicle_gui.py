@@ -5,12 +5,10 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
                              QListWidget, QMainWindow, QPushButton,
                              QStackedWidget, QWidget)
 from .chronicle import Chronicle
+from ..utils import load_config, load_tables
 
 
-with open('config.json', 'r') as f:
-    config = json.load(f)
-
-
+config = load_config()
 engine = create_engine(config['DB_NAME'])
 Session = sessionmaker(bind=engine)
 session = Session()

@@ -4,14 +4,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.sql.schema import MetaData
+from ..utils import load_config, load_tables
 
 
-with open('config.json', 'r') as f:
-    config = json.load(f)
-
-
+config = load_config()
 engine = create_engine(config['DB_NAME'])
-
 Base = declarative_base()
 
 
