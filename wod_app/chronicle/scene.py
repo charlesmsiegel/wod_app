@@ -1,5 +1,5 @@
 import json
-from sqlalchemy import Table, Column, Integer, Text, DateTime
+from sqlalchemy import Table, Column, Integer, Text, DateTime, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
@@ -13,6 +13,10 @@ with open('config.json', 'r') as f:
 engine = create_engine(config['DB_NAME'])
 Session = sessionmaker(bind=engine)
 session = Session()
+md = MetaData(bind=engine)
+md.reflect()
+
+stories = md.tables['stories']
 
 Base = declarative_base()
 
@@ -23,7 +27,7 @@ class Scene(Base):
     id = Column(Integer(), primary_key=True)
     name = Column(Text(), unique=True)
     date = Column(DateTime())
-    # story = Column(ForeignKey('stories.id'))
+    story = Column(ForeignKey(stories.c.id))
     # location,
     # characters,
 
