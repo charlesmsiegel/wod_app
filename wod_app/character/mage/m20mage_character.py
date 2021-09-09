@@ -88,4 +88,4 @@ class M20MageCharacter(Character):
     }
 
 
-Base.metadata.create_all(engine)
+Character.metadata.create_all(engine)
