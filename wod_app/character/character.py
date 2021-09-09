@@ -1,16 +1,21 @@
 import json
-from sqlalchemy import Table, Column, Integer, Text, ForeignKey
+from sqlalchemy import Table, Column, Integer, Text, ForeignKey, MetaData
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
+
 
 with open('config.json', 'r') as f:
     config = json.load(f)
 
-
 engine = create_engine(config['DB_NAME'])
 Session = sessionmaker(bind=engine)
 session = Session()
+
+md = MetaData(bind=engine)
+md.reflect()
+
+chronicles = md.tables['chronicles']
 
 Base = declarative_base()
 
@@ -20,13 +25,14 @@ class Character(Base):
     extended to every other character type
     """
     __tablename__ = "characters"
-    character_id = Column(Integer(), primary_key=True)
+    id = Column(Integer(), primary_key=True)
     name = Column(Text(), unique=True)
     player = Column(Text())
     concept = Column(Text())
-    chronicle = Column(ForeignKey('chronicle.id'))
+    chronicle_id = Column(Integer(), ForeignKey(chronicles.c.id))
     nature = Column(Text())
     demeanor = Column(Text())
+    type = Column(Text())
 
     specialties = dict()
 
@@ -56,8 +62,8 @@ class Character(Base):
         return self.health_tracker[self.health()]
 
     __mapper_args__ = {
-        'polymorphic_identity':'character',
-        'polymorphic_on':type
+        'polymorphic_identity': 'character',
+        'polymorphic_on': type
     }
 
 

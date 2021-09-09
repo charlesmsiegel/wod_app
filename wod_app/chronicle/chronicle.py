@@ -1,8 +1,9 @@
 import json
 from sqlalchemy import Table, Column, Integer, Text
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
+from sqlalchemy.sql.schema import MetaData
 
 
 with open('config.json', 'r') as f:
@@ -10,10 +11,9 @@ with open('config.json', 'r') as f:
 
 
 engine = create_engine(config['DB_NAME'])
-Session = sessionmaker(bind=engine)
-session = Session()
 
 Base = declarative_base()
+
 
 class Chronicle(Base):
     """Base Class that establishes the table 'chronicles'. This stores the
@@ -34,5 +34,6 @@ class Chronicle(Base):
 
     def __repr__(self) -> str:
         return f"{self.name}"
+
 
 Base.metadata.create_all(engine)
