@@ -26,4 +26,7 @@ class Scene(Base):
     # location,
     # characters,
 
+    def __repr__(self) -> str:
+        return self.name
+
 Base.metadata.create_all(engine)

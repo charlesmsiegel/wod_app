@@ -86,5 +86,8 @@ class M20MageCharacter(Character):
         'polymorphic_identity': 'm20_mage_character',
     }
 
+    def __repr__(self) -> str:
+        return self.name
+
 
 Character.metadata.create_all(engine)

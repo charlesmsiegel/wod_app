@@ -30,7 +30,7 @@ class Chronicle(Base):
     theme = Column(Text())
 
     def __repr__(self) -> str:
-        return f"{self.name}"
+        return self.name
 
 
 Base.metadata.create_all(engine)

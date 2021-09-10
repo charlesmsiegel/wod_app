@@ -25,4 +25,7 @@ class Story(Base):
     # pcs,
     # key_locations,
 
+    def __repr__(self) -> str:
+        return self.name
+
 Base.metadata.create_all(engine)

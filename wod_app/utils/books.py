@@ -20,4 +20,7 @@ class Book(Base):
     edition = Column(Integer())
     community_content = Column(Boolean, default=False)
 
+    def __repr__(self) -> str:
+        return self.name
+
 Base.metadata.create_all(engine)
