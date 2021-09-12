@@ -1,5 +1,5 @@
 import json
-from sqlalchemy import Table, Column, Integer, Text, ForeignKey, MetaData
+from sqlalchemy import Table, Column, Integer, Text, ForeignKey, PickleType
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
@@ -28,7 +28,7 @@ class Character(Base):
     demeanor = Column(Text())
     type = Column(Text())
 
-    specialties = dict()
+    specialties = Column(PickleType)
 
     # Attributes
     strength = Column(Integer(), default=1)
