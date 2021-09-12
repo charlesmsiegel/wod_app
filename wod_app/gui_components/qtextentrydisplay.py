@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QLabel, QLineEdit, QStackedWidget, QWidget
 
 
 class QTextEntryDisplay(QStackedWidget):
-    def __init__(self, parent: typing.Optional[QWidget]=None) -> None:
+    def __init__(self, parent: typing.Optional[QWidget] = None) -> None:
         super().__init__(parent=parent)
         self.entry = QLineEdit()
         self.display = QLabel()
