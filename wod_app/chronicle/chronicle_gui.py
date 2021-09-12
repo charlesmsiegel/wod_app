@@ -3,9 +3,10 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLabel, QLineEdit,
                              QListWidget, QMainWindow, QPushButton,
-                             QStackedWidget, QWidget)
+                             QStackedWidget, QWidget, QListWidgetItem)
 from .chronicle import Chronicle
 from ..utils import load_config, load_tables
+from ..gui_components import QTextEntryDisplay
 
 
 config = load_config()
@@ -17,6 +18,7 @@ session = Session()
 class ChronicleWindow(QMainWindow):
     """Constructs the Chronicle GUI
     """
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -29,6 +31,7 @@ class ChronicleWindow(QMainWindow):
         self.chronicle_list = QListWidget()
         for chron in self.list_of_chronicles:
             self.chronicle_list.addItem(chron.name)
+        self.chronicle_list.sortItems()
 
         self.chronicle_list.itemClicked.connect(self.on_chronicle_select)
 
@@ -39,38 +42,21 @@ class ChronicleWindow(QMainWindow):
         self.new_chronicle_stack.addWidget(self.save_chronicle_button)
 
         self.name_label = QLabel("Name:")
-        self.name_writer = QLineEdit()
-        self.name_display = QLabel()
-
-        self.name_stacked = QStackedWidget()
-        self.name_stacked.addWidget(self.name_display)
-        self.name_stacked.addWidget(self.name_writer)
+        self.name_data = QTextEntryDisplay()
 
         self.storyteller_label = QLabel("Storyteller:")
-        self.storyteller_writer = QLineEdit()
-        self.storyteller_display = QLabel()
+        self.storyteller_data = QTextEntryDisplay()
 
-        self.storyteller_stacked = QStackedWidget()
-        self.storyteller_stacked.addWidget(self.storyteller_display)
-        self.storyteller_stacked.addWidget(self.storyteller_writer)
         # self.name_label = QLabel("Locations:")
         # self.name_label = QLabel("Player Characters:")
         # self.name_label = QLabel("Non-Player Characters:")
-        self.theme_label = QLabel("Theme:")
-        self.theme_writer = QLineEdit()
-        self.theme_display = QLabel()
 
-        self.theme_stacked = QStackedWidget()
-        self.theme_stacked.addWidget(self.theme_display)
-        self.theme_stacked.addWidget(self.theme_writer)
+        self.theme_label = QLabel("Theme:")
+        self.theme_data = QTextEntryDisplay()
 
         self.mood_label = QLabel("Mood:")
-        self.mood_writer = QLineEdit()
-        self.mood_display = QLabel()
+        self.mood_data = QTextEntryDisplay()
 
-        self.mood_stacked = QStackedWidget()
-        self.mood_stacked.addWidget(self.mood_display)
-        self.mood_stacked.addWidget(self.mood_writer)
         # self.name_label = QLabel("Game Lines:")
         # self.name_label = QLabel("Permitted Books:")
 
@@ -82,10 +68,10 @@ class ChronicleWindow(QMainWindow):
         self.layout.addWidget(self.theme_label, 2, 1)
         self.layout.addWidget(self.mood_label, 3, 1)
 
-        self.layout.addWidget(self.name_stacked, 0, 2)
-        self.layout.addWidget(self.storyteller_stacked, 1, 2)
-        self.layout.addWidget(self.theme_stacked, 2, 2)
-        self.layout.addWidget(self.mood_stacked, 3, 2)
+        self.layout.addWidget(self.name_data, 0, 2)
+        self.layout.addWidget(self.storyteller_data, 1, 2)
+        self.layout.addWidget(self.theme_data, 2, 2)
+        self.layout.addWidget(self.mood_data, 3, 2)
 
         self.widget = QWidget()
         self.widget.setLayout(self.layout)
@@ -96,44 +82,42 @@ class ChronicleWindow(QMainWindow):
         self.setCentralWidget(self.widget)
 
     def new_chronicle_clicked(self):
-        self.name_stacked.setCurrentIndex(1)
-        self.storyteller_stacked.setCurrentIndex(1)
-        self.theme_stacked.setCurrentIndex(1)
-        self.mood_stacked.setCurrentIndex(1)
+        self.name_data.setCurrentIndex(1)
+        self.storyteller_data.setCurrentIndex(1)
+        self.theme_data.setCurrentIndex(1)
+        self.mood_data.setCurrentIndex(1)
         self.new_chronicle_stack.setCurrentIndex(1)
 
     def save_chronicle_clicked(self):
         new_chronicle = Chronicle()
-        new_chronicle.name = self.name_writer.text()
-        new_chronicle.storyteller = self.storyteller_writer.text()
-        new_chronicle.theme = self.theme_writer.text()
-        new_chronicle.mood = self.mood_writer.text()
+        new_chronicle.name = self.name_data.text()
+        new_chronicle.storyteller = self.storyteller_data.text()
+        new_chronicle.theme = self.theme_data.text()
+        new_chronicle.mood = self.mood_data.text()
 
         session.add(new_chronicle)
         session.commit()
+        new_item = QListWidgetItem(new_chronicle.name)
+
         self.list_of_chronicles = session.query(Chronicle).all()
-        self.chronicle_list.addItem(new_chronicle.name)
-        self.name_stacked.setCurrentIndex(0)
-        self.storyteller_stacked.setCurrentIndex(0)
-        self.theme_stacked.setCurrentIndex(0)
-        self.mood_stacked.setCurrentIndex(0)
-        self.new_chronicle_stack.setCurrentIndex(0)
-        self.name_display.setText(new_chronicle.name)
-        self.storyteller_display.setText(new_chronicle.storyteller)
-        self.theme_display.setText(new_chronicle.theme)
-        self.mood_display.setText(new_chronicle.mood)
+        self.chronicle_list.addItem(new_item)
+        self.chronicle_list.sortItems()
+
+        self.on_chronicle_select(new_item)
 
     def on_chronicle_select(self, item):
-        self.name_stacked.setCurrentIndex(0)
-        self.storyteller_stacked.setCurrentIndex(0)
-        self.theme_stacked.setCurrentIndex(0)
-        self.mood_stacked.setCurrentIndex(0)
+        self.name_data.setCurrentIndex(0)
+        self.storyteller_data.setCurrentIndex(0)
+        self.theme_data.setCurrentIndex(0)
+        self.mood_data.setCurrentIndex(0)
         self.new_chronicle_stack.setCurrentIndex(0)
+
         chron = session.query(Chronicle).filter_by(name=item.text()).first()
-        self.name_display.setText(chron.name)
-        self.storyteller_display.setText(chron.storyteller)
-        self.theme_display.setText(chron.theme)
-        self.mood_display.setText(chron.mood)
+
+        self.name_data.setText(chron.name)
+        self.storyteller_data.setText(chron.storyteller)
+        self.theme_data.setText(chron.theme)
+        self.mood_data.setText(chron.mood)
 
 
 if __name__ == "__main__":

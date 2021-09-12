@@ -6,3 +6,4 @@ from . import actions
 from . import locations
 from . import objects
 from . import combat
+from . import gui_components
