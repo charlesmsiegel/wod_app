@@ -1,4 +1,4 @@
 from .action import Action
 from .combataction import CombatAction
-from .initiative import Initiative
+from .initiative import initiative
 from .martialartsmaneuver import MartialArtsManeuver
