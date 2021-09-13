@@ -75,8 +75,6 @@ class M20MageCharacter(HumanCharacter):
     spirit = Column(Integer(), default=0)
     time = Column(Integer(), default=0)
 
-    # TODO: During creation set default WP to 5 from 3.
-
     quintessences = Column(Integer(), default=0)
     paradox = Column(Integer(), default=0)
     permanent_paradox = Column(Integer(), default=0)

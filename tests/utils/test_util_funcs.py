@@ -31,7 +31,7 @@ class TestUtilFuncs(unittest.TestCase):
         self.assertEqual(load_tables(engine).keys(), dict().keys())
         meta = MetaData()
 
-        students = Table(
+        Table(
             'students', meta,
             Column('id', Integer, primary_key=True),
             Column('name', String),

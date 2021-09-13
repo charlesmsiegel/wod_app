@@ -43,9 +43,6 @@ class HumanCharacter(Character):
     intelligence = Column(Integer(), default=1)
     wits = Column(Integer(), default=1)
     
-    # TODO: Common Abilities
-    # TODO: Common Backgrounds
-
     willpower = Column(Integer(), default=3)
     temporary_willpower = Column(Integer(), default=3)
 
@@ -54,8 +51,6 @@ class HumanCharacter(Character):
     aggravated_levels = Column(Integer(), default=0)
 
     health_tracker = [0, 0, -1, -1, -2, -2, -5, -1000]
-
-    # TODO: merits_and_flaws, languages
 
     xp = Column(Integer(), default=0)
     spent_xp = Column(Integer(), default=0)
