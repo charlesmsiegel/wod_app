@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from ..character import Character
+from ..humancharacter import HumanCharacter
 from ...utils import load_config, load_tables
 
 
@@ -16,13 +16,13 @@ tables = load_tables(engine)
 Base = declarative_base()
 
 
-class M20MageCharacter(Character):
+class M20MageCharacter(HumanCharacter):
     """Class for Mage characters under M20 rules. Provides the
     m20_mage_character table.
     """
     __tablename__ = "m20_mage_character"
 
-    id = Column(Integer, ForeignKey('characters.id'), primary_key=True)
+    id = Column(Integer, ForeignKey('human_characters.id'), primary_key=True)
 
     # Abilities
     # Talents
@@ -75,8 +75,7 @@ class M20MageCharacter(Character):
     spirit = Column(Integer(), default=0)
     time = Column(Integer(), default=0)
 
-    willpower = Column(Integer(), default=5)
-    temporary_willpower = Column(Integer(), default=5)
+    # TODO: During creation set default WP to 5 from 3.
 
     quintessences = Column(Integer(), default=0)
     paradox = Column(Integer(), default=0)
@@ -90,4 +89,4 @@ class M20MageCharacter(Character):
         return self.name
 
 
-Character.metadata.create_all(engine)
+HumanCharacter.metadata.create_all(engine)
