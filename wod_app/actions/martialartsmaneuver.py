@@ -1,0 +1,2 @@
+class MartialArtsManeuver:
+    pass
