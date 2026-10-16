@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect x=%227%22 y=%223%22 width=%2218%22 height=%2226%22 rx=%223%22 fill=%22%23241433%22 stroke=%22%23d6b25e%22 stroke-width=%222%22/%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%225%22 fill=%22none%22 stroke=%22%23d6b25e%22 stroke-width=%221.5%22/%3E%3C/svg%3E">
+  <title>Mage Tarot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap">
+  <link rel="stylesheet" href="tarot.css">
+</head>
+<body>
+  <header class="bar">
+    <a class="home" href="../../" title="All tools">&#8962;</a>
+    <h1 id="deck-title">Mage Tarot</h1>
+
+    <div class="controls">
+      <label class="field" id="deck-field" hidden>
+        <span>Deck</span>
+        <select id="deck-select"></select>
+      </label>
+      <label class="field">
+        <span>Spread</span>
+        <select id="spread-select"></select>
+      </label>
+      <label class="field" id="significator-field">
+        <span>Significator</span>
+        <select id="significator-select"></select>
+      </label>
+      <label class="check"><input type="checkbox" id="reversals"> Reversals</label>
+      <label class="check"><input type="checkbox" id="majors-only"> Major Arcana only</label>
+    </div>
+
+    <div class="actions">
+      <button id="deal" class="primary" title="Shuffle and deal (D)">Deal</button>
+      <button id="next" title="Turn over the next card (Space or &rarr;)">Next</button>
+      <button id="reveal-all" title="Turn over every card (A)">Reveal all</button>
+      <button id="extend" title="Lay another card" hidden>Draw another</button>
+      <button id="copy" title="Copy the reading as text">Copy</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="table" id="table" aria-label="Spread"></section>
+
+    <aside class="panel">
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="card" aria-selected="true">Card</button>
+        <button role="tab" data-tab="reading" aria-selected="false">Reading</button>
+      </nav>
+      <div class="panel-body" id="panel-card"></div>
+      <div class="panel-body" id="panel-reading" hidden></div>
+    </aside>
+  </main>
+
+  <footer class="notices" id="notices" hidden></footer>
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="tarot.js"></script>
+</body>
+</html>

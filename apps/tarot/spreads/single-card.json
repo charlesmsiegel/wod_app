@@ -1,0 +1,13 @@
+{
+  "name": "Single Card",
+  "order": 60,
+  "description": "One card for quick inspiration: an NPC, a plot twist, a spirit, an unexpected development or a coincidental effect.",
+  "positions": [
+    {
+      "label": "The Card",
+      "x": 0,
+      "y": 0,
+      "meaning": "Draw on the card's imagery, meanings and associations for inspiration."
+    }
+  ]
+}

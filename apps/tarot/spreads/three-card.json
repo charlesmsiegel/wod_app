@@ -1,0 +1,25 @@
+{
+  "name": "Three Cards: Body, Mind, Spirit",
+  "order": 40,
+  "description": "A short linear spread laid from right to left. Handy for quickly sketching a new character or NPC.",
+  "positions": [
+    {
+      "label": "Body",
+      "x": 2.28,
+      "y": 0,
+      "meaning": "The physical aspect of the subject, or its past."
+    },
+    {
+      "label": "Mind",
+      "x": 1.14,
+      "y": 0,
+      "meaning": "The mind, or the present state of things."
+    },
+    {
+      "label": "Spirit",
+      "x": 0,
+      "y": 0,
+      "meaning": "The spirit, or future ambitions and plans."
+    }
+  ]
+}

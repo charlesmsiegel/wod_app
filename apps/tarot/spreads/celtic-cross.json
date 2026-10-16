@@ -1,0 +1,75 @@
+{
+  "name": "Celtic Cross",
+  "order": 10,
+  "description": "The classic ten-card spread, laid around a significator. It looks at the short- and long-term pasts and futures of the reading's subject. It can be dealt from the full deck or from the Major Arcana alone.",
+  "positions": [
+    {
+      "label": "Significator",
+      "significator": true,
+      "x": 0.45,
+      "y": 0.0,
+      "meaning": "The querent: the person or question the reading concerns."
+    },
+    {
+      "label": "Cover",
+      "x": 2.0,
+      "y": 1.5,
+      "meaning": "Covers the querent. The forces now at work within the querent's life."
+    },
+    {
+      "label": "Cross",
+      "x": 2.0,
+      "y": 1.5,
+      "rotate": 90,
+      "meaning": "Crosses the querent. Conflict; whatever stands in opposition and must be overcome."
+    },
+    {
+      "label": "Base",
+      "x": 2.0,
+      "y": 2.62,
+      "meaning": "The basis of the matter, or the short-term past."
+    },
+    {
+      "label": "Crown",
+      "x": 2.0,
+      "y": 0.38,
+      "meaning": "Crowns the querent. The immediate future."
+    },
+    {
+      "label": "Recent Past",
+      "x": 3.55,
+      "y": 1.5,
+      "meaning": "Things which have just happened."
+    },
+    {
+      "label": "Long-term Future",
+      "x": 0.45,
+      "y": 1.5,
+      "meaning": "The long-term future. Apart from the final card, probably the most important indicator in the reading."
+    },
+    {
+      "label": "Inner Concerns",
+      "x": 5.2,
+      "y": 3.18,
+      "meaning": "The querent's inner concerns and fears."
+    },
+    {
+      "label": "Outside Influences",
+      "x": 5.2,
+      "y": 2.06,
+      "meaning": "Friends, society and others around the querent, and how they see the querent."
+    },
+    {
+      "label": "Hopes and Ideals",
+      "x": 5.2,
+      "y": 0.94,
+      "meaning": "What the querent hopes for, and wants out of all this."
+    },
+    {
+      "label": "Outcome",
+      "x": 5.2,
+      "y": -0.18,
+      "meaning": "The sum total of the reading; the end result."
+    }
+  ]
+}

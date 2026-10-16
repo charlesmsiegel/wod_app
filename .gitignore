@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+/dist/
+
+# Card art is dropped in locally; keep only the folder's README in git.
+apps/*/decks/*/images/*
+!apps/*/decks/*/images/README.md

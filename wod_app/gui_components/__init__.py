@@ -1,1 +1,0 @@
-from .qtextentrydisplay import QTextEntryDisplay
