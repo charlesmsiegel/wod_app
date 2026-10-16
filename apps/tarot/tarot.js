@@ -123,22 +123,23 @@
 
   // ---- dealing ------------------------------------------------------------
 
-  function chooseSignificator(pile) {
+  function chooseSignificator() {
     const choice = settings.significator;
     if (choice === "none") return null;
     if (choice === "random-court" || choice === "random") {
-      const pool = choice === "random-court" ? pile.filter((c) => c.court) : pile;
-      const from = pool.length ? pool : pile;
+      const pool = choice === "random-court" ? deck.cards.filter((c) => c.court) : deck.cards;
+      const from = pool.length ? pool : deck.cards;
       return from.length ? from[randomInt(from.length)] : null;
     }
     return cardById(choice);
   }
 
   function deal() {
-    let pile = deck.cards.filter((c) => !settings.majorsOnly || c.arcana === "major");
+    // The significator comes from the whole deck; "Major Arcana only" limits the dealt cards.
     const needsSignificator = spread.positions.some((p) => p.significator);
-    const significator = needsSignificator ? chooseSignificator(pile) : null;
-    if (significator) pile = pile.filter((c) => c.id !== significator.id);
+    const significator = needsSignificator ? chooseSignificator() : null;
+    const pile = deck.cards.filter((c) =>
+      (!settings.majorsOnly || c.arcana === "major") && c.id !== significator?.id);
     shuffle(pile);
 
     const placements = spread.positions.map((position) => {

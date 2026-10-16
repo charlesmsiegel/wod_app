@@ -248,8 +248,13 @@ def load_spread(path):
     return spread
 
 
+def _visible(path):
+    """Hidden files and folders (dot-names, incl. macOS '._' files) are never published."""
+    return not path.name.startswith(".")
+
+
 def load_spreads(spreads_dir):
-    spreads = [load_spread(p) for p in sorted(Path(spreads_dir).glob("*.json"))]
+    spreads = [load_spread(p) for p in sorted(Path(spreads_dir).glob("*.json")) if _visible(p)]
     return sorted(spreads, key=lambda s: (s["order"], s["name"]))
 
 
@@ -263,7 +268,7 @@ def load_deck(deck_dir, url_prefix=""):
 
     image_dir = deck_dir / "images"
     filenames = [p.name for p in image_dir.iterdir()
-                 if p.is_file() and p.suffix.lower() in IMAGE_EXTENSIONS] if image_dir.is_dir() else []
+                 if p.is_file() and _visible(p) and p.suffix.lower() in IMAGE_EXTENSIONS] if image_dir.is_dir() else []
     matches, back, unmatched = match_images(parsed["cards"], parsed["suits"], filenames)
 
     # Percent-encode so names containing spaces, '#', '?' or '%' still work as URLs.
@@ -291,7 +296,7 @@ def build_data(app_dir=APP_DIR, url_prefix=""):
     """Everything the page needs, as JSON-ready data."""
     app_dir = Path(app_dir)
     decks = [load_deck(d, url_prefix) for d in sorted((app_dir / "decks").iterdir())
-             if (d / "meanings.md").is_file()]
+             if _visible(d) and (d / "meanings.md").is_file()]
     return {"decks": decks, "spreads": load_spreads(app_dir / "spreads")}
 
 

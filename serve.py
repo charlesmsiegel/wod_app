@@ -89,16 +89,26 @@ def build(out_dir):
     apps = ROOT / "apps"
     if out == ROOT or out in ROOT.parents or out == apps or apps in out.parents:
         raise SystemExit(f"refusing to build into {out}: it would overwrite the source files")
+    # Build beside the target and swap it in only once everything succeeded, so a
+    # content error (bad spread, malformed meanings file) leaves the old copy intact.
+    staging = out.parent / f".{out.name}.building"
+    if staging.exists():
+        shutil.rmtree(staging)
+    staging.mkdir(parents=True)
+    try:
+        shutil.copy2(ROOT / "index.html", staging / "index.html")
+        shutil.copytree(ROOT / "apps", staging / "apps",
+                        ignore=shutil.ignore_patterns(".*", "__pycache__", "*.py", "*.pyc"))
+        for route, loader in DATA_ROUTES.items():
+            target = staging / route.lstrip("/")
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(json.dumps(loader(), ensure_ascii=False), encoding="utf-8")
+    except BaseException:
+        shutil.rmtree(staging, ignore_errors=True)
+        raise
     if out.exists():
         shutil.rmtree(out)
-    out.mkdir(parents=True)
-    shutil.copy2(ROOT / "index.html", out / "index.html")
-    shutil.copytree(ROOT / "apps", out / "apps",
-                    ignore=shutil.ignore_patterns(".*", "__pycache__", "*.py", "*.pyc"))
-    for route, loader in DATA_ROUTES.items():
-        target = out / route.lstrip("/")
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(json.dumps(loader(), ensure_ascii=False), encoding="utf-8")
+    staging.rename(out)
     print(f"Static copy written to {out}")
 
 

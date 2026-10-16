@@ -193,6 +193,29 @@ class BuildDataTests(unittest.TestCase):
             self.assertEqual(deck["aspect"], 0.575)
 
 
+    def test_hidden_decks_spreads_and_images_are_skipped(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            app = Path(tmp)
+            images = app / "decks" / "mage" / "images"
+            images.mkdir(parents=True)
+            shutil.copy(MAGE / "meanings.md", images.parent / "meanings.md")
+            (images / "._The Fool.jpg").write_bytes(b"")  # macOS AppleDouble file
+            (images / "The Fool.jpg").write_bytes(b"")
+            private = app / "decks" / ".private"
+            private.mkdir()
+            shutil.copy(MAGE / "meanings.md", private / "meanings.md")
+            (app / "spreads").mkdir()
+            shutil.copy(data.APP_DIR / "spreads" / "single-card.json", app / "spreads")
+            (app / "spreads" / ".draft.json").write_text("not json")
+            built = data.build_data(app)
+            self.assertEqual([d["id"] for d in built["decks"]], ["mage"])
+            self.assertEqual([s["id"] for s in built["spreads"]], ["single-card"])
+            deck = built["decks"][0]
+            fool = next(c for c in deck["cards"] if c["id"] == "the-fool")
+            self.assertEqual(fool["image"], "decks/mage/images/The%20Fool.jpg")
+            self.assertEqual(deck["unmatchedImages"], [])
+
+
 class ServerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -261,6 +284,38 @@ class StaticBuildTests(unittest.TestCase):
         finally:
             secret.unlink()
             shutil.rmtree(hidden_dir)
+
+    def test_failed_build_keeps_previous_output(self):
+        import serve
+
+        def broken():
+            raise ValueError("bad spread")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "site"
+            out.mkdir()
+            (out / "previous.txt").write_text("still here")
+            original = dict(serve.DATA_ROUTES)
+            serve.DATA_ROUTES["/apps/tarot/data.json"] = broken
+            try:
+                with self.assertRaisesRegex(ValueError, "bad spread"):
+                    serve.build(out)
+            finally:
+                serve.DATA_ROUTES.clear()
+                serve.DATA_ROUTES.update(original)
+            self.assertEqual((out / "previous.txt").read_text(), "still here")
+            self.assertEqual(sorted(p.name for p in Path(tmp).iterdir()), ["site"])
+
+    def test_build_replaces_previous_output(self):
+        import serve
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "site"
+            out.mkdir()
+            (out / "stale.txt").write_text("old")
+            serve.build(out)
+            self.assertFalse((out / "stale.txt").exists())
+            self.assertTrue((out / "apps" / "tarot" / "data.json").exists())
+            self.assertEqual(sorted(p.name for p in Path(tmp).iterdir()), ["site"])
 
     def test_build_refuses_to_overwrite_sources(self):
         import serve
