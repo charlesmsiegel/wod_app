@@ -94,7 +94,7 @@ def build(out_dir):
     out.mkdir(parents=True)
     shutil.copy2(ROOT / "index.html", out / "index.html")
     shutil.copytree(ROOT / "apps", out / "apps",
-                    ignore=shutil.ignore_patterns("__pycache__", "*.py", "*.pyc"))
+                    ignore=shutil.ignore_patterns(".*", "__pycache__", "*.py", "*.pyc"))
     for route, loader in DATA_ROUTES.items():
         target = out / route.lstrip("/")
         target.parent.mkdir(parents=True, exist_ok=True)

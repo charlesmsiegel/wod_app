@@ -245,6 +245,23 @@ class StaticBuildTests(unittest.TestCase):
             self.assertTrue((out / "apps" / "tarot" / "index.html").exists())
             self.assertFalse((out / "apps" / "tarot" / "data.py").exists())
 
+    def test_build_leaves_out_hidden_files(self):
+        import serve
+        secret = serve.ROOT / "apps" / "tarot" / ".env-test-secret"
+        hidden_dir = serve.ROOT / "apps" / "tarot" / ".hidden-test-dir"
+        secret.write_text("SECRET=1")
+        hidden_dir.mkdir()
+        (hidden_dir / "file.txt").write_text("x")
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                out = Path(tmp) / "site"
+                serve.build(out)
+                self.assertFalse((out / "apps" / "tarot" / secret.name).exists())
+                self.assertFalse((out / "apps" / "tarot" / hidden_dir.name).exists())
+        finally:
+            secret.unlink()
+            shutil.rmtree(hidden_dir)
+
     def test_build_refuses_to_overwrite_sources(self):
         import serve
         for target in (serve.ROOT, serve.ROOT / "apps", serve.ROOT.parent):
