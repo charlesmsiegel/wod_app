@@ -1,0 +1,86 @@
+{
+  "name": "Circular Spread (Year)",
+  "order": 30,
+  "description": "Twelve cards in a circle around a significator, one for each month, laid out like a clock face. Use it for a course of action or a state of mind over the span of a year.",
+  "positions": [
+    {
+      "label": "Significator",
+      "significator": true,
+      "x": 0.0,
+      "y": 0.0,
+      "meaning": "The querent, or the subject of the reading, at the centre of the circle."
+    },
+    {
+      "label": "January",
+      "x": 2.2,
+      "y": -1.94,
+      "meaning": "Events and influences for January."
+    },
+    {
+      "label": "February",
+      "x": 3.81,
+      "y": -1.12,
+      "meaning": "Events and influences for February."
+    },
+    {
+      "label": "March",
+      "x": 4.4,
+      "y": 0.0,
+      "meaning": "Events and influences for March."
+    },
+    {
+      "label": "April",
+      "x": 3.81,
+      "y": 1.12,
+      "meaning": "Events and influences for April."
+    },
+    {
+      "label": "May",
+      "x": 2.2,
+      "y": 1.94,
+      "meaning": "Events and influences for May."
+    },
+    {
+      "label": "June",
+      "x": 0.0,
+      "y": 2.24,
+      "meaning": "Events and influences for June."
+    },
+    {
+      "label": "July",
+      "x": -2.2,
+      "y": 1.94,
+      "meaning": "Events and influences for July."
+    },
+    {
+      "label": "August",
+      "x": -3.81,
+      "y": 1.12,
+      "meaning": "Events and influences for August."
+    },
+    {
+      "label": "September",
+      "x": -4.4,
+      "y": 0.0,
+      "meaning": "Events and influences for September."
+    },
+    {
+      "label": "October",
+      "x": -3.81,
+      "y": -1.12,
+      "meaning": "Events and influences for October."
+    },
+    {
+      "label": "November",
+      "x": -2.2,
+      "y": -1.94,
+      "meaning": "Events and influences for November."
+    },
+    {
+      "label": "December",
+      "x": -0.0,
+      "y": -2.24,
+      "meaning": "Events and influences for December."
+    }
+  ]
+}

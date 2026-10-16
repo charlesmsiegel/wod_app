@@ -1,0 +1,56 @@
+{
+  "name": "Circular Spread (Week)",
+  "order": 20,
+  "description": "Seven cards in a circle around a significator, one for each day of a week, starting at the upper right with Sunday. Use it for a course of action or a state of mind over the coming week.",
+  "positions": [
+    {
+      "label": "Significator",
+      "significator": true,
+      "x": 0.0,
+      "y": 0.0,
+      "meaning": "The querent, or the subject of the reading, at the centre of the circle."
+    },
+    {
+      "label": "Sunday",
+      "x": 1.19,
+      "y": -1.27,
+      "meaning": "Events and influences for Sunday."
+    },
+    {
+      "label": "Monday",
+      "x": 2.68,
+      "y": -0.31,
+      "meaning": "Events and influences for Monday."
+    },
+    {
+      "label": "Tuesday",
+      "x": 2.15,
+      "y": 0.88,
+      "meaning": "Events and influences for Tuesday."
+    },
+    {
+      "label": "Wednesday",
+      "x": 0.0,
+      "y": 1.41,
+      "meaning": "Events and influences for Wednesday."
+    },
+    {
+      "label": "Thursday",
+      "x": -2.15,
+      "y": 0.88,
+      "meaning": "Events and influences for Thursday."
+    },
+    {
+      "label": "Friday",
+      "x": -2.68,
+      "y": -0.31,
+      "meaning": "Events and influences for Friday."
+    },
+    {
+      "label": "Saturday",
+      "x": -1.19,
+      "y": -1.27,
+      "meaning": "Events and influences for Saturday."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "Linear Spread",
+  "order": 50,
+  "description": "Cards are laid in a straight line from right to left, each one clarifying the card before it. Keep drawing until querent and reader are satisfied. Cards to the left point toward future events, cards to the right toward the past.",
+  "positions": [
+    {
+      "label": "Card 1",
+      "x": 3.42,
+      "y": 0,
+      "meaning": "The subject card."
+    },
+    {
+      "label": "Card 2",
+      "x": 2.28,
+      "y": 0,
+      "meaning": "Clarifies or comments upon the preceding card."
+    },
+    {
+      "label": "Card 3",
+      "x": 1.14,
+      "y": 0,
+      "meaning": "Clarifies or comments upon the preceding card."
+    },
+    {
+      "label": "Card 4",
+      "x": 0.0,
+      "y": 0,
+      "meaning": "Clarifies or comments upon the preceding card."
+    }
+  ],
+  "extend": {
+    "dx": -1.14,
+    "dy": 0,
+    "label": "Card {n}",
+    "meaning": "Clarifies or comments upon the preceding card."
+  }
+}
