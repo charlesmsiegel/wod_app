@@ -14,6 +14,7 @@ Layout of the app folder::
 import json
 import re
 from pathlib import Path
+from urllib.parse import quote
 
 APP_DIR = Path(__file__).resolve().parent
 
@@ -265,17 +266,18 @@ def load_deck(deck_dir, url_prefix=""):
                  if p.is_file() and p.suffix.lower() in IMAGE_EXTENSIONS] if image_dir.is_dir() else []
     matches, back, unmatched = match_images(parsed["cards"], parsed["suits"], filenames)
 
-    image_url = f"{url_prefix}decks/{deck_dir.name}/images/"
+    # Percent-encode so names containing spaces, '#', '?' or '%' still work as URLs.
+    image_url = f"{url_prefix}decks/{quote(deck_dir.name)}/images/"
     for card in parsed["cards"]:
         filename = matches.get(card["id"])
-        card["image"] = image_url + filename if filename else None
+        card["image"] = image_url + quote(filename) if filename else None
         card.pop("imageFile", None)
 
     deck = dict(parsed["deck"])
     deck.update(settings)
     deck.update(
         id=deck_dir.name,
-        back=image_url + back if back else None,
+        back=image_url + quote(back) if back else None,
         suits=parsed["suits"],
         cards=parsed["cards"],
         missingImages=[c["name"] for c in parsed["cards"] if not c["image"]],

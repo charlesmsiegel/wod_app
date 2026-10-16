@@ -11,12 +11,14 @@ Needs only the Python standard library (3.9+).
 
 import argparse
 import json
+import re
 import shutil
 import sys
 import threading
 import webbrowser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
@@ -37,34 +39,40 @@ class Handler(SimpleHTTPRequestHandler):
         super().__init__(*args, directory=str(ROOT), **kwargs)
 
     def _route(self):
-        path = self.path.split("?", 1)[0].split("#", 1)[0]
-        if any(part.startswith(".") for part in path.split("/") if part):
+        """The decoded request path, or None (after a 404) for hidden files."""
+        path = unquote(self.path.split("?", 1)[0].split("#", 1)[0])
+        if any(part.startswith(".") for part in re.split(r"[/\\]", path) if part):
             self.send_error(404)
             return None
         return path
 
+    def _send_data(self, path, include_body):
+        try:
+            payload = DATA_ROUTES[path]()
+            status = 200
+        except Exception as error:  # show loader errors in the page instead of a bare 500
+            payload = {"error": f"{type(error).__name__}: {error}"}
+            status = 500
+        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        if include_body:
+            self.wfile.write(body)
+
     def do_GET(self):
         path = self._route()
-        if path is None:
-            return
         if path in DATA_ROUTES:
-            try:
-                payload = DATA_ROUTES[path]()
-                status = 200
-            except Exception as error:  # show loader errors in the page instead of a bare 500
-                payload = {"error": f"{type(error).__name__}: {error}"}
-                status = 500
-            body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-            self.send_response(status)
-            self.send_header("Content-Type", "application/json; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-            return
-        super().do_GET()
+            self._send_data(path, include_body=True)
+        elif path is not None:
+            super().do_GET()
 
     def do_HEAD(self):
-        if self._route() is not None:
+        path = self._route()
+        if path in DATA_ROUTES:
+            self._send_data(path, include_body=False)
+        elif path is not None:
             super().do_HEAD()
 
     def end_headers(self):

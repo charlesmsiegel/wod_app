@@ -182,11 +182,14 @@ class BuildDataTests(unittest.TestCase):
             images.mkdir(parents=True)
             shutil.copy(MAGE / "meanings.md", images.parent / "meanings.md")
             (images / "The Fool.jpg").write_bytes(b"")
+            (images / "The#Star?.jpg").write_bytes(b"")
             (app / "spreads").mkdir()
             shutil.copy(data.APP_DIR / "spreads" / "single-card.json", app / "spreads")
             deck = data.build_data(app)["decks"][0]
-            fool = next(c for c in deck["cards"] if c["id"] == "the-fool")
-            self.assertEqual(fool["image"], "decks/mage/images/The Fool.jpg")
+            cards = {c["id"]: c for c in deck["cards"]}
+            self.assertEqual(cards["the-fool"]["image"], "decks/mage/images/The%20Fool.jpg")
+            # Reserved URL characters in a file name are encoded, not read as a fragment or query.
+            self.assertEqual(cards["the-star"]["image"], "decks/mage/images/The%23Star%3F.jpg")
             self.assertEqual(deck["aspect"], 0.575)
 
 
@@ -217,9 +220,18 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(len(payload["decks"][0]["cards"]), 78)
 
     def test_hidden_files_are_not_served(self):
-        with self.assertRaises(urllib.error.HTTPError) as caught:
-            self.get("/.git/config")
-        self.assertEqual(caught.exception.code, 404)
+        for path in ("/.git/config", "/%2egit/config", "/%2Egit/HEAD", "/apps/%2e%2e/.git/config"):
+            with self.assertRaises(urllib.error.HTTPError, msg=path) as caught:
+                self.get(path)
+            self.assertEqual(caught.exception.code, 404, path)
+
+    def test_head_on_generated_data(self):
+        request = urllib.request.Request(self.base + "/apps/tarot/data.json", method="HEAD")
+        with urllib.request.urlopen(request) as response:
+            self.assertEqual(response.status, 200)
+            self.assertEqual(response.headers["Content-Type"], "application/json; charset=utf-8")
+            self.assertGreater(int(response.headers["Content-Length"]), 0)
+            self.assertEqual(response.read(), b"")
 
 
 class StaticBuildTests(unittest.TestCase):
