@@ -70,6 +70,8 @@
     const nightmares = drawn.filter(id => lookup.get(id).family === 'Nightmare');
     const cast = {id: state.nextCast, phase: 'drawn', art, realms: [...realms],
       bunks: drawn.filter(id => !nightmares.includes(id)), nightmares, effect: '', successes: null};
+    cast.draft = {effect: '', fulfilled: false, nightmaresAcknowledged: false,
+      context: 'enchanted', successes: String(successCap(cast, cards)), disposition: ''};
     return {...state, deck: state.deck.slice(drawCount), casts: [...state.casts, cast],
       removedNightmares: [...state.removedNightmares, ...nightmares],
       glamourSpent: state.glamourSpent + realms.length - 1 + (drawCount === 2 ? 1 : 0), nextCast: state.nextCast + 1};
@@ -77,6 +79,13 @@
   function successCap(cast, cards) {
     const lookup = byId(cards);
     return cast.bunks.reduce((sum, id) => sum + (lookup.get(id).successes || 0), 0);
+  }
+  function updateCantripDraft(state, castId, changes) {
+    const cast = state.casts.find(item => item.id === castId);
+    if (!cast) throw new Error('Unknown cantrip.');
+    if (Object.keys(changes).some(key => !Object.hasOwn(cast.draft, key))) throw new Error('Unknown cantrip draft field.');
+    return {...state, casts: state.casts.map(item => item.id === castId
+      ? {...item, draft: {...item.draft, ...changes}} : item)};
   }
   function weaveCantrip(state, cards, castId, {fulfilled, nightmaresAcknowledged = false, effect, successes}) {
     const cast = state.casts.find(item => item.id === castId);
@@ -113,5 +122,5 @@
       deck: shuffle([...state.deck, ...restored.filter(id => state.pool.includes(id))], random)};
   }
   return {shuffle, filterCards, createTable, moveCard, drawCards, shuffleTable,
-    createKit, availableKnown, beginCantrip, successCap, weaveCantrip, endCantrip, refreshKit};
+    createKit, availableKnown, beginCantrip, successCap, updateCantripDraft, weaveCantrip, endCantrip, refreshKit};
 });

@@ -122,3 +122,17 @@ test('epiphany refresh can choose specific discarded cards without refreshing th
   assert.throws(()=>engine.refreshKit(state,[]),/choose|Choose/);
   assert.throws(()=>engine.refreshKit(state,['realm']),/discard/);
 });
+test('a cantrip draft is immutable and survives unrelated cantrip transitions',()=>{
+  assert.equal(typeof engine.updateCantripDraft,'function');
+  const before=start(kit(['nightmare','bunk','bunk2']),{drawCount:2});
+  const draft={effect:'Open a door.',fulfilled:true,nightmaresAcknowledged:true,context:'banality',successes:'2',disposition:'__glamour'};
+  let state=engine.updateCantripDraft(before,1,draft);
+  assert.equal(before.casts[0].draft.effect,'');
+  state=engine.beginCantrip(state,cards,{art:'art2',realms:['realm2'],drawCount:1});
+  assert.deepEqual(state.casts[0].draft,draft);
+  state=engine.endCantrip(state,2,{discardId:'realm2'},()=>.999);
+  state=engine.refreshKit(state,['realm2'],()=>.999);
+  assert.deepEqual(state.casts[0].draft,draft);
+  assert.throws(()=>engine.updateCantripDraft(state,99,{effect:'Wrong cast'}),/Unknown/);
+  assert.throws(()=>engine.updateCantripDraft(state,1,{art:'art2'}),/draft/);
+});

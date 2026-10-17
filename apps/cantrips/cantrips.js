@@ -133,6 +133,7 @@
   }
   function components(cast) {return [cast.art,...cast.realms,...cast.bunks];}
   function renderCast(cast) {
+    const draft=cast.draft;
     const section=node('article',undefined,'cast');section.dataset.cast=String(cast.id);
     section.append(node('p',`Cantrip ${cast.id} · ${cast.phase==='active'?'effect active — cards held':'Bunks drawn — awaiting fulfillment'}`,'cast-title'));
     section.append(node('h3',lookup.get(cast.art).name));
@@ -150,15 +151,16 @@
       section.append(node('h3','3 · Fulfill, describe, establish success'));
       if(!cap)section.append(node('p','No ordinary Bunk was drawn, so no Bunk successes are available. Resolve the Nightmare with your Storyteller and settle this attempt. No replacement is drawn automatically.','muted'));
       else {
-        const form=node('form'), fulfilled=node('input');fulfilled.type='checkbox';fulfilled.name='fulfilled';
+        const form=node('form'), fulfilled=node('input');fulfilled.type='checkbox';fulfilled.name='fulfilled';fulfilled.checked=draft.fulfilled;
         const check=node('label',undefined,'check');check.append(fulfilled,document.createTextNode('Every drawn Bunk requirement has been fulfilled.'));form.append(check);
         let acknowledged;
-        if(cast.nightmares.length) { acknowledged=node('input');acknowledged.type='checkbox';const row=node('label',undefined,'check');row.append(acknowledged,document.createTextNode('Nightmare consequences applied and continuation agreed with the Storyteller.'));form.append(row); }
-        const effectLabel=node('label','Intended effect'), effect=node('textarea');effect.name='effect';effect.maxLength=2000;effect.required=true;effectLabel.append(effect);form.append(effectLabel);
+        if(cast.nightmares.length) { acknowledged=node('input');acknowledged.type='checkbox';acknowledged.name='nightmaresAcknowledged';acknowledged.checked=draft.nightmaresAcknowledged;const row=node('label',undefined,'check');row.append(acknowledged,document.createTextNode('Nightmare consequences applied and continuation agreed with the Storyteller.'));form.append(row); }
+        const effectLabel=node('label','Intended effect'), effect=node('textarea');effect.name='effect';effect.value=draft.effect;effect.maxLength=2000;effect.required=true;effectLabel.append(effect);form.append(effectLabel);
         const context=node('select');context.name='context';context.append(option('enchanted','Enchanted target / freehold · Bunk total'),option('banality','Mortal target, witness or Banality resistance · roll'));
+        context.value=draft.context;
         const contextLabel=node('label','4 · Establish successes ');contextLabel.append(context);form.append(contextLabel);
         const instruction=node('p',undefined,'muted');form.append(instruction);
-        const successes=node('input');successes.type='number';successes.min='1';successes.max=String(cap);successes.value=String(cap);successes.name='successes';
+        const successes=node('input');successes.type='number';successes.min='1';successes.max=String(cap);successes.value=draft.successes;successes.name='successes';
         const successesLabel=node('label',`Successes · maximum ${cap} `);successesLabel.append(successes);form.append(successesLabel);
         function rollContext() {
           successes.readOnly=context.value==='enchanted';
@@ -167,6 +169,10 @@
           instruction.textContent=context.value==='enchanted'?`No Banality roll required: the Bunks give ${cap} successes.`:`Roll ${art.attribute||'confirm Art Attribute'} + ${abilities} against the highest relevant Banality. Ask the Storyteller which Ability applies with multiple Realms. Enter the successful result, capped at ${cap}. A failed roll adds temporary Banality; a botch adds permanent Banality. Settle a failed attempt below.`;
         }
         context.addEventListener('change',rollContext);rollContext();
+        const saveDraft=()=>{kit=D.updateCantripDraft(kit,cast.id,{fulfilled:fulfilled.checked,nightmaresAcknowledged:Boolean(acknowledged?.checked),effect:effect.value,context:context.value,successes:successes.value});};
+        for(const control of [fulfilled,acknowledged,effect,context,successes].filter(Boolean)) {
+          control.addEventListener('input',saveDraft);control.addEventListener('change',saveDraft);
+        }
         const submit=node('button','Keep effect active','primary');submit.type='submit';form.append(submit);
         form.addEventListener('submit',event=>{event.preventDefault();act(()=>{kit=D.weaveCantrip(kit,cards,cast.id,{fulfilled:fulfilled.checked,nightmaresAcknowledged:Boolean(acknowledged?.checked),effect:effect.value,successes:Number(successes.value)});renderGuided();message('Cantrip active. Its component cards remain held until the effect ends.');});});
         section.append(form);
@@ -175,6 +181,8 @@
     const settle=node('div',undefined,'settle');settle.append(node('h3','5 · When the effect ends / attempt fails'));
     const disposition=node('select');disposition.setAttribute('aria-label',`Cantrip ${cast.id} discard choice`);
     disposition.append(option('','Choose one used card to discard…'),...components(cast).map(id=>option(id,`Discard ${lookup.get(id).name}`)),option('__glamour','Spend 1 Glamour · retain all used cards'));
+    disposition.value=draft.disposition;
+    disposition.addEventListener('change',()=>{kit=D.updateCantripDraft(kit,cast.id,{disposition:disposition.value});});
     settle.append(disposition,button(cast.phase==='active'?'End effect & settle':'End attempt & settle',()=>act(()=>{kit=D.endCantrip(kit,cast.id,{discardId:disposition.value==='__glamour'?undefined:disposition.value,payGlamour:disposition.value==='__glamour'});renderGuided();message('Used cards settled. Retained Bunks have been shuffled back into your personal deck.');}), 'primary'));
     section.append(settle);return section;
   }

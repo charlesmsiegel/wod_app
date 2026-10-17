@@ -4,6 +4,8 @@ The catalogue models 168 physical card identities, each with an independently re
 
 The casting model holds one Art, one or more Realms, and the drawn Bunks until the effect ends. Ending an effect discards one used card or records one Glamour spent to retain it; retained Bunks return to the shuffled personal deck. Nightmares apply immediately and leave that deck permanently. Refreshing restores discarded ordinary cards but never releases active cards or resurrects Nightmares.
 
+Each cantrip also owns its unfinished form draft. Input events update that draft without redrawing the forms; drawing, settling or refreshing other cards can rebuild the view without losing text, acknowledgements, roll context, successes or the settlement choice. Drafts share the kit's in-memory tab lifetime.
+
 Implementation plan: pin catalogue/image confinement and casting transitions with Python/Node tests; add the stdlib loader and importer; build the two responsive views; verify the server route, static build, existing suite, and browser.
 
 Reused: the existing `serve.py` generated-data route and static build, standard-library JSON/Path/URL quoting, and the repository's vanilla DOM and Node-test conventions. The sandbox and personal kit deliberately have separate zones: merging them would let a practice draw consume a character's active spell components. Replacing a card's image or correcting its text changes its manifest entry, without a new state transition.
