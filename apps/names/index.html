@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b20">
+  <title>Names of the Awakened · Mage: The Ascension</title>
+  <link rel="stylesheet" href="names.css">
+</head>
+<body data-mode="adept">
+  <header class="topbar"><a href="../../" class="home">← <span>World of Darkness Tools</span></a><span class="topbar-note">A Mage's companion</span></header>
+  <main>
+    <div class="intro">
+      <div class="sigil" aria-hidden="true">N<span>∴</span></div>
+      <div class="eyebrow">Mage: The Ascension</div>
+      <h1>Names of the Awakened</h1>
+      <p>A handle in the Digital Web. A name behind the veil.<br>Choose the tradition that names you.</p>
+    </div>
+
+    <fieldset class="mode-switch">
+      <legend class="sr-only">Naming tradition</legend>
+      <label><input type="radio" name="mode" value="adept" checked><span><strong>Virtual Adept</strong><small>Handle terminal</small></span></label>
+      <label><input type="radio" name="mode" value="hermetic"><span><strong>Order of Hermes</strong><small>Registry of names</small></span></label>
+    </fieldset>
+
+    <section id="adept-view" aria-labelledby="adept-heading">
+      <div class="mode-heading"><div><div class="eyebrow">// identity / essence</div><h2 id="adept-heading">The name is a number.</h2></div><span class="stamp">LOCAL SESSION</span></div>
+      <div class="workspace">
+        <div class="panel input-panel">
+          <label for="handle">Adept handle</label>
+          <div class="terminal-input"><span aria-hidden="true">&gt;</span><input id="handle" type="text" maxlength="200" placeholder="C0y0te" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="handle-help adept-message"></div>
+          <p class="help" id="handle-help">ASCII A–Z, case-insensitive, plus zero (0). Spaces, hyphens and straight apostrophes are ignored. Other characters are unsupported.</p>
+          <button class="quiet" type="button" id="adept-example">Try C0y0te</button>
+          <p id="adept-message" class="validation" aria-live="polite"></p>
+          <div class="rule-card"><div class="eyebrow">The procedure</div><p>Letters become numbers: A = 1 through Z = 26. Add them, repeatedly add the decimal digits to reach 1–9, then divide by three and round to the nearest integer.</p><p class="small">0 Primordial · 1 Pattern<br>2 Dynamic · 3 Questing</p></div>
+        </div>
+        <div class="panel output-panel">
+          <div class="panel-heading"><span class="eyebrow">Essence analysis</span><button type="button" id="copy-adept" class="quiet" disabled>Copy analysis</button></div>
+          <div id="adept-empty" class="empty-state"><span aria-hidden="true">_</span><p>Awaiting a handle.</p><small>The arithmetic will appear here.</small></div>
+          <div id="adept-result" hidden aria-live="polite">
+            <div class="essence-number" id="essence-number" aria-hidden="true"></div>
+            <h3 id="essence-name" class="essence-name"></h3>
+            <p id="essence-description" class="essence-description"></p>
+            <ol class="trace">
+              <li><span class="step-label">01 / Add the values</span><p id="letter-trace"></p></li>
+              <li><span class="step-label">02 / Reduce the decimal digits</span><p id="reduction-trace"></p></li>
+              <li><span class="step-label">03 / Divide by three and round</span><p id="division-trace"></p></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <p class="source-caption">Handle method: <cite>Tradition Book: Virtual Adepts Revised</cite>, printed pp. 43–45 (PDF pp. 44–46), especially printed p. 44.</p>
+    </section>
+
+    <section id="hermetic-view" aria-labelledby="hermetic-heading" hidden>
+      <div class="mode-heading"><div><div class="eyebrow">Liber nominum / a private registry</div><h2 id="hermetic-heading">Behind the public name.</h2></div><span class="stamp">IN CALIGINE ABDITUS</span></div>
+      <div class="workspace hermetic-workspace">
+        <div class="panel input-panel hermetic-fields">
+          <label for="given-name">Given / birth name</label>
+          <input id="given-name" type="text" maxlength="300" placeholder="Iris Vale" autocomplete="off" spellcheck="false">
+          <label for="craft-name">Craft / shadow name</label>
+          <input id="craft-name" type="text" maxlength="300" placeholder="Aster Lucian Voss" autocomplete="off" spellcheck="false" aria-describedby="craft-help">
+          <p id="craft-help" class="help">Your public alternate name. The full Shadow Name inserts the birth name after its first word, before the middle / last names.</p>
+          <label for="titles">Titles &amp; honorifics <span class="optional">(optional)</span></label>
+          <textarea id="titles" rows="3" maxlength="1500" placeholder="bani [your House]&#10;Keeper of the Glass Door" autocomplete="off" spellcheck="false" aria-describedby="titles-help"></textarea>
+          <p id="titles-help" class="help">One per line, appended to the full Shadow and True Names. Include your own bani House if desired.</p>
+          <details class="override"><summary>Set the Shadow Name yourself</summary><label for="shadow-override">Full Shadow Name, before titles</label><input id="shadow-override" type="text" maxlength="800" autocomplete="off" spellcheck="false" aria-describedby="override-help"><p id="override-help" class="help">Optional. Replaces the automatic birth-name insertion; titles still follow. Useful for one-word craft names or other arrangements.</p></details>
+          <p id="hermetic-message" class="validation" aria-live="polite"></p>
+        </div>
+        <div class="panel output-panel registry">
+          <div class="panel-heading"><span class="eyebrow">The register</span><button type="button" id="copy-registry" class="quiet" disabled>Copy register</button></div>
+          <div class="name-entry"><h3>Public craft name</h3><p id="craft-output" class="name-output">Enter a craft name to begin.</p></div>
+          <div class="name-entry"><h3>Full Shadow Name</h3><p id="shadow-output" class="name-output" aria-live="polite">The birth name and craft name will meet here.</p></div>
+          <div class="name-entry true-entry"><div class="entry-heading"><h3>Full True Name</h3><button type="button" id="copy-true" class="quiet" disabled>Copy True Name</button></div><p id="true-output" class="name-output" aria-live="polite">Complete the names and ten syllables below.</p><p class="help">The entire Shadow Name, then “In Caligine Abditus” (In Darkness Hidden), then ten invented syllables.</p></div>
+        </div>
+      </div>
+
+      <fieldset class="panel secret-panel">
+        <legend>The ten secret syllables</legend>
+        <div class="secret-heading"><p class="help" id="secret-help">One intended syllable per slot. Edit freely using letters A–Z; hyphens in the preview mark each boundary. We count slots, without guessing pronunciation.</p><button type="button" id="generate-secret">Generate ten syllables</button></div>
+        <div class="syllable-slots">
+          <label><span>01</span><input id="syllable-1" type="text" maxlength="12" aria-label="Secret syllable 1" aria-describedby="secret-help" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+          <label><span>02</span><input id="syllable-2" type="text" maxlength="12" aria-label="Secret syllable 2" aria-describedby="secret-help" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+          <label><span>03</span><input id="syllable-3" type="text" maxlength="12" aria-label="Secret syllable 3" aria-describedby="secret-help" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+          <label><span>04</span><input id="syllable-4" type="text" maxlength="12" aria-label="Secret syllable 4" aria-describedby="secret-help" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+          <label><span>05</span><input id="syllable-5" type="text" maxlength="12" aria-label="Secret syllable 5" aria-describedby="secret-help" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+          <label><span>06</span><input id="syllable-6" type="text" maxlength="12" aria-label="Secret syllable 6" aria-describedby="secret-help" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+          <label><span>07</span><input id="syllable-7" type="text" maxlength="12" aria-label="Secret syllable 7" aria-describedby="secret-help" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+          <label><span>08</span><input id="syllable-8" type="text" maxlength="12" aria-label="Secret syllable 8" aria-describedby="secret-help" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+          <label><span>09</span><input id="syllable-9" type="text" maxlength="12" aria-label="Secret syllable 9" aria-describedby="secret-help" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+          <label><span>10</span><input id="syllable-10" type="text" maxlength="12" aria-label="Secret syllable 10" aria-describedby="secret-help" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+        </div>
+        <div class="secret-preview"><p id="secret-preview"></p><span id="secret-count" role="status"></span></div>
+        <p class="help">Original invented sounds, grouped 2 + 3 + 2 + 3. The book supplies the ten-syllable rule, not a generation table or a translation.</p>
+        <p id="secret-message" class="validation" aria-live="polite"></p>
+      </fieldset>
+      <p class="source-caption">Naming structure: <cite>Tradition Book: Order of Hermes Revised</cite>, “The Naming of a Hermetic Mage,” printed p. 69 (PDF p. 71).</p>
+    </section>
+
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+    <details class="about"><summary>About the names &amp; sources</summary>
+      <p>The Adept method assigns A = 1 through Z = 26, sums the values, and repeatedly sums the decimal digits to get 1–9. Divide by three and round to the nearest integer: 1 → 0; 2–4 → 1; 5–7 → 2; 8–9 → 3. The source's C0y0te example demonstrates zero. This tool applies ASCII case-insensitivity and ignores only spaces, hyphens and straight apostrophes; it invents no values for other digits or Unicode.</p>
+      <p>The four Essence descriptions here are short original paraphrases of <cite>Mage: The Ascension 20th Anniversary Edition</cite>, printed pp. 266–267 (PDF pp. 267–268). This handle procedure yields Primordial, Pattern, Dynamic or Questing.</p>
+      <p>Hermetic craft names are ordinary alternate names. The Revised Tradition Book describes a full Shadow Name formed by inserting the birth name between the first and remaining craft names, followed by honorifics. The True Name adds the Latin phrase and ten syllables that are not real words.</p>
+      <p>Our generator combines original consonant sounds, one vowel and a final consonant per slot, using the browser's cryptographic random source. Hyphens keep the ten defined syllables visible. The four groups are an interface convention. The result is fictional soundplay with no assigned meaning or Enochian translation; no check against every real-world language is possible. You choose the intended pronunciation of manual edits.</p>
+      <p>Everything calculates in this page. Entered names are not saved by this app or sent to an API. Copying is optional and uses your clipboard.</p>
+    </details>
+    <noscript><p class="validation">Enable JavaScript to calculate and compose names. This app needs no server connection.</p></noscript>
+    <footer><div class="darkpack-notice"><a href="https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement" title="Dark Pack agreement"><img src="https://images.ctfassets.net/u73tyf0fa8v1/3oBTHBZk9XmfcBlUPylvFh/673e4a6b14566548c03424ddf627b944/darkpack_logo2.png?fm=webp&amp;q=75&amp;w=300" alt="Dark Pack" width="85" height="85" loading="lazy"></a><div><strong>Unofficial, free fan project</strong><p>Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit <a href="https://www.worldofdarkness.com/">worldofdarkness.com</a>.</p></div></div></footer>
+  </main>
+  <script src="names-core.js"></script>
+  <script src="names.js"></script>
+</body>
+</html>
