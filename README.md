@@ -308,9 +308,7 @@ python -m http.server --directory dist 8001
 
 ```sh
 python -m unittest discover -s tests
-node --test tests/test_garou.mjs
-node --test tests/test_garou_ui.mjs
-node --test tests/test_names.mjs
+node --test tests/*.mjs
 ```
 
 

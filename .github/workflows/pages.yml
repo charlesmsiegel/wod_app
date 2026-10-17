@@ -23,12 +23,12 @@ jobs:
         run: node --test tests/*.mjs
       - name: Check browser JavaScript syntax
         run: |
+          node --check apps/names/names-core.js
+          node --check apps/names/names.js
           node --check apps/garou/garou.js
           node --check apps/garou/garou-astro.js
           node --check apps/garou/sky-data.js
           node --check apps/garou/umbral-data.js
-          node --check apps/names/names-core.js
-          node --check apps/names/names.js
       - name: Build static site
         run: python serve.py --build dist
       - name: Assert both apps are bundled
