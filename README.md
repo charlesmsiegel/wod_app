@@ -41,11 +41,14 @@ in `icon.svg` that also serves as its browser favicon.
   Ursa Major/The Plough for the Fianna), Garou star names such as
   Vegarda/Polaris and Matagar/Sirius, and the ancestral Milky Way for
   Uktena and Wendigo. A tribal filter highlights relevant stories.
-- **Umbral phenomena:** Anthelios appears only on request, represented by
-  an explicitly **symbolic region** near Ursa Major and Leo, not an invented
-  star with physical astronomical coordinates. Hakahe's Vulcan, Rorg,
-  Songan and Yakecen are available as Umbral lore entries, not falsely
-  plotted celestial bodies.
+- **Umbral phenomena:** The selected mode always displays a prominent
+  **EARTH / UMBRA** state indicator. When "Show Anthelios" is enabled, an
+  unmistakable red **Eye of the Wyrm** omen appears below the chart and
+  can be selected for its lore even when its illustrative region is
+  below the local physical horizon. A red chart marker appears only when
+  that *approximate* sector is above the horizon; it is not a measured
+  astronomical star coordinate. Hakahe's Vulcan, Rorg, Songan and
+  Yakecen remain in the separate Umbral lore collection.
 - **Lunisolar Garou calendar:** The first full moon after the northern
   spring equinox opens Nerigal's month. Twelve consecutive full-to-full
   intervals correspond to the patrons Nerigal–Shantar; any extra lunation
@@ -60,6 +63,14 @@ catalogue is curated, not a complete stellar atlas. Constellation and
 spirit lore is based on the book's printed pages 63–81; atmospheric prompts
 are original. The app does not contact a location API and keeps optional
 location preferences in local browser storage.
+
+### Troubleshooting the live sky
+
+The HTML, CSS, Garou code and sky-lore scripts use a shared versioned URL
+to prevent cached pre-overlay JavaScript from being paired with newer HTML.
+If the Umbral checkbox appears but the mode indicator remains stuck on
+"Preparing the heavens…" or switching sides has no visual effect, use a
+hard refresh (Ctrl+Shift+R), then check the page's error message.
 
 ## Tarot Reader
 

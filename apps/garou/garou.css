@@ -110,3 +110,51 @@ footer a{color:var(--gold)}
 
 /* Distinctive scalable Garou icon for app header and favicon. */
 .garou-emblem{display:block;width:clamp(92px,13vw,128px);height:auto;margin:0 auto 14px;filter:drop-shadow(0 0 20px rgba(182,89,85,.18));}
+
+/* Visually unmistakable "Step sideways" state. */
+.sky-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 14px;
+  margin-top: 12px;
+  border: 1px solid #537183;
+  border-radius: 10px;
+  background: #152b38;
+}
+.sky-mode strong { color: #d6dfdf; font: 17px Georgia, serif; }
+.sky-mode span { color: #c5d4d8; font: 13px/1.5 Arial, sans-serif; }
+.chart-shell.umbral-active {
+  background: radial-gradient(ellipse at 50% 38%,#342b53 0%,#1b233f 46%,#111729 100%);
+  border-color: #9c76bb;
+  box-shadow: inset 0 0 0 1px #614981, 0 0 28px rgba(139,91,181,.16);
+}
+.chart-shell.umbral-active .sky-mode {
+  background: linear-gradient(105deg,#423051,#2d2548);
+  border-color: #a97cbe;
+  box-shadow: 0 0 20px rgba(158,92,215,.15);
+}
+.chart-shell.umbral-active .sky-mode strong { color: #f5d8ff; }
+.chart-shell.umbral-active .sky-mode span { color: #dbcaed; }
+.anthelios-omen {
+  margin: 14px 0 6px;
+  border-radius: 10px;
+  border: 1px solid #ac5871;
+  background: linear-gradient(105deg,#511f35,#2b213e);
+  box-shadow: 0 0 22px rgba(191,41,72,.16);
+}
+.anthelios-omen[hidden] { display: none; }
+.anthelios-focus {
+  display: flex; align-items: center; gap: 13px; width: 100%;
+  text-align: left; border: 0; padding: 14px 16px;
+  color: #ffe4ed; background: transparent;
+}
+.anthelios-focus:hover, .anthelios-focus:focus-visible {
+  background: rgba(227,73,109,.12); border-radius: 10px;
+}
+.anthelios-icon { color: #ff8898; font-size: 40px; line-height: 1;
+  text-shadow: 0 0 15px rgba(255,54,98,.8); }
+.anthelios-focus strong { display: block; color: #ffb6c5; font: 19px Georgia, serif; }
+.anthelios-focus small { display: block; color: #edc8d8;
+  font: 13px/1.5 Arial, sans-serif; margin-top: 5px; }
+.omen-arrow { margin-left: auto; font-size: 22px; color: #e7a7bc; }

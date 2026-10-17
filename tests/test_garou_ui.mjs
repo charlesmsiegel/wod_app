@@ -7,7 +7,15 @@ class Element {
   constructor(id) {
     this.id=id; this.value=''; this.innerHTML=''; this.textContent='';
     this.hidden=false; this.dataset={}; this.handlers=new Map();
-    this.classList={toggle(){}};
+    this._classes=new Set();
+    this.classList={
+      toggle:(name,force)=>{
+        const add=force===undefined?!this._classes.has(name):Boolean(force);
+        if(add)this._classes.add(name);else this._classes.delete(name);
+        return add;
+      },
+      contains:name=>this._classes.has(name)
+    };
   }
   addEventListener(type,callback) {this.handlers.set(type,callback);}
   setAttribute() {}
@@ -92,4 +100,36 @@ test('Anthelios can be requested only as an explicit optional omen',()=>{
   el('anthelios-toggle').handlers.get('change')();
   assert.equal(el('error').textContent,'');
   assert.match(el('umbral-list').innerHTML,/Anthelios/);
+});
+
+test('the physical/Umbral toggle always has a visible mode indicator',()=>{
+  const {el}=loadPage();
+  assert.match(el('sky-mode-title').textContent,/UMBRA/);
+  assert.match(el('sky-mode-description').textContent,/tribal sky traditions/);
+  assert.equal(el('chart-shell').classList.contains('umbral-active'),true);
+  el('umbral-toggle').checked=false;
+  el('umbral-toggle').handlers.get('change')();
+  assert.match(el('sky-mode-title').textContent,/EARTH/);
+  assert.equal(el('chart-shell').classList.contains('umbral-active'),false);
+  el('umbral-toggle').checked=true;
+  el('umbral-toggle').handlers.get('change')();
+  assert.match(el('sky-mode-title').textContent,/UMBRA/);
+  assert.equal(el('chart-shell').classList.contains('umbral-active'),true);
+  assert.equal(el('error').textContent,'');
+});
+test('Anthelios remains findable when its symbolic physical sector is below horizon',()=>{
+  const {el,context}=loadPage();
+  // Force the approximate sky sector below the physical horizon;
+  // it cannot hide an independent Umbral omen.
+  context.GarouUmbral.antiSunSector=()=>({alt:-25,az:250});
+  el('anthelios-toggle').checked=true;
+  el('anthelios-toggle').handlers.get('change')();
+  assert.equal(el('anthelios-omen').hidden,false);
+  assert.match(el('anthelios-status').textContent,/below the physical horizon/i);
+  assert.match(el('umbral-list').innerHTML,/Anthelios/);
+  assert.doesNotMatch(el('sky').innerHTML,/class="anthelios-sigil"/);
+  assert.equal(el('error').textContent,'');
+  el('umbral-toggle').checked=false;
+  el('umbral-toggle').handlers.get('change')();
+  assert.equal(el('anthelios-omen').hidden,true);
 });
