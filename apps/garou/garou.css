@@ -107,3 +107,6 @@ footer a{color:var(--gold)}
 .darkpack-notice img{display:block;width:75px;height:75px;object-fit:contain}
 .darkpack-notice p{margin:4px 0;font:12px/1.5 Arial,sans-serif;color:#bfcacf}
 @media(max-width:500px){.veil-controls{flex-direction:column;align-items:flex-start}.darkpack-notice img{width:60px;height:60px}}
+
+/* Distinctive scalable Garou icon for app header and favicon. */
+.garou-emblem{display:block;width:clamp(92px,13vw,128px);height:auto;margin:0 auto 14px;filter:drop-shadow(0 0 20px rgba(182,89,85,.18));}
