@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102b29">
+  <title>Changeling Cantrip Deck · First Edition</title>
+  <link rel="icon" href="icon.svg">
+  <link rel="stylesheet" href="cantrips.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="home" href="../../">← All tools</a>
+    <div class="title-row"><img src="icon.svg" alt="" width="68" height="68"><div><p class="eyebrow">Changeling: The Dreaming · First edition</p><h1>The Cantrip Deck</h1></div></div>
+    <p class="lede">Choose an Art. Give it a Realm. Discover what Glamour demands.</p>
+    <p class="ribbon" id="catalogue-status">Opening the card cabinet…</p>
+  </header>
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+  <p class="error" id="error" role="alert" hidden></p>
+  <main class="workspace" id="app" hidden>
+    <div class="workbench">
+      <nav class="modes" aria-label="Deck view"><button id="table-mode" aria-pressed="true">Card table</button><button id="guided-mode" aria-pressed="false">Weave a cantrip</button></nav>
+      <section id="table-view" aria-labelledby="table-title">
+        <div class="section-head"><div><p class="eyebrow">A free hand</p><h2 id="table-title">Your card table</h2></div><p id="table-counts"></p></div>
+        <p class="muted">Draw from the filtered catalogue or choose cards by hand. This practice table is separate from your personal cantrip kit.</p>
+        <div class="toolbar"><label>Cards <input id="draw-count" type="number" min="1" max="20" value="1"></label><button id="draw" class="primary">Draw from filter</button><button id="shuffle">Shuffle stock + discards</button><button id="return-hand">Return hand to stock</button><label class="check"><input id="face-down" type="checkbox"> Show hand backs</label></div>
+        <div id="hand" class="hand" aria-label="Your hand"></div>
+        <details class="discards"><summary id="table-discard-count">Table discards (0)</summary><div id="table-discards" class="chips"></div></details>
+      </section>
+      <section id="guided-view" aria-labelledby="guided-title" hidden>
+        <p class="eyebrow">The original card system · 1995</p><h2 id="guided-title">Your personal cantrip kit</h2>
+        <p class="muted">One Art defines the effect; Realms define its focus. Bunks come from your own shuffled pool. The Storyteller settles applicability and outcomes.</p>
+        <div id="kit-setup">
+          <div class="section-head"><h3>1 · Set your known cards</h3><button id="example">Use an example kit</button></div>
+          <p class="muted">Enter your character’s ratings. You receive a card for every known level, not only the highest level.</p>
+          <div class="ratings-grid"><fieldset><legend>Arts</legend><div id="art-ratings"></div></fieldset><fieldset><legend>Realms</legend><div id="realm-ratings"></div></fieldset></div>
+          <h3>2 · Choose your Bunks</h3><p id="pool-count"></p>
+          <p class="muted">Use “Add to pool” in the catalogue below. The core book gives you as many Bunks as total Art dots; all Art suits can work together. Add Nightmares only at your Storyteller’s direction.</p>
+          <div id="pool" class="chips"></div>
+          <div class="toolbar"><button id="browse-bunks">Browse Bunks ↓</button><button id="prepare-kit" class="primary">Shuffle my personal deck</button></div>
+        </div>
+        <div id="kit-session" hidden>
+          <p id="kit-counts" class="ribbon"></p>
+          <h3>1 · Choose Art and Realm</h3>
+          <form id="cast-form"><label>Art <select id="casting-art"></select></label><fieldset><legend>Realm cards <span class="muted">· each beyond the first costs 1 Glamour</span></legend><div id="casting-realms" class="realm-options"></div></fieldset>
+            <label>Bunk draw <select id="bunk-count"><option value="1">One Bunk</option><option value="2">Two Bunks · spend 1 Glamour</option></select></label>
+            <p id="cast-cost" class="muted"></p><button class="primary" type="submit">2 · Draw Bunk requirements</button>
+          </form>
+          <div id="casts" aria-label="Cantrips on the table"></div>
+          <details class="discards"><summary>Refresh discarded cards</summary><p class="muted">Deep, satisfying rest (normally between stories) restores your discarded cards. Reverie or Rapture refreshes as many cards as Glamour gained; Ravaging does not. Active components stay held. Drawn Nightmares never return.</p><div id="kit-discards" class="realm-options"></div><div class="toolbar"><button id="refresh-selected">Refresh selected cards</button><button id="refresh-all">Refresh all discarded cards</button></div></details>
+          <p id="nightmares-removed" class="muted"></p>
+          <button id="new-kit" class="quiet">Build a new kit · clears this session</button>
+        </div>
+        <details class="rules"><summary>First-edition rules and scope</summary><ol><li>Lay out one known Art and at least one appropriate Realm. Each Realm after the first costs a point of Glamour.</li><li>Before drawing, decide whether to spend 1 Glamour for a second Bunk. Both requirements must be fulfilled; their successes add. A Bunk you cannot or will not fulfill makes the cantrip fail.</li><li>After fulfilling the Bunk, describe your intended effect. The Storyteller decides its result within the successes available.</li><li>Enchanted targets or a freehold use the Bunk successes. Mortal targets or witnesses require the Art’s Attribute + the Realm’s Ability against the highest relevant Banality. Successes cannot exceed the Bunk total. A failed roll gives temporary Banality; a botch gives permanent Banality. A changeling can invoke Banality to resist.</li><li>Keep the cards on the table until the effect ends. Then discard one used card of your choice, or spend 1 Glamour to retain it. Retained Bunks are shuffled back into the deck.</li></ol><p>Nightmares apply immediately when drawn, then leave the deck permanently. Follow their instructions with the Storyteller; this app never draws a replacement automatically. Recurring Nightmare’s additional taboo draw is handled at your table.</p><p>The optional advanced same-suit bonus and oathmate sharing are not automated. The <cite>Changeling Players Kit</cite>, p. 3, offers additional Bunk-selection and fixed-success variations; they are not enabled here. These cards retain the core book’s separate levels and successes.</p><p>Sources: <cite>Changeling: The Dreaming</cite> (1995), pp. 191–195 and 212–215, and the Cantrip Cards. Card descriptions here are brief paraphrases. Consult the book or printed text reverse for full power effects and success tables.</p></details>
+      </section>
+      <section class="cabinet" aria-labelledby="catalogue-title" id="catalogue">
+        <div class="section-head"><div><p class="eyebrow">Art · Bunks · Realms · Treasure</p><h2 id="catalogue-title">The card cabinet</h2></div><p id="results-count"></p></div>
+        <div class="filters"><label class="search">Search cards <input id="search" type="search" placeholder="Name, instructions or alias…"></label><label>Category <select id="category"><option value="">All categories</option><option>Art</option><option>Bunks</option><option>Realms</option><option>Treasure</option></select></label><label>Family <select id="family"><option value="">All families</option></select></label></div>
+        <div id="cards" class="catalogue-grid"></div>
+      </section>
+    </div>
+    <aside class="inspector" aria-labelledby="inspect-title">
+      <p class="eyebrow">A closer look</p><h2 id="inspect-title">Choose a card</h2>
+      <p class="inspector-return"><a href="#table-title" id="return-view">↑ Return to table</a> · <a href="#catalogue">Return to cards</a></p>
+      <p id="inspect-meta" class="muted"></p>
+      <div class="face-controls"><button id="inspect-front" aria-pressed="true">Art face</button><button id="inspect-back" aria-pressed="false">Printed reverse</button></div>
+      <div id="inspect-face" class="inspect-face"></div>
+      <p id="inspect-summary"></p><p id="inspect-rules" class="muted"></p><p id="inspect-image-note" class="image-note"></p>
+      <details><summary>Source and recovery</summary><p id="inspect-source"></p><p id="inspect-notes" class="muted"></p></details>
+    </aside>
+  </main>
+  <footer class="site-footer">
+    <p>Session state lives in this tab. Reloading starts a fresh table and kit. Card text remains usable with no images installed.</p>
+    <details><summary>Artwork and replacement slots</summary><p id="artwork-status"></p><p>Every face and text reverse has an explicit slot in <code>catalogue.json</code>. Your local images can be replaced and reloaded. Faithful scans, AI reconstructions and partial candidates are kept distinct; only confirmed faithful scans are eligible for the optional importer.</p></details>
+    <div class="darkpack-notice"><a href="https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement" title="Dark Pack agreement"><img src="https://images.ctfassets.net/u73tyf0fa8v1/3oBTHBZk9XmfcBlUPylvFh/673e4a6b14566548c03424ddf627b944/darkpack_logo2.png?fm=webp&q=75&w=300" alt="Dark Pack" width="85" height="85" loading="lazy"></a><div><strong>Unofficial, free fan project</strong><p>Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit <a href="https://www.worldofdarkness.com/">worldofdarkness.com</a>.</p></div></div>
+  </footer>
+  <script src="deck.js"></script>
+  <script src="cantrips.js"></script>
+</body>
+</html>
