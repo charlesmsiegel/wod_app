@@ -66,8 +66,9 @@ fronts and two incorrectly duplicated Nature text reverses stay missing. AI
 derivatives and partial candidates are never silently substituted. Text cards
 work with no images, including all twelve Nightmare descriptions.
 
-Artwork is ignored by Git and is **not included in this feature**. To import your
-local faithful files, run:
+The repository includes **221 verified image files**, covering the 157 recovered
+fronts and 154 reverse slots. The ordinary Bunk back is shared. To restore these
+files from your local faithful archive, run:
 
 ```powershell
 python -m apps.cantrips.import_images "C:/Users/charl/OneDrive/Desktop/cantrip cards" --dry-run
@@ -79,8 +80,8 @@ slots. It preserves existing replacements unless `--replace` is requested.
 Replace a file in its slot, or edit `front`/`back` to another relative path under
 `images/`, then reload. See [the image-slot notes](apps/cantrips/images/README.md)
 for supported formats and pairing details. The deployed app never reads the
-external archive. A local static build includes images installed at build time;
-a clean checkout builds with text cards.
+external archive. A clean checkout and static build include the verified images;
+unavailable card sides retain their text fallbacks.
 
 ## Garou Astrology
 
