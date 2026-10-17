@@ -28,36 +28,52 @@ no build step and no restart.
 
 ## Garou Astrology
 
-The `apps/garou/` app contains three small experiences:
+The \`apps/garou/\` app includes three compact experiences:
 
 - **Night sky:** enter a local date/time and coordinates, or permit browser
-  geolocation, to see the actual star positions, Moon, Sun, and planets on a
-  north-up azimuth/altitude chart. Tap named figures and bright stars to learn
-  their Garou names and associations. The plotted catalogue is deliberately
-  selective, **not** a complete celestial atlas.
-- **Lunar calendar:** the Garou year starts at the first full moon *after* the
-  northern spring equinox. Exactly 12 full-to-full lunar months receive the
-  published patrons Nerigal through Shantar. If there is a 13th full-to-full
-  lunation before the next equinox-derived year, it appears as an *unnamed*
-  intercalary interval; Rorg is a 13th sign **outside** the named calendar,
-  not a canonical extra month's patron.
-- **Read the heavens:** an original brief storytelling prompt from the current
-  patron, lunar phase, and prominent sky figures; optional natal readings for
-  birth and First Change dates. These are not reproduced book text or rules.
+  geolocation, to see real astronomical positions for selected stars,
+  constellations, the Moon, Sun, and planets on a north-up azimuth/altitude
+  chart. The sky catalogue is intentionally curated rather than exhaustive.
+- **Umbral overlay:** **Step sideways** toggles between the ordinary physical
+  sky and a Garou interpretation of it. The overlay adds sourcebook-grounded
+  tribal constellation lore (e.g., Diana for Orion among the Black Furies,
+  Fenris for Ursa Major among the Get, the Fianna's Plough), spirit-star
+  names (Matagar/Sirius and Vegarda/Polaris), and the ancestral Milky Way
+  for Uktena and Wendigo. Choose a tribe to focus its traditions.
+  **Anthelios is off by default**, as it belongs to an Apocalypse-era
+  storyline; when shown its position is deliberately *illustrative*, in
+  the general sector between Ursa Major and Leo, not a real coordinate.
+  Vulcan/Hakahe, Rorg, Songan and Yakecen are **unlocated Umbral features**,
+  not false entries in the physical astronomical ephemerides.
+- **Lunar calendar:** the Garou year begins with the first full moon *after*
+  the northern spring equinox. Exactly 12 full-to-full lunar months receive
+  the published patrons Nerigal through Shantar. Any additional lunation
+  before the following year is explicitly **unnamed**; Rorg is a thirteenth
+  *sign*, not a canonical leap-month patron.
+- **Read the heavens:** a short original scene/interpretive prompt using
+  lunar patron, phase, and bright constellations, plus optional birth and
+  First Change sign readings. These are original prose, not book text.
 
-All calculations run in the browser. Geolocation is **opt-in**, and coordinates
-are kept in browser localStorage only. A sample New York location is used until
-you provide your own. Event times use your device's timezone, while boundaries
-are determined by exact astronomical instants. This is a **northern-hemisphere
-spring-equinox convention** even when the observer is in the southern hemisphere.
+### Cosmology and precision
 
-The app bundles [Astronomy Engine](https://github.com/cosinekitty/astronomy)
-under its MIT license, so the astronomical calculations run offline and on
-GitHub Pages. Stars are transformed from approximate J2000 positions using
-Astronomy Engine. The constellation catalogue is a first pass; names,
-additional tribal traditions, and interpretive details should be checked
-against a personal copy of *Rage Across the Heavens* before expanding them.
-No fictitious Umbral bodies are presented as physical astronomical objects.
+The astronomical data is calculated in-browser by [Astronomy Engine](https://github.com/cosinekitty/astronomy), bundled under MIT. Real physical
+star positions are calculated from approximate J2000 coordinates and the
+Milky Way's actual galactic equator (not a made-up constellation arc).
+Umbral objects that lack documented physical positions **never** receive
+supposedly exact astronomical coordinates. The optional Anthelios glyph is
+only a visible marker of the *region described by the book*; it is explicitly
+labeled symbolic in the UI.
+
+The physical chart and the overlay are **different visual modes**, but
+neither changes physical sky coordinates. Calendar boundaries use exact
+astronomical instants, not fixed civil dates. The northern spring equinox
+anchors the calendar even if your observer is in the southern hemisphere.
+
+The lore primarily follows *Rage Across the Heavens* (1999), specifically
+pp. 63–81 (printed page numbers) for lunar astrology, tribal constellations,
+and other celestial objects. Some short atmospheric interpretations are
+original. Users may enable location sharing, but coordinates stay in
+browser localStorage only. The site has no server-side account or API key.
 
 ## Tarot Reader
 
@@ -238,10 +254,41 @@ python serve.py --build dist
 python -m http.server --directory dist 8001
 ```
 
+### Installing the full Mage Tarot deck for Pages
+
+If you have the prepared archive `Mage_Tarot_web_assets_for_wod_app.zip`,
+a local checkout can import all 78 optimized card faces and the back:
+
+```sh
+python scripts/install_tarot_cards.py Mage_Tarot_web_assets_for_wod_app.zip
+python -m unittest discover -s tests
+python serve.py --build dist
+git add apps/tarot/decks/mage/images/
+git commit -m "Add web-optimized Mage Tarot card art"
+git push origin main
+```
+
+The installer verifies that all 78 card faces match the deck's expected
+names, checks the back, and refuses incomplete or unsafe archives.
+The zipped art is not committed by this patch, since the GitHub connector
+can create text blobs but does not take native binary attachments.
+Only publish scans if you have rights to distribute them on the public site.
+
 ## Tests
 
 ```sh
 python -m unittest discover -s tests
 node --test tests/test_garou.mjs
+node --test tests/test_garou_ui.mjs
 ```
 
+
+## Dark Pack
+
+The homepage and both tools include the official Dark Pack logo loaded from
+Paradox's official asset CDN, an unofficial-project notice, and the required
+copyright/trademark text. This is a free, unofficial fan project. The Dark Pack
+agreement limits reproduction of copyrighted material to a reasonable extent;
+using its logo does **not** automatically authorize distributing every image
+from a commercial tarot deck. Confirm distribution permission for full-card
+images before making the public site serve them.

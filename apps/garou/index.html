@@ -41,8 +41,23 @@
       <div class="sky-layout">
         <div class="chart-shell">
           <div class="chart-header"><h2>The heavens above</h2><span id="sky-condition"></span></div>
+          <div class="veil-controls">
+            <label class="veil-switch"><input type="checkbox" id="umbral-toggle" checked> <span>Step sideways · Umbral overlay</span></label>
+            <label id="tradition-field" class="tradition-field">Tribal sky lore
+              <select id="tribe-lens">
+                <option value="all">All traditions</option>
+                <option>Black Furies</option><option>Bone Gnawers</option><option>Children of Gaia</option>
+                <option>Fianna</option><option>Get of Fenris</option><option>Glass Walkers</option>
+                <option>Shadow Lords</option><option>Silent Striders</option><option>Silver Fangs</option>
+                <option>Stargazers</option><option>Uktena</option><option>Wendigo</option>
+                <option>Red Talons</option><option>Bunyip</option>
+              </select>
+            </label>
+          </div>
           <svg id="sky" class="sky" viewBox="-260 -260 520 520" role="img" aria-label="Azimuthal star chart; north up, east right, horizon at outer circle"></svg>
-          <div class="chart-key"><span><i class="swatch star"></i> Stars and constellations</span><span><i class="swatch planet"></i> Sun, Moon &amp; planets</span></div>
+          <div class="chart-key"><span><i class="swatch star"></i> Real stars &amp; constellations</span><span><i class="swatch planet"></i> Sun, Moon &amp; planets</span><span id="veil-legend"><i class="swatch umbral-swatch"></i> Garou lore and symbolic Umbral features</span></div>
+          <div id="umbra-context" class="umbra-context">Garou constellations and star lore are layered over real positions; the spectral band traces the real Milky Way. Supernatural landmarks have no invented physical coordinates.</div>
+          <label id="anthelios-control" class="anthelios-control"><input id="anthelios-toggle" type="checkbox"> Show Anthelios in an Apocalypse-era chronicle <span>(symbolic region only)</span></label>
         </div>
         <aside class="detail" aria-live="polite">
           <h2 id="detail-title">Select a celestial figure</h2>
@@ -50,7 +65,11 @@
           <div class="notebox">The chart shows <em>physical</em> astronomical positions. Umbral powers, including Hakahe's Vulcan and Anthelios, are not placed among physical objects.</div>
         </aside>
       </div>
-      <section class="visible-figures"><h2>Stories above the horizon</h2><div id="visible-list" class="chips"></div></section>
+      <section class="visible-figures"><h2 id="visible-heading">Stories above the horizon</h2><div id="visible-list" class="chips"></div></section>
+      <section id="umbral-features" class="umbral-features" aria-label="Other Aetherial phenomena">
+        <div class="section-intro"><h2>Beyond the Gauntlet</h2><p>The Incarnae and Umbral phenomena not located at measured points in the physical sky. Select a feature for its lore.</p></div>
+        <div class="phenomena" id="umbral-list"></div>
+      </section>
     </section>
     <section id="view-calendar" class="view" hidden>
       <div class="section-intro"><h2>The twelve lunar months</h2><p>The year begins with the first full moon after the northern spring equinox. Each month lasts until the following full moon.</p></div>
@@ -79,10 +98,11 @@
         </section>
       </div>
     </section>
-    <footer>Unofficial fan-made World of Darkness tool. <em>Rage Across the Heavens</em> © its respective rightsholders. Astronomical calculations: <a href="https://github.com/cosinekitty/astronomy">Astronomy Engine</a> (MIT). No character data is uploaded.</footer>
+    <footer><div class="darkpack-notice"><a href="https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement" title="Dark Pack agreement"><img src="https://images.ctfassets.net/u73tyf0fa8v1/3oBTHBZk9XmfcBlUPylvFh/673e4a6b14566548c03424ddf627b944/darkpack_logo2.png?fm=webp&q=75&w=300" alt="Dark Pack" width="85" height="85" loading="lazy"></a><div><strong>Unofficial, free fan project</strong><p>Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit <a href="https://www.worldofdarkness.com/">worldofdarkness.com</a>.</p></div></div><p><em>Rage Across the Heavens</em> is a setting reference, not a real astronomical theory. Astronomical calculations: <a href="https://github.com/cosinekitty/astronomy">Astronomy Engine</a> (MIT). No character data is uploaded.</p></footer>
   </main>
   <script src="vendor/astronomy.browser.min.js"></script>
   <script src="sky-data.js"></script>
+  <script src="umbral-data.js"></script>
   <script src="garou-astro.js"></script>
   <script src="garou.js"></script>
 </body>
