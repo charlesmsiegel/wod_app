@@ -61,9 +61,6 @@
     const errors = {};
     if (!given) errors.givenName = 'Enter the given / birth name.';
     if (!craft) errors.craftName = 'Enter the craft / shadow name.';
-    else if (!override && craft.split(' ').length < 2) {
-      errors.craftName = 'Use at least two craft-name words, or supply a Shadow name override.';
-    }
     if (!validSecret(fields.syllables)) {
       errors.secret = 'Fill all ten syllable slots with 1–12 ASCII letters each; no spaces or hyphens inside a slot.';
     }

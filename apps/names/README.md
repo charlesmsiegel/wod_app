@@ -15,6 +15,7 @@ digits 1–9 would invent rules; unsupported inputs fail visibly instead.
 Hermetic composition follows *Tradition Book: Order of Hermes Revised*,
 printed 69 (PDF 71). The craft preview preserves the supplied public name;
 birth-name insertion builds the full Shadow Name, then titles follow. A
+one-word craft name places the birth name directly after it. A
 manual override replaces the insertion without duplicating the birth name.
 The True Name appends the prescribed Latin phrase and ten secret syllables.
 

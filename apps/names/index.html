@@ -60,11 +60,11 @@
           <input id="given-name" type="text" maxlength="300" placeholder="Iris Vale" autocomplete="off" spellcheck="false">
           <label for="craft-name">Craft / shadow name</label>
           <input id="craft-name" type="text" maxlength="300" placeholder="Aster Lucian Voss" autocomplete="off" spellcheck="false" aria-describedby="craft-help">
-          <p id="craft-help" class="help">Your public alternate name. The full Shadow Name inserts the birth name after its first word, before the middle / last names.</p>
+          <p id="craft-help" class="help">Your public alternate name. The full Shadow Name inserts the birth name after its first word, before any middle / last names. A one-word craft name works too.</p>
           <label for="titles">Titles &amp; honorifics <span class="optional">(optional)</span></label>
           <textarea id="titles" rows="3" maxlength="1500" placeholder="bani [your House]&#10;Keeper of the Glass Door" autocomplete="off" spellcheck="false" aria-describedby="titles-help"></textarea>
           <p id="titles-help" class="help">One per line, appended to the full Shadow and True Names. Include your own bani House if desired.</p>
-          <details class="override"><summary>Set the Shadow Name yourself</summary><label for="shadow-override">Full Shadow Name, before titles</label><input id="shadow-override" type="text" maxlength="800" autocomplete="off" spellcheck="false" aria-describedby="override-help"><p id="override-help" class="help">Optional. Replaces the automatic birth-name insertion; titles still follow. Useful for one-word craft names or other arrangements.</p></details>
+          <details class="override"><summary>Set the Shadow Name yourself</summary><label for="shadow-override">Full Shadow Name, before titles</label><input id="shadow-override" type="text" maxlength="800" autocomplete="off" spellcheck="false" aria-describedby="override-help"><p id="override-help" class="help">Optional. Replaces the automatic birth-name insertion for your own arrangement; titles still follow.</p></details>
           <p id="hermetic-message" class="validation" aria-live="polite"></p>
         </div>
         <div class="panel output-panel registry">

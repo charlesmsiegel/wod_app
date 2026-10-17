@@ -101,8 +101,16 @@ test('Hermetic names preserve Unicode independently of the restricted Adept alph
   assert.equal(result.shadow, 'Astra 秦 明 Étoile Séraphin, Gardienne de l’Étoile');
 });
 
-test('incomplete fields do not fabricate names and a one-word craft needs the override', () => {
-  for (const fields of [{ givenName: '' }, { craftName: '' }, { craftName: 'Aster' }]) {
+test('a one-word craft name composes the birth name, titles and secret without an override', () => {
+  const result = composeHermetic({ ...base, givenName: 'John Smith', craftName: 'Merlin', titles: 'bani Tytalus\nKeeper of the Glass Door' });
+  assert.equal(result.valid, true);
+  assert.equal(result.craft, 'Merlin');
+  assert.equal(result.shadow, 'Merlin John Smith, bani Tytalus, Keeper of the Glass Door');
+  assert.equal(result.trueName, 'Merlin John Smith, bani Tytalus, Keeper of the Glass Door; In Caligine Abditus, Lah-ru Si-u-me Ta-nek Ke-re-mot');
+});
+
+test('incomplete fields do not fabricate names', () => {
+  for (const fields of [{ givenName: '' }, { craftName: '' }]) {
     const result = composeHermetic({ ...base, ...fields });
     assert.equal(result.valid, false);
     assert.equal(result.trueName, '');

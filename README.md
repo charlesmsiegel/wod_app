@@ -265,7 +265,8 @@ The fully static `apps/names/` app has two modes:
   rejected. The four outputs are Primordial, Pattern, Dynamic and Questing.
 - **Order of Hermes:** Enter a birth name, public craft / shadow name and
   optional titles. The full Shadow Name inserts the birth name after the
-  craft name's first word, then adds the supplied titles. An optional manual
+  craft name's first word, then adds the supplied titles; one-word craft
+  names work directly, such as Merlin John Smith. An optional manual
   override supports other arrangements. The full True Name adds
   *In Caligine Abditus* and ten invented syllables, following *Tradition Book:
   Order of Hermes Revised*, printed p. 69 (PDF p. 71).
