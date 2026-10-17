@@ -7,7 +7,7 @@ static pages. No account, server-side database or API key is needed.
 
 | Tool | What it does |
 |------|--------------|
-| [Mage Tarot Reader](apps/tarot/) | Deals Mage Tarot spreads and shows what each card means in its position. |
+| [Mage Tarot Reader](apps/tarot/) | Deals spreads with The Mage: the Ascension Tarot and shows what each card means in its position. |
 | [Garou Astrology](apps/garou/) | An astronomical Garou lunar calendar, interactive night sky, and compact astrology readings inspired by *Rage Across the Heavens*. |
 
 ## Running it
@@ -78,7 +78,7 @@ Keys: **Space** / **→** next card, **←** previous card, **D** deal,
 
 ### Card images
 
-Drop the image files into `apps/tarot/decks/mage/images/` and reload. Files
+Drop the image files into `apps/tarot/decks/mage-the-ascension/images/` and reload. Files
 are matched to cards by name. Case, separators, a leading sort number and
 the words "the" and "of" are all ignored, so any of these work:
 
@@ -101,16 +101,13 @@ cards with no image and files that didn't match any card. If a file name
 can't be made to match, add an `Image: filename.jpg` line to that card in
 the meanings file.
 
-The repository now **allows** artwork to be committed, so the static
-GitHub Pages build can include card faces and the back. Images are
-**not** included in this change. Add the original scans yourself only if you
-have permission to distribute them publicly; a private source repository does
-not make the resulting Pages site private. Until then, tarot cards use the
-existing text-only fallback.
+Artwork can be committed so the static GitHub Pages build includes card
+faces and the back. Only add scans with permission for public distribution;
+a private source repository does not make the resulting Pages site private.
 
 ### Card text: `meanings.md`
 
-`apps/tarot/decks/mage/meanings.md` holds the text of all 78 cards,
+`apps/tarot/decks/mage-the-ascension/meanings.md` holds the text of all 78 cards,
 transcribed from *The Mage Tarot: Designs of Destiny* (used with
 permission). The format is plain Markdown:
 
@@ -183,7 +180,7 @@ The bundled spreads come from the book:
 
 ### Adding a deck
 
-Make a new folder beside `decks/mage/` with its own `meanings.md` and
+Make a new folder beside `decks/mage-the-ascension/` with its own `meanings.md` and
 `images/`. Add an optional `deck.json` too: `{"aspect": 0.58}` sets the
 card's width-to-height ratio. When there is more than one deck, a deck
 picker appears.
@@ -196,7 +193,7 @@ index.html               list of tools
 apps/tarot/
   index.html, tarot.css, tarot.js   the page (no dependencies, no build step)
   data.py                 reads decks and spreads, returns one JSON-ready dict
-  decks/mage/             meanings.md, deck.json, images/
+  decks/mage-the-ascension/ meanings.md, deck.json, images/
   spreads/*.json          one file per spread
 apps/garou/              static calendar / chart / reading; vendored Astronomy Engine
 tests/                   Python + Node astronomical tests

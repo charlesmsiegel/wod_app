@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT))
 
 from apps.tarot import data  # noqa: E402
 
-MAGE = ROOT / "apps" / "tarot" / "decks" / "mage"
+MAGE = ROOT / "apps" / "tarot" / "decks" / "mage-the-ascension"
 
 
 def mage_deck():

@@ -1,4 +1,4 @@
-# The Mage Tarot
+# The Mage: the Ascension Tarot
 
 Card text from *The Mage Tarot: Designs of Destiny* by Nicky Rea and Jackie Cassada (White Wolf, 1993, 2001). Used with permission.
 
