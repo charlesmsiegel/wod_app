@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Run the Mage tools on this computer, or build a static copy of them.
+"""Run the World of Darkness tools locally, or build a static copy.
 
-    python serve.py                 # serve on http://localhost:8000 and open the tarot reader
+    python serve.py                 # serve on http://localhost:8000 and open the tools homepage
     python serve.py --port 9000     # pick another port
     python serve.py --no-browser    # don't open a browser tab
     python serve.py --build dist    # write a static copy (data.json pre-built) to ./dist
@@ -31,7 +31,7 @@ DATA_ROUTES = {
     "/apps/tarot/data.json": tarot_data.build_data,
 }
 
-START_PAGE = "/apps/tarot/"
+START_PAGE = "/"
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -126,7 +126,7 @@ def main():
 
     server = ThreadingHTTPServer((args.host, args.port), Handler)
     url = f"http://{'localhost' if args.host in ('127.0.0.1', '0.0.0.0') else args.host}:{server.server_port}"
-    print(f"Mage tools running at {url}/  (tarot reader: {url}{START_PAGE})")
+    print(f"World of Darkness tools running at {url}/ (tarot: {url}/apps/tarot/; garou: {url}/apps/garou/)")
     print("Press Ctrl+C to stop.")
     if not args.no_browser:
         threading.Timer(0.5, webbrowser.open, [url + START_PAGE]).start()

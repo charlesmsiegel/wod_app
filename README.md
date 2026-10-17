@@ -1,13 +1,14 @@
-# Mage Tools
+# World of Darkness Tools
 
-Table aids for *Mage: The Ascension*, built to run on a laptop at the table or
-over a screen share. Each tool is plain HTML, CSS and JavaScript plus a small
-standard-library Python loader, so it can be lifted into another project
-(such as a Django site) without bringing a framework along.
+Small, atmospheric, self-contained experiences for World of Darkness games.
+The tools are plain HTML, CSS and JavaScript, with a small standard-library
+Python loader for the Mage Tarot data. They can run locally or be published as
+static pages. No account, server-side database or API key is needed.
 
 | Tool | What it does |
 |------|--------------|
-| [Tarot Reader](apps/tarot/) | Deals Mage Tarot spreads and shows what each card means in its position. |
+| [Mage Tarot Reader](apps/tarot/) | Deals Mage Tarot spreads and shows what each card means in its position. |
+| [Garou Astrology](apps/garou/) | An astronomical Garou lunar calendar, interactive night sky, and compact astrology readings inspired by *Rage Across the Heavens*. |
 
 ## Running it
 
@@ -17,12 +18,46 @@ You need Python 3.9 or newer and nothing else.
 python serve.py
 ```
 
-This starts a local server and opens the tarot reader at
-<http://localhost:8000/apps/tarot/>. Use `--port 9000` to pick another port
+This starts a local server and opens the tools homepage at
+<http://localhost:8000/>. The tarot reader is at `/apps/tarot/` and Garou
+astrology at `/apps/garou/`. Use `--port 9000` to pick another port
 or `--no-browser` to skip opening a tab. Stop it with Ctrl+C.
 
 Edits to card text, spreads or images show up on a browser reload. There's
 no build step and no restart.
+
+## Garou Astrology
+
+The `apps/garou/` app contains three small experiences:
+
+- **Night sky:** enter a local date/time and coordinates, or permit browser
+  geolocation, to see the actual star positions, Moon, Sun, and planets on a
+  north-up azimuth/altitude chart. Tap named figures and bright stars to learn
+  their Garou names and associations. The plotted catalogue is deliberately
+  selective, **not** a complete celestial atlas.
+- **Lunar calendar:** the Garou year starts at the first full moon *after* the
+  northern spring equinox. Exactly 12 full-to-full lunar months receive the
+  published patrons Nerigal through Shantar. If there is a 13th full-to-full
+  lunation before the next equinox-derived year, it appears as an *unnamed*
+  intercalary interval; Rorg is a 13th sign **outside** the named calendar,
+  not a canonical extra month's patron.
+- **Read the heavens:** an original brief storytelling prompt from the current
+  patron, lunar phase, and prominent sky figures; optional natal readings for
+  birth and First Change dates. These are not reproduced book text or rules.
+
+All calculations run in the browser. Geolocation is **opt-in**, and coordinates
+are kept in browser localStorage only. A sample New York location is used until
+you provide your own. Event times use your device's timezone, while boundaries
+are determined by exact astronomical instants. This is a **northern-hemisphere
+spring-equinox convention** even when the observer is in the southern hemisphere.
+
+The app bundles [Astronomy Engine](https://github.com/cosinekitty/astronomy)
+under its MIT license, so the astronomical calculations run offline and on
+GitHub Pages. Stars are transformed from approximate J2000 positions using
+Astronomy Engine. The constellation catalogue is a first pass; names,
+additional tribal traditions, and interpretive details should be checked
+against a personal copy of *Rage Across the Heavens* before expanding them.
+No fictitious Umbral bodies are presented as physical astronomical objects.
 
 ## Tarot Reader
 
@@ -66,8 +101,12 @@ cards with no image and files that didn't match any card. If a file name
 can't be made to match, add an `Image: filename.jpg` line to that card in
 the meanings file.
 
-The images folder is git-ignored, so the art stays on your machine. Remove
-the rule from `.gitignore` if you want the images committed.
+The repository now **allows** artwork to be committed, so the static
+GitHub Pages build can include card faces and the back. Images are
+**not** included in this change. Add the original scans yourself only if you
+have permission to distribute them publicly; a private source repository does
+not make the resulting Pages site private. Until then, tarot cards use the
+existing text-only fallback.
 
 ### Card text: `meanings.md`
 
@@ -159,13 +198,15 @@ apps/tarot/
   data.py                 reads decks and spreads, returns one JSON-ready dict
   decks/mage/             meanings.md, deck.json, images/
   spreads/*.json          one file per spread
-tests/                   python -m unittest discover -s tests
+apps/garou/              static calendar / chart / reading; vendored Astronomy Engine
+tests/                   Python + Node astronomical tests
+.github/workflows/pages.yml  test, build, and deploy
 ```
 
 ## Porting
 
-The page only fetches `data.json`, which sits next to it. Everything else is
-a static file, and image paths in that JSON are relative to the page. To
+The tarot page fetches `data.json`, which sits next to it. The Garou page is
+fully static and loads local scripts; both tools use relative URLs. To
 move a tool somewhere else:
 
 - **Static hosting:** run `python serve.py --build dist`. This copies the
@@ -176,8 +217,34 @@ move a tool somewhere else:
   `JsonResponse(apps.tarot.data.build_data())`. `data.py` uses only the
   standard library.
 
+## GitHub Pages
+
+The workflow at `.github/workflows/pages.yml` runs the Python suite and
+astronomical Node tests, builds the static site and (on `main`) uploads and
+deploys the generated `dist/` folder.
+
+To enable publishing, go to **Settings → Pages → Build and deployment**
+and choose **GitHub Actions** as the source. The published pages will be
+under `https://charlesmsiegel.github.io/wod_app/` if your GitHub plan and
+Pages settings permit it.
+
+**Important:** GitHub Free permits Pages from public repositories; Pages
+from a **private source repository** requires GitHub Pro, Team, or Enterprise.
+For a personal repository, GitHub Pages is normally **publicly accessible
+even when the source repository is private**. The artwork permissions and
+any other published data must allow public distribution.
+
+You can inspect the production output locally:
+
+```sh
+python serve.py --build dist
+python -m http.server --directory dist 8001
+```
+
 ## Tests
 
 ```sh
 python -m unittest discover -s tests
+node --test tests/test_garou.mjs
 ```
+
