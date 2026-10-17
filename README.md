@@ -2,11 +2,12 @@
 
 Small, atmospheric, self-contained experiences for World of Darkness games.
 The tools are plain HTML, CSS and JavaScript, with a small standard-library
-Python loader for the Mage Tarot data. They can run locally or be published as
+Python loaders for the Mage Tarot and Changeling card data. They can run locally or be published as
 static pages. No account, server-side database or API key is needed.
 
 | Tool | What it does |
 |------|--------------|
+| [Changeling Cantrip Deck](apps/cantrips/) | A 168-card cabinet and practice table, plus a guided first-edition Art → Realm → Bunk workflow. |
 | [Mage Tarot Reader](apps/tarot/) | Deals spreads with The Mage: the Ascension Tarot and shows what each card means in its position. |
 | [Garou Astrology](apps/garou/) | An astronomical Garou lunar calendar, interactive night sky, and compact astrology readings inspired by *Rage Across the Heavens*. |
 | [Names of the Awakened](apps/names/) | Trace a Virtual Adept handle's Essence and compose Hermetic craft, Shadow and True Names with ten editable secret syllables. |
@@ -20,12 +21,66 @@ python serve.py
 ```
 
 This starts a local server and opens the tools homepage at
-<http://localhost:8000/>. The tarot reader is at `/apps/tarot/` and Garou
+<http://localhost:8000/>. The cantrip deck is at `/apps/cantrips/`, the tarot reader at `/apps/tarot/`, and Garou
 astrology at `/apps/garou/`. Use `--port 9000` to pick another port
 or `--no-browser` to skip opening a tab. Stop it with Ctrl+C.
 
 Edits to card text, spreads or images show up on a browser reload. There's
 no build step and no restart.
+
+## Changeling Cantrip Deck
+
+The `apps/cantrips/` app uses **Changeling: The Dreaming, first edition
+(1995)**. It provides two views over the same 168 card identities:
+
+- **Card table:** search names, aliases and short instructions; filter by category
+  or family; choose a hand or draw from the filtered stock; inspect either side;
+  discard, return cards and shuffle. This is a separate practice table.
+- **Weave a cantrip:** enter your Art and Realm ratings, choose a personal Bunk
+  pool, then select one Art and one or more Realms before drawing. Choose whether
+  to spend Glamour for a second Bunk before the draw. Fulfill both Bunks, describe
+  the effect, establish successes, and hold the used cards until the effect ends.
+  Then discard one used card or record a Glamour spent to retain it. Retained
+  Bunks return to the shuffled personal deck. Nightmares apply immediately and
+  leave the deck permanently. Rest and epiphany refreshes restore discarded
+  ordinary cards without releasing active cards or reviving Nightmares.
+
+The app records Glamour spent, not your character's remaining balance. The
+Storyteller decides Realm applicability, the effect, Banality rolls, Nightmare
+consequences and refresh eligibility. Optional oathmate sharing and same-suit
+bonuses are not automated. The *Players Kit* p. 3 offers additional Bunk-selection
+and fixed-success variations; this app retains the original core book's separate
+Bunk levels and successes. State lasts for the current tab session; reload starts
+fresh. Short card descriptions are paraphrases, not complete power descriptions.
+
+### Cantrip text and replaceable artwork
+
+`apps/cantrips/catalogue.json` is both the editable text catalogue and image
+manifest. Each card has its own front and printed reverse slot; Art, Realm and
+Treasure text reverses are never used as universal backs. Ordinary Bunks share
+their confirmed common reverse. The display uses the printed names **Flicker
+Flash**, **Protocol** and **Orb of Coulion**, preserving checklist names as aliases.
+
+The source archive has **157 confirmed fronts out of 168**. Eleven Nightmare
+fronts and two incorrectly duplicated Nature text reverses stay missing. AI
+derivatives and partial candidates are never silently substituted. Text cards
+work with no images, including all twelve Nightmare descriptions.
+
+Artwork is ignored by Git and is **not included in this feature**. To import your
+local faithful files, run:
+
+```powershell
+python -m apps.cantrips.import_images "C:/Users/charl/OneDrive/Desktop/cantrip cards" --dry-run
+python -m apps.cantrips.import_images "C:/Users/charl/OneDrive/Desktop/cantrip cards"
+```
+
+The importer copies only confirmed front/back mappings into the manifest's exact
+slots. It preserves existing replacements unless `--replace` is requested.
+Replace a file in its slot, or edit `front`/`back` to another relative path under
+`images/`, then reload. See [the image-slot notes](apps/cantrips/images/README.md)
+for supported formats and pairing details. The deployed app never reads the
+external archive. A local static build includes images installed at build time;
+a clean checkout builds with text cards.
 
 ## Garou Astrology
 
@@ -227,6 +282,7 @@ picker appears.
 ```
 serve.py                 local server and static-site builder (stdlib only)
 index.html               list of tools
+apps/cantrips/           first-edition card table and casting kit; catalogue.json, image slots, stdlib loader/importer
 apps/tarot/
   index.html, tarot.css, tarot.js   the page (no dependencies, no build step)
   data.py                 reads decks and spreads, returns one JSON-ready dict

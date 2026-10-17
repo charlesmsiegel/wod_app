@@ -30,10 +30,14 @@ jobs:
           node --check apps/garou/garou-astro.js
           node --check apps/garou/sky-data.js
           node --check apps/garou/umbral-data.js
+          node --check apps/cantrips/deck.js
+          node --check apps/cantrips/cantrips.js
       - name: Build static site
         run: python serve.py --build dist
-      - name: Assert both apps are bundled
+      - name: Assert all apps are bundled
         run: |
+          test -f dist/apps/cantrips/data.json
+          test -f dist/apps/cantrips/index.html
           test -f dist/apps/tarot/data.json
           test -f dist/apps/garou/index.html
           test -s dist/apps/garou/vendor/astronomy.browser.min.js

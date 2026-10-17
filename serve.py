@@ -24,10 +24,12 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
 from apps.tarot import data as tarot_data  # noqa: E402
+from apps.cantrips import data as cantrip_data  # noqa: E402
 
 # URL path -> function returning JSON-ready data. Each app that needs
 # generated data adds an entry here; everything else is served as static files.
 DATA_ROUTES = {
+    "/apps/cantrips/data.json": cantrip_data.build_data,
     "/apps/tarot/data.json": tarot_data.build_data,
 }
 
@@ -126,7 +128,7 @@ def main():
 
     server = ThreadingHTTPServer((args.host, args.port), Handler)
     url = f"http://{'localhost' if args.host in ('127.0.0.1', '0.0.0.0') else args.host}:{server.server_port}"
-    print(f"World of Darkness tools running at {url}/ (tarot: {url}/apps/tarot/; garou: {url}/apps/garou/)")
+    print(f"World of Darkness tools running at {url}/ (cantrips: {url}/apps/cantrips/; tarot: {url}/apps/tarot/; garou: {url}/apps/garou/)")
     print("Press Ctrl+C to stop.")
     if not args.no_browser:
         threading.Timer(0.5, webbrowser.open, [url + START_PAGE]).start()
