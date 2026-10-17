@@ -5,6 +5,4 @@ __pycache__/
 # Mage Tarot images can be versioned for the static GitHub Pages build.
 # Only add scans when public distribution is permitted.
 
-# Cantrip artwork is imported locally and stays out of feature PRs.
-/apps/cantrips/images/**
-!/apps/cantrips/images/README.md
+# Confirmed Cantrip artwork is versioned; the recovery archive stays external.

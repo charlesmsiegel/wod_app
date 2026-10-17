@@ -1,4 +1,4 @@
-"""Copy confirmed faithful archive images into ignored, replaceable app slots.
+"""Copy confirmed faithful archive images into replaceable app slots.
 
 Run from the repository: python -m apps.cantrips.import_images "PATH/TO/cantrip cards"
 Use --dry-run to inspect counts; existing images survive unless --replace is given.
