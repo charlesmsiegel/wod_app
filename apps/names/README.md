@@ -17,7 +17,21 @@ printed 69 (PDF 71). The craft preview preserves the supplied public name;
 birth-name insertion builds the full Shadow Name, then titles follow. A
 one-word craft name places the birth name directly after it. A
 manual override replaces the insertion without duplicating the birth name.
+House is a separate optional field: `bani [House]` follows the public craft
+name and precedes other honorifics in the Shadow and True Names, matching
+the book's example. Clearing House removes only that structured affiliation.
 The True Name appends the prescribed Latin phrase and ten secret syllables.
+
+`hermetic-houses.js` is a static catalogue of 29 named Houses and sub-Houses,
+including historical entries, with aliases, era notes and citations. It is
+loaded by a normal script tag so the menu also works over `file://` without
+fetching JSON. `names.js` builds native option groups from it; composition
+remains independent of House status, so a medieval character can select
+Tremere and a modern character can select a newer House. The groups follow
+the Revised sources, not a universal present-day roster. Aliases identify
+one lineage and output its displayed primary name. The researched list,
+original filenames and edition conflicts are in
+[the House source notes](../../docs/hermetic-houses.md).
 
 The onset / vowel / coda generator and four grouping lengths are original
 interface choices, not book tables. Each of ten slots stands for one intended

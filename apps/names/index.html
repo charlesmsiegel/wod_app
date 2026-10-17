@@ -61,10 +61,14 @@
           <label for="craft-name">Craft / shadow name</label>
           <input id="craft-name" type="text" maxlength="300" placeholder="Aster Lucian Voss" autocomplete="off" spellcheck="false" aria-describedby="craft-help">
           <p id="craft-help" class="help">Your public alternate name. The full Shadow Name inserts the birth name after its first word, before any middle / last names. A one-word craft name works too.</p>
-          <label for="titles">Titles &amp; honorifics <span class="optional">(optional)</span></label>
-          <textarea id="titles" rows="3" maxlength="1500" placeholder="bani [your House]&#10;Keeper of the Glass Door" autocomplete="off" spellcheck="false" aria-describedby="titles-help"></textarea>
-          <p id="titles-help" class="help">One per line, appended to the full Shadow and True Names. Include your own bani House if desired.</p>
-          <details class="override"><summary>Set the Shadow Name yourself</summary><label for="shadow-override">Full Shadow Name, before titles</label><input id="shadow-override" type="text" maxlength="800" autocomplete="off" spellcheck="false" aria-describedby="override-help"><p id="override-help" class="help">Optional. Replaces the automatic birth-name insertion for your own arrangement; titles still follow.</p></details>
+          <label for="house">Hermetic House <span class="optional">(optional)</span></label>
+          <select id="house" aria-describedby="house-help house-note"><option value="">No House selected</option></select>
+          <p id="house-help" class="help">Adds “bani [House]” to the craft, Shadow and True Names. Includes smaller and historical Houses; the groups follow the Revised-era books.</p>
+          <p id="house-note" class="help house-note" aria-live="polite">Choose a House to see its history and source. All eras remain selectable.</p>
+          <label for="titles">Other titles &amp; honorifics <span class="optional">(optional)</span></label>
+          <textarea id="titles" rows="3" maxlength="1500" placeholder="Stone of Unburning Fire&#10;Keeper of the Glass Door" autocomplete="off" spellcheck="false" aria-describedby="titles-help"></textarea>
+          <p id="titles-help" class="help">One per line, following the House in the full Shadow and True Names.</p>
+          <details class="override"><summary>Set the Shadow Name yourself</summary><label for="shadow-override">Full Shadow Name, before House and titles</label><input id="shadow-override" type="text" maxlength="800" autocomplete="off" spellcheck="false" aria-describedby="override-help"><p id="override-help" class="help">Optional. Replaces the automatic birth-name insertion for your own arrangement; the selected House and other titles still follow.</p></details>
           <p id="hermetic-message" class="validation" aria-live="polite"></p>
         </div>
         <div class="panel output-panel registry">
@@ -102,12 +106,14 @@
       <p>The Adept method assigns A = 1 through Z = 26, sums the values, and repeatedly sums the decimal digits to get 1–9. Divide by three and round to the nearest integer: 1 → 0; 2–4 → 1; 5–7 → 2; 8–9 → 3. The source's C0y0te example demonstrates zero. This tool applies ASCII case-insensitivity and ignores only spaces, hyphens and straight apostrophes; it invents no values for other digits or Unicode.</p>
       <p>The four Essence descriptions here are short original paraphrases of <cite>Mage: The Ascension 20th Anniversary Edition</cite>, printed pp. 266–267 (PDF pp. 267–268). This handle procedure yields Primordial, Pattern, Dynamic or Questing.</p>
       <p>Hermetic craft names are ordinary alternate names. The Revised Tradition Book describes a full Shadow Name formed by inserting the birth name between the first and remaining craft names, followed by honorifics. The True Name adds the Latin phrase and ten syllables that are not real words.</p>
+      <p>The House menu collects 29 named Houses and sub-Houses from <cite>Order of Hermes</cite> (1997), pp. 34, 42, 65; <cite>Order of Hermes Revised</cite>, pp. 34–35, 50–51, 55, 60–61; <cite>Blood Treachery</cite>, pp. 20–21, 54, 89; and <cite>Guide to the Traditions</cite>, pp. 100–101. Aliases share an entry. Status varies by era: the historical options remain usable, and the selected House’s note identifies source differences.</p>
       <p>Our generator combines original consonant sounds, one vowel and a final consonant per slot, using the browser's cryptographic random source. Hyphens keep the ten defined syllables visible. The four groups are an interface convention. The result is fictional soundplay with no assigned meaning or Enochian translation; no check against every real-world language is possible. You choose the intended pronunciation of manual edits.</p>
       <p>Everything calculates in this page. Entered names are not saved by this app or sent to an API. Copying is optional and uses your clipboard.</p>
     </details>
     <noscript><p class="validation">Enable JavaScript to calculate and compose names. This app needs no server connection.</p></noscript>
     <footer><div class="darkpack-notice"><a href="https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement" title="Dark Pack agreement"><img src="https://images.ctfassets.net/u73tyf0fa8v1/3oBTHBZk9XmfcBlUPylvFh/673e4a6b14566548c03424ddf627b944/darkpack_logo2.png?fm=webp&amp;q=75&amp;w=300" alt="Dark Pack" width="85" height="85" loading="lazy"></a><div><strong>Unofficial, free fan project</strong><p>Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit <a href="https://www.worldofdarkness.com/">worldofdarkness.com</a>.</p></div></div></footer>
   </main>
+  <script src="hermetic-houses.js"></script>
   <script src="names-core.js"></script>
   <script src="names.js"></script>
 </body>

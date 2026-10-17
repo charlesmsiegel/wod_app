@@ -263,9 +263,13 @@ The fully static `apps/names/` app has two modes:
   ignoring spaces, hyphens and straight apostrophes are explicit interface
   conventions. Other digits, punctuation, Unicode and zero-only handles are
   rejected. The four outputs are Primordial, Pattern, Dynamic and Questing.
-- **Order of Hermes:** Enter a birth name, public craft / shadow name and
-  optional titles. The full Shadow Name inserts the birth name after the
-  craft name's first word, then adds the supplied titles; one-word craft
+- **Order of Hermes:** Enter a birth name, public craft / shadow name,
+  optional House and other titles. A separate dropdown collects 29 current
+  and historical Houses and sub-Houses, with aliases, era notes and source
+  citations; see [the House source notes](docs/hermetic-houses.md). House adds
+  `bani [House]` to the public craft name. The full Shadow Name inserts the
+  birth name after the craft name's first word, then adds the House and
+  supplied titles; one-word craft
   names work directly, such as Merlin John Smith. An optional manual
   override supports other arrangements. The full True Name adds
   *In Caligine Abditus* and ten invented syllables, following *Tradition Book:

@@ -4,13 +4,13 @@
 body { margin:0; background:radial-gradient(ellipse at 50% 0%,#23443d 0,transparent 65%),var(--bg); color:var(--ink); font:16px/1.6 var(--serif); min-height:100vh; }
 body[data-mode=hermetic] { --bg:#1b171c; --panel:#28202a; --panel-deep:#1e1721; --ink:#eee4df; --muted:#c3b1b4; --accent:#e4bb82; --line:#66515c; --focus:#ffdfa7; background:radial-gradient(ellipse at 50% 0%,#46313d 0,transparent 65%),var(--bg); }
 a { color:var(--accent); text-underline-offset:3px; }
-button,input,textarea { font:inherit; }
+button,input,textarea,select { font:inherit; }
 button { cursor:pointer; border:1px solid var(--accent); border-radius:5px; padding:10px 16px; background:var(--accent); color:var(--bg); font:14px/1.4 var(--mono); min-height:42px; }
 button:hover { filter:brightness(1.1); }
 button:disabled { opacity:.45; cursor:default; }
 button.quiet { background:transparent; color:var(--accent); border-color:var(--line); padding:7px 12px; font-size:12px; }
 :focus-visible { outline:2px solid var(--focus); outline-offset:4px; }
-button,input,textarea,summary { touch-action:manipulation; }
+button,input,textarea,select,summary { touch-action:manipulation; }
 .topbar { max-width:1200px; margin:auto; padding:21px 28px; display:flex; justify-content:space-between; gap:20px; font:12px/1.4 var(--mono); }
 .home { text-decoration:none; }
 .topbar-note { color:var(--muted); }
@@ -39,7 +39,10 @@ h2 { font-size:27px; font-weight:normal; line-height:1.25; margin:7px 0 0; }
 .workspace { display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); gap:20px; }
 .panel { border:1px solid var(--line); background:var(--panel); border-radius:8px; padding:25px; min-width:0; }
 .input-panel>label { display:block; color:var(--ink); font-size:17px; margin-bottom:8px; }
-input[type=text],textarea { display:block; border:1px solid var(--line); border-radius:4px; background:var(--panel-deep); color:var(--ink); width:100%; padding:11px 12px; min-width:0; }
+input[type=text],textarea,select { display:block; border:1px solid var(--line); border-radius:4px; background:var(--panel-deep); color:var(--ink); width:100%; padding:11px 12px; min-width:0; }
+select { text-overflow:ellipsis; }
+optgroup,option { background:var(--panel-deep); color:var(--ink); }
+.house-note { border-left:2px solid var(--line); padding-left:12px; }
 input::placeholder,textarea::placeholder { color:var(--muted); opacity:.7; }
 input[aria-invalid=true],textarea[aria-invalid=true] { border-color:#eea08f; }
 textarea { resize:vertical; }

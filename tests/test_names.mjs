@@ -75,6 +75,28 @@ const base = {
   syllables,
 };
 
+test('a separate House appears in the public craft name and before the other titles', () => {
+  const result = composeHermetic({ ...base, house: 'Tytalus', titles: 'Stone of Unburning Fire' });
+  assert.equal(result.craft, 'Alexia Elizabeth Cavanaugh, bani Tytalus');
+  assert.equal(result.shadow, 'Alexia Erin Justine Connell Elizabeth Cavanaugh, bani Tytalus, Stone of Unburning Fire');
+  assert.equal(result.trueName, 'Alexia Erin Justine Connell Elizabeth Cavanaugh, bani Tytalus, Stone of Unburning Fire; In Caligine Abditus, Lah-ru Si-u-me Ta-nek Ke-re-mot');
+});
+
+test('changing or clearing House replaces the affiliation without changing titles or the secret', () => {
+  const fields = Object.freeze({ ...base, house: 'Hong Lei', titles: 'Keeper of the Glass Door' });
+  assert.equal(composeHermetic(fields).shadow, 'Alexia Erin Justine Connell Elizabeth Cavanaugh, bani Hong Lei, Keeper of the Glass Door');
+  assert.equal(composeHermetic({ ...fields, house: 'Ex Miscellanea' }).craft, 'Alexia Elizabeth Cavanaugh, bani Ex Miscellanea');
+  assert.equal(composeHermetic({ ...fields, house: '' }).shadow, 'Alexia Erin Justine Connell Elizabeth Cavanaugh, Keeper of the Glass Door');
+  assert.equal(fields.house, 'Hong Lei');
+  assert.deepEqual(fields.syllables, syllables);
+});
+
+test('House follows a manually arranged Shadow Name and works without any other titles', () => {
+  const result = composeHermetic({ ...base, house: 'Tremere', titles: '', shadowOverride: 'A deliberately chosen Shadow' });
+  assert.equal(result.shadow, 'A deliberately chosen Shadow, bani Tremere');
+  assert.ok(result.trueName.startsWith('A deliberately chosen Shadow, bani Tremere; In Caligine Abditus, '));
+});
+
 test('the birth name sits after the first craft-name word, followed by supplied titles', () => {
   const result = composeHermetic(base);
   assert.equal(result.valid, true);

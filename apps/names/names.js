@@ -8,6 +8,21 @@
   let registryCopy = '';
   let trueCopy = '';
 
+  // Native optgroups keep era distinctions accessible without blocking a choice.
+  const houseGroups = new Map();
+  for (const house of window.HermeticHouses) {
+    if (!houseGroups.has(house.group)) {
+      const group = document.createElement('optgroup');
+      group.label = house.group;
+      houseGroups.set(house.group, group);
+      el('house').appendChild(group);
+    }
+    const option = document.createElement('option');
+    option.value = house.name;
+    option.textContent = house.name + (house.aliases.length ? ` (${house.aliases.join(' / ')})` : '');
+    houseGroups.get(house.group).appendChild(option);
+  }
+
   const essenceDescriptions = {
     Primordial: 'Deep roots, old mysteries, and the instinctive forces beneath the surface.',
     Pattern: 'Structure, continuity, and the forms that give a changing world its shape.',
@@ -44,11 +59,16 @@
     const fields = {
       givenName: el('given-name').value,
       craftName: el('craft-name').value,
+      house: el('house').value,
       titles: el('titles').value,
       shadowOverride: el('shadow-override').value,
       syllables: slots.map(slot => slot.value),
     };
     const result = composeHermetic(fields);
+    const house = window.HermeticHouses.find(item => item.name === fields.house);
+    el('house-note').textContent = house
+      ? `${house.note} Source: ${house.citation}.`
+      : 'Choose a House to see its history and source. All eras remain selectable.';
     const started = Boolean(fields.givenName || fields.craftName || fields.shadowOverride);
     const secret = formatSecret(fields.syllables);
     el('craft-output').textContent = result.craft || 'Enter a craft name to begin.';
@@ -113,6 +133,7 @@
   for (const field of ['given-name', 'craft-name', 'titles', 'shadow-override'].map(el).concat(slots)) {
     field.addEventListener('input', () => { el('copy-status').textContent = ''; renderHermetic(); });
   }
+  el('house').addEventListener('change', () => { el('copy-status').textContent = ''; renderHermetic(); });
   el('generate-secret').addEventListener('click', () => { el('copy-status').textContent = ''; regenerate(); });
   el('copy-adept').addEventListener('click', () => copy(adeptCopy, 'Analysis'));
   el('copy-registry').addEventListener('click', () => copy(registryCopy, 'Register'));

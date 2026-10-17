@@ -40,7 +40,7 @@ class NamesSiteTests(unittest.TestCase):
             self.assertTrue(page.is_file())
             document = LocalLinks()
             document.feed(page.read_text(encoding='utf-8'))
-            self.assertEqual(len(document.assets), 3)
+            self.assertEqual(len(document.assets), 4)
             for link in document.assets:
                 self.assertFalse(link.startswith(('/', 'http:','https:')))
                 self.assertTrue((page.parent / link.split('?', 1)[0]).is_file(), link)

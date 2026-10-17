@@ -55,6 +55,7 @@
     const clean = value => typeof value === 'string' ? value.trim().replace(/\s+/g, ' ') : '';
     const given = clean(fields.givenName);
     const craft = clean(fields.craftName);
+    const house = clean(fields.house);
     const override = clean(fields.shadowOverride);
     const titles = typeof fields.titles === 'string'
       ? fields.titles.split(/\r?\n/).map(clean).filter(Boolean) : [];
@@ -64,7 +65,8 @@
     if (!validSecret(fields.syllables)) {
       errors.secret = 'Fill all ten syllable slots with 1–12 ASCII letters each; no spaces or hyphens inside a slot.';
     }
-    const withTitles = name => [name, ...titles].join(', ');
+    const withHouse = name => house ? `${name}, bani ${house}` : name;
+    const withTitles = name => [withHouse(name), ...titles].join(', ');
     let shadow = '';
     if (!errors.givenName && !errors.craftName) {
       const [first, ...rest] = craft.split(' ');
@@ -72,7 +74,7 @@
     }
     return {
       valid: Object.keys(errors).length === 0, errors,
-      craft, shadow,
+      craft: craft ? withHouse(craft) : '', shadow,
       trueName: shadow && !errors.secret ? `${shadow}; In Caligine Abditus, ${formatSecret(fields.syllables)}` : '',
     };
   }
