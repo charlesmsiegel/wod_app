@@ -21,6 +21,13 @@ jobs:
         run: python -m unittest discover -s tests
       - name: Garou astronomical tests
         run: node --test tests/test_garou.mjs
+      - name: Garou browser initialization smoke tests
+        run: node --test tests/test_garou_ui.mjs
+      - name: Check browser JavaScript syntax
+        run: |
+          node --check apps/garou/garou.js
+          node --check apps/garou/garou-astro.js
+          node --check apps/garou/sky-data.js
       - name: Build static site
         run: python serve.py --build dist
       - name: Assert both apps are bundled
