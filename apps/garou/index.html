@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111c26">
+  <title>Rage Across the Heavens · Garou Astrology</title>
+  <link rel="stylesheet" href="garou.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="home" href="../../" aria-label="All World of Darkness tools">⌂ <span>World of Darkness Tools</span></a>
+    <div class="subtitle">An Aetherial almanac</div>
+  </header>
+  <main>
+    <div class="intro">
+      <div class="eyebrow">Werewolf: The Apocalypse</div>
+      <h1>Rage Across the Heavens</h1>
+      <p>Read the lunar months, trace the stars, and listen for the stories the Garou tell about the sky.</p>
+    </div>
+    <section class="controls" aria-label="Time and place">
+      <label class="date-control">Date &amp; local time<input id="when" type="datetime-local" required></label>
+      <label>Latitude ° N<input id="latitude" type="number" min="-90" max="90" step="any" value="40.7128" required></label>
+      <label>Longitude ° E<input id="longitude" type="number" min="-180" max="180" step="any" value="-74.0060" required></label>
+      <button id="now" type="button">Now</button>
+      <button id="here" type="button">Use my location</button>
+      <p class="small" id="location-note">Starting with sample coordinates for New York. Adjust them or use your location; calculations stay in your browser.</p>
+      <div class="error" id="error" role="alert" hidden></div>
+    </section>
+    <section class="overview" aria-label="Current celestial influences">
+      <div class="fact"><div class="fact-label">Lunar month</div><div class="fact-value" id="month-name">—</div><div class="fact-detail" id="month-caption"></div></div>
+      <div class="fact"><div class="fact-label">Luna's face</div><div class="fact-value" id="phase-name">—</div><div class="fact-detail" id="auspice"></div></div>
+      <div class="fact"><div class="fact-label">Next full moon</div><div class="fact-value smaller" id="next-full">—</div><div class="fact-detail" id="next-full-caption"></div></div>
+    </section>
+    <nav class="tabs" aria-label="App views">
+      <button type="button" class="active" data-tab="sky" aria-current="page">Night sky</button>
+      <button type="button" data-tab="calendar">Lunar calendar</button>
+      <button type="button" data-tab="reading">Read the heavens</button>
+    </nav>
+    <section id="view-sky" class="view">
+      <div class="sky-layout">
+        <div class="chart-shell">
+          <div class="chart-header"><h2>The heavens above</h2><span id="sky-condition"></span></div>
+          <svg id="sky" class="sky" viewBox="-260 -260 520 520" role="img" aria-label="Azimuthal star chart; north up, east right, horizon at outer circle"></svg>
+          <div class="chart-key"><span><i class="swatch star"></i> Stars and constellations</span><span><i class="swatch planet"></i> Sun, Moon &amp; planets</span></div>
+        </div>
+        <aside class="detail" aria-live="polite">
+          <h2 id="detail-title">Select a celestial figure</h2>
+          <div id="detail-body"><p>Tap a star, constellation, or planet to discover its Garou association.</p></div>
+          <div class="notebox">The chart shows <em>physical</em> astronomical positions. Umbral powers, including Hakahe's Vulcan and Anthelios, are not placed among physical objects.</div>
+        </aside>
+      </div>
+      <section class="visible-figures"><h2>Stories above the horizon</h2><div id="visible-list" class="chips"></div></section>
+    </section>
+    <section id="view-calendar" class="view" hidden>
+      <div class="section-intro"><h2>The twelve lunar months</h2><p>The year begins with the first full moon after the northern spring equinox. Each month lasts until the following full moon.</p></div>
+      <div id="calendar-banner" class="calendar-banner"></div>
+      <div id="months" class="months"></div>
+      <div class="notebox" id="calendar-note"></div>
+    </section>
+    <section id="view-reading" class="view" hidden>
+      <div class="reading-grid">
+        <section class="reading-card">
+          <div class="eyebrow">The sky's counsel</div>
+          <h2 id="reading-head"></h2>
+          <p id="reading-copy"></p>
+          <p class="question" id="reading-question"></p>
+          <p class="small">Original storytelling prompts inspired by the published correspondences—not quotations, predictions, or game rules.</p>
+          <button id="copy-reading" type="button">Copy reading</button>
+        </section>
+        <section class="natal-card">
+          <div class="eyebrow">The two beginnings</div>
+          <h2>Birth &amp; First Change</h2>
+          <p>The book considers both a Garou's birth month and the lunar month of their First Change. Compare their celestial patrons.</p>
+          <label>Birth date and time <input id="born" type="datetime-local"></label>
+          <label>First Change <span class="optional">(optional)</span><input id="first-change" type="datetime-local"></label>
+          <button id="cast" type="button">Read the signs</button>
+          <div id="natal-output" class="natal-output" aria-live="polite"></div>
+        </section>
+      </div>
+    </section>
+    <footer>Unofficial fan-made World of Darkness tool. <em>Rage Across the Heavens</em> © its respective rightsholders. Astronomical calculations: <a href="https://github.com/cosinekitty/astronomy">Astronomy Engine</a> (MIT). No character data is uploaded.</footer>
+  </main>
+  <script src="vendor/astronomy.browser.min.js"></script>
+  <script src="sky-data.js"></script>
+  <script src="garou-astro.js"></script>
+  <script src="garou.js"></script>
+</body>
+</html>
