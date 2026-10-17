@@ -15,9 +15,12 @@ class GarouSiteTests(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertTrue((app / path).is_file())
         html = (app / "index.html").read_text(encoding="utf-8")
+        self.assertIn('id="sky-mode-title"', html)
+        self.assertIn('id="anthelios-omen"', html)
+        self.assertIn('garou.js?v=', html)
         for script in ("vendor/astronomy.browser.min.js", "sky-data.js",
                        "garou-astro.js", "umbral-data.js", "garou.js"):
-            self.assertIn(f'src="{script}"', html)
+            self.assertIn(f'src="{script}', html)
 
     def test_static_build_includes_both_apps(self):
         import tempfile

@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#111c26">
   <link rel="icon" type="image/svg+xml" href="icon.svg">
   <title>Rage Across the Heavens · Garou Astrology</title>
-  <link rel="stylesheet" href="garou.css">
+  <link rel="stylesheet" href="garou.css?v=20261016-umbral2">
 </head>
 <body>
   <header class="topbar">
@@ -41,8 +41,12 @@
     </nav>
     <section id="view-sky" class="view">
       <div class="sky-layout">
-        <div class="chart-shell">
+        <div class="chart-shell" id="chart-shell">
           <div class="chart-header"><h2>The heavens above</h2><span id="sky-condition"></span></div>
+          <div id="sky-mode" class="sky-mode" role="status" aria-live="polite">
+            <strong id="sky-mode-title">Preparing the heavens…</strong>
+            <span id="sky-mode-description">Checking celestial traditions.</span>
+          </div>
           <div class="veil-controls">
             <label class="veil-switch"><input type="checkbox" id="umbral-toggle" checked> <span>Step sideways · Umbral overlay</span></label>
             <label id="tradition-field" class="tradition-field">Tribal sky lore
@@ -60,11 +64,18 @@
           <div class="chart-key"><span><i class="swatch star"></i> Real stars &amp; constellations</span><span><i class="swatch planet"></i> Sun, Moon &amp; planets</span><span id="veil-legend"><i class="swatch umbral-swatch"></i> Garou lore and symbolic Umbral features</span></div>
           <div id="umbra-context" class="umbra-context">Garou constellations and star lore are layered over real positions; the spectral band traces the real Milky Way. Supernatural landmarks have no invented physical coordinates.</div>
           <label id="anthelios-control" class="anthelios-control"><input id="anthelios-toggle" type="checkbox"> Show Anthelios in an Apocalypse-era chronicle <span>(symbolic region only)</span></label>
+          <div id="anthelios-omen" class="anthelios-omen" hidden>
+            <button type="button" class="anthelios-focus" data-target="umbral:anthelios" aria-label="Read about Anthelios, the Eye of the Wyrm">
+              <span class="anthelios-icon" aria-hidden="true">◉</span>
+              <span><strong>Anthelios · the Eye of the Wyrm</strong><small id="anthelios-status">An Umbral omen, not an astronomical star.</small></span>
+              <span class="omen-arrow" aria-hidden="true">↗</span>
+            </button>
+          </div>
         </div>
         <aside class="detail" aria-live="polite">
           <h2 id="detail-title">Select a celestial figure</h2>
           <div id="detail-body"><p>Tap a star, constellation, or planet to discover its Garou association.</p></div>
-          <div class="notebox">The chart shows <em>physical</em> astronomical positions. Umbral powers, including Hakahe's Vulcan and Anthelios, are not placed among physical objects.</div>
+          <div class="notebox">The stars and planets keep their <em>real</em> astronomical positions when you step sideways. Umbral beings without known positions appear separately as lore; Anthelios's chart glyph marks only an illustrative region.</div>
         </aside>
       </div>
       <section class="visible-figures"><h2 id="visible-heading">Stories above the horizon</h2><div id="visible-list" class="chips"></div></section>
@@ -103,9 +114,9 @@
     <footer><div class="darkpack-notice"><a href="https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement" title="Dark Pack agreement"><img src="https://images.ctfassets.net/u73tyf0fa8v1/3oBTHBZk9XmfcBlUPylvFh/673e4a6b14566548c03424ddf627b944/darkpack_logo2.png?fm=webp&q=75&w=300" alt="Dark Pack" width="85" height="85" loading="lazy"></a><div><strong>Unofficial, free fan project</strong><p>Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit <a href="https://www.worldofdarkness.com/">worldofdarkness.com</a>.</p></div></div><p><em>Rage Across the Heavens</em> is a setting reference, not a real astronomical theory. Astronomical calculations: <a href="https://github.com/cosinekitty/astronomy">Astronomy Engine</a> (MIT). No character data is uploaded.</p></footer>
   </main>
   <script src="vendor/astronomy.browser.min.js"></script>
-  <script src="sky-data.js"></script>
-  <script src="umbral-data.js"></script>
-  <script src="garou-astro.js"></script>
-  <script src="garou.js"></script>
+  <script src="sky-data.js?v=20261016-umbral2"></script>
+  <script src="umbral-data.js?v=20261016-umbral2"></script>
+  <script src="garou-astro.js?v=20261016-umbral2"></script>
+  <script src="garou.js?v=20261016-umbral2"></script>
 </body>
 </html>

@@ -302,6 +302,26 @@
           '<p class="small">Both events occur under the same patron—an intensified association in Garou tradition.</p>':"");
     } catch(e) { $("natal-output").textContent=e.message; }
   }
+  function updateUmbralStatus(date,place) {
+    const veil=overlayOn(), enabled=veil && $("anthelios-toggle").checked;
+    const lens=tribalLens();
+    $("chart-shell").classList.toggle("umbral-active",veil);
+    $("sky-mode-title").textContent=veil?"UMBRA · Aetherial sight":"EARTH · Physical heavens";
+    $("sky-mode-description").textContent=veil
+      ? "The Gauntlet is crossed: "+(lens==="all"?"all tribal sky traditions":lens+" sky traditions")+
+        " overlay the real sky. Celestial powers beyond the physical heavens appear below."
+      : "Ordinary astronomical sky; switch on Step sideways to reveal Garou names, ancestral paths, and the Incarnae.";
+    $("anthelios-omen").hidden=!enabled;
+    if(enabled) {
+      // The source names only a broad sky region, not a physical star.
+      // Its omen must remain available even when the illustrative sector
+      // is below the observer's local horizon.
+      const sector=U.antiSunSector(A,date,place);
+      $("anthelios-status").textContent=sector.alt>=0
+        ? "The illustrative sector is above the horizon. Look for the red glyph on the chart, or select this omen."
+        : "The illustrative sector is below the physical horizon. The Umbral omen is still accessible—select to read.";
+    }
+  }
   function update() {
     try {
       const {date,lat,lon,place}=timeAndPlace();
@@ -317,6 +337,7 @@
       const sun=sky.bodies.get("Sun");
       $("sky-condition").textContent=sun.alt>=-6?"Daylight / twilight: stars are plotted, not necessarily visible":"Sky above local horizon";
       drawUmbralFeatures();
+      updateUmbralStatus(date,place);
       drawChart(sky,date,place);
       const figs=visibleFigures(sky);
       details(sky,cal);
