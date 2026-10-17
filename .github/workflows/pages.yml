@@ -19,12 +19,13 @@ jobs:
           python-version: '3.11'
       - name: Python tests
         run: python -m unittest discover -s tests
-      - name: Garou astronomical tests
-        run: node --test tests/test_garou.mjs
-      - name: Garou browser initialization smoke tests
-        run: node --test tests/test_garou_ui.mjs
+      - name: JavaScript tests
+        run: node --test tests/*.mjs
       - name: Check browser JavaScript syntax
         run: |
+          node --check apps/names/names-core.js
+          node --check apps/names/hermetic-houses.js
+          node --check apps/names/names.js
           node --check apps/garou/garou.js
           node --check apps/garou/garou-astro.js
           node --check apps/garou/sky-data.js

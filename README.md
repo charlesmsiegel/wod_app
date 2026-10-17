@@ -9,6 +9,7 @@ static pages. No account, server-side database or API key is needed.
 |------|--------------|
 | [Mage Tarot Reader](apps/tarot/) | Deals spreads with The Mage: the Ascension Tarot and shows what each card means in its position. |
 | [Garou Astrology](apps/garou/) | An astronomical Garou lunar calendar, interactive night sky, and compact astrology readings inspired by *Rage Across the Heavens*. |
+| [Names of the Awakened](apps/names/) | Trace a Virtual Adept handle's Essence and compose Hermetic craft, Shadow and True Names with ten editable secret syllables. |
 
 ## Running it
 
@@ -250,6 +251,41 @@ move a tool somewhere else:
   `JsonResponse(apps.tarot.data.build_data())`. `data.py` uses only the
   standard library.
 
+## Names of the Awakened
+
+The fully static `apps/names/` app has two modes:
+
+- **Virtual Adept:** Enter a handle to see its letter values, sum, repeated
+  decimal digit sum, division by three, rounded result and Essence. It uses
+  the method from *Tradition Book: Virtual Adepts Revised*, printed pp. 43–45
+  (PDF pp. 44–46), especially printed p. 44. A = 1 through Z = 26; zero is
+  supported by the source's C0y0te example. ASCII case-insensitivity and
+  ignoring spaces, hyphens and straight apostrophes are explicit interface
+  conventions. Other digits, punctuation, Unicode and zero-only handles are
+  rejected. The four outputs are Primordial, Pattern, Dynamic and Questing.
+- **Order of Hermes:** Enter a birth name, public craft / shadow name,
+  optional House and other titles. A separate dropdown collects 29 current
+  and historical Houses and sub-Houses, with aliases, era notes and source
+  citations; see [the House source notes](docs/hermetic-houses.md). House adds
+  `bani [House]` to the public craft name. The full Shadow Name inserts the
+  birth name after the craft name's first word, then adds the House and
+  supplied titles; one-word craft
+  names work directly, such as Merlin John Smith. An optional manual
+  override supports other arrangements. The full True Name adds
+  *In Caligine Abditus* and ten invented syllables, following *Tradition Book:
+  Order of Hermes Revised*, printed p. 69 (PDF p. 71).
+
+The secret-syllable generator is original, using browser cryptographic
+randomness and one consonant–vowel–consonant unit per slot. Ten editable
+slots retain explicit boundaries in groups of 2 + 3 + 2 + 3; the app counts
+slots rather than guessing the pronunciation of entered words. The sounds
+have no assigned meaning, canonical phoneme table or Enochian translation.
+Generated combinations cannot be checked against every real-world language.
+All calculations and composition stay in the browser; the app does not save
+entered names or use an external API. Each mode offers plain-text copying.
+The app works when its folder is copied to another static site without a
+build step or additional dependencies. See [the implementation note](apps/names/README.md).
+
 ## GitHub Pages
 
 The workflow at `.github/workflows/pages.yml` runs the Python suite and
@@ -276,8 +312,7 @@ python -m http.server --directory dist 8001
 
 ```sh
 python -m unittest discover -s tests
-node --test tests/test_garou.mjs
-node --test tests/test_garou_ui.mjs
+node --test tests/*.mjs
 ```
 
 
