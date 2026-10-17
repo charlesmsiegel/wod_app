@@ -496,7 +496,9 @@ button:focus-visible, select:focus-visible, input:focus-visible {
 .load-error code { color: var(--gold); }
 
 @media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; grid-template-rows: minmax(60vh, 1fr) auto; }
+  body { height: auto; min-height: 100%; }
+  .bar h1 { white-space: normal; }
+  .layout { grid-template-columns: 1fr; grid-template-rows: minmax(420px, 60vh) auto; }
   .panel { border-left: 0; border-top: 1px solid var(--line); max-height: none; }
   .actions { margin-left: 0; }
 }

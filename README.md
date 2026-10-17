@@ -191,6 +191,29 @@ The bundled spreads come from the book:
 - an open-ended Linear spread
 - a Single Card for quick inspiration
 
+The **Wraith: The Shroud** spread comes from *Mediums: Speakers With the
+Dead*, printed pp. 32–33 (PDF pp. 34–35). A chosen significator for the
+departed sits above four cards dealt left to right: Background, Arcanoi,
+Fetters and Passions. The existing card panel shows the Wraith-specific
+position question alongside the Mage card's usual upright/reversed meanings.
+*Mediums* explicitly recommends the Mage Tarot; its example uses reversals.
+Choose a representative court card manually, or use the reader's existing
+random-court option as a digital convenience.
+
+Preparation is described on printed pp. 29–31 (PDF pp. 31–33). The book
+associates Sunday through Saturday with the Penitent, Silent, Skeletal,
+Grim, Paupers, Emerald and Iron Legions respectively; Fate is outside this
+weekday mapping. The candle colors are orange, pearl, red, yellow, purple,
+pink/green and black in that same order. These are optional context for
+the reading. The published death-date zodiac guidance can help select a
+significator; it is not calculated automatically. Some fictional mediums
+reserve Cups/Primordialism for Spectres, but the app imposes no such rule.
+
+The Shroud is an interpretive spread, not a generator of ghost dialogue or
+an exact Arcanos/Background rating. The layout and position subjects come
+from the book; their question prompts are concise editorial paraphrases.
+It reuses the existing shuffle, significator, reversals and card images.
+
 ### Adding a deck
 
 Make a new folder beside `decks/mage-the-ascension/` with its own `meanings.md` and
