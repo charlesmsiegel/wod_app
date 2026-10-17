@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Garou Astrology</title>
+  <desc id="desc">A howling black wolf against a silver full moon, framed by red celestial paths and a ring of stars.</desc>
+  <defs>
+    <radialGradient id="night" cx=".64" cy=".35" r=".84">
+      <stop offset="0" stop-color="#324258"/>
+      <stop offset=".56" stop-color="#162538"/>
+      <stop offset="1" stop-color="#100f21"/>
+    </radialGradient>
+    <radialGradient id="luna" cx=".3" cy=".28" r=".9">
+      <stop offset="0" stop-color="#fff6d9"/>
+      <stop offset=".62" stop-color="#d7e1e9"/>
+      <stop offset="1" stop-color="#91aabb"/>
+    </radialGradient>
+    <linearGradient id="redtrail" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#e9a15f"/>
+      <stop offset="1" stop-color="#a52b42"/>
+    </linearGradient>
+    <clipPath id="frame"><circle cx="128" cy="128" r="114"/></clipPath>
+  </defs>
+  <circle cx="128" cy="128" r="122" fill="#0b1021" stroke="#af5a4d" stroke-width="6"/>
+  <circle cx="128" cy="128" r="115" fill="url(#night)" stroke="#dfbc83" stroke-width="2"/>
+  <g clip-path="url(#frame)">
+    <circle cx="154" cy="91" r="67" fill="#cfdfed" opacity=".11"/>
+    <circle cx="154" cy="91" r="59" fill="url(#luna)"/>
+    <circle cx="140" cy="69" r="13" fill="#91aabb" opacity=".18"/>
+    <circle cx="175" cy="104" r="19" fill="#68869a" opacity=".13"/>
+    <circle cx="149" cy="118" r="9" fill="#7792a6" opacity=".12"/>
+    <path d="M 6 96 Q 101 0 243 41" stroke="#b44754" stroke-width="2" fill="none" opacity=".8"/>
+    <path d="M 198 11 Q 245 73 236 163" stroke="url(#redtrail)" stroke-width="3" fill="none" opacity=".9"/>
+    <path d="M 21 58 L 39 48 L 55 68 L 77 51" stroke="#c8dcf0" stroke-width="1.5" fill="none" opacity=".9"/>
+    <g fill="#fff0ce">
+      <circle cx="21" cy="58" r="3"/><circle cx="39" cy="48" r="2.8"/><circle cx="55" cy="68" r="2.7"/><circle cx="77" cy="51" r="3.2"/>
+      <circle cx="29" cy="105" r="2"/><circle cx="194" cy="41" r="2"/><circle cx="219" cy="131" r="2"/><circle cx="216" cy="58" r="1.4"/><circle cx="47" cy="22" r="1.4"/>
+    </g>
+    <path d="M 216 35 v 12 M 210 41 h 12" stroke="#ffddb1" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M 39 148 Q 91 128 137 174 T 236 181 L 260 256 H 0Z" fill="#1a2531" opacity=".85"/>
+    <path d="M 28 247 L 38 217 L 58 195 L 70 169 L 82 150 L 82 137 L 68 130 L 55 116 L 57 106 L 75 111 L 84 102 L 92 79 L 102 98 L 112 101 L 123 111 L 119 122 L 105 132 L 117 147 L 131 161 L 145 186 L 159 198 L 183 215 L 198 249 Z" fill="#0a1019" stroke="#35546a" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M 81 150 Q 66 173 62 196 M 104 131 Q 129 169 133 190 M 131 161 Q 144 194 165 216" fill="none" stroke="#64809a" stroke-width="3" opacity=".36" stroke-linecap="round"/>
+    <path d="M 55 117 Q 69 123 78 124 Q 71 129 66 129" fill="#a47d80" opacity=".9"/>
+    <circle cx="87" cy="111" r="2" fill="#efc782"/>
+    <path d="M 15 226 L 50 199 L 70 231 L 101 192 L 120 218 L 162 196 L 208 218 L 247 200 L 260 256 H 0Z" fill="#0a1420" opacity=".73"/>
+  </g>
+  <circle cx="128" cy="128" r="114" fill="none" stroke="#b8725e" stroke-width="1.5" stroke-dasharray="2 9" opacity=".9"/>
+  <path d="M 102 246 L 113 229 L 128 244 L 144 229 L 156 246" stroke="#b76a52" fill="none" stroke-width="4" stroke-linecap="round"/>
+</svg>

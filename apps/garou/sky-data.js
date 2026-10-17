@@ -51,6 +51,15 @@
     ["alcyone","Alcyone",3.7914,24.1051,2.86],["maia","Maia",3.7637,24.3679,3.87],
     ["electra","Electra",3.7479,24.1133,3.70],["merope","Merope",3.7721,23.9484,4.17],
     ["taygeta","Taygeta",3.7535,24.4673,4.3],
+    // Additional real stars used to anchor documented tribal sky lore.
+    ["kochab","Kochab",14.8451,74.1555,2.08],["pherkad","Pherkad",15.3455,71.8340,3.05],
+    ["yildun","Yildun",17.5369,86.5864,4.36],["epsilonumi","Epsilon UMi",16.7661,82.0373,4.23],
+    ["zetaumi","Zeta UMi",15.7343,77.7945,4.29],["etaumi","Eta UMi",16.2918,75.7553,4.95],
+    ["alphard","Alphard",9.4598,-8.6586,1.99],["epsilonhya","Epsilon Hya",8.7796,6.4189,3.38],
+    ["zetahya","Zeta Hya",8.9232,5.9456,3.11],["gammahya","Gamma Hya",13.3153,-23.1714,2.99],
+    ["regulus","Regulus",10.1395,11.9672,1.35],["denebola","Denebola",11.8177,14.5721,2.14],
+    ["algieba","Algieba",10.3329,19.8415,2.01],["zosma","Zosma",11.2351,20.5237,2.55],
+    ["adhafera","Adhafera",10.2782,23.4173,3.43],["rasalas","Rasalas",9.8794,26.0069,3.88],
     ["vega","Vega",18.6156,38.7837,0.03],["altair","Altair",19.8464,8.8683,0.76],
     ["deneb","Deneb",20.6905,45.2803,1.25],["arcturus","Arcturus",14.2610,19.1825,-0.05],
     ["capella","Capella",5.2782,45.9980,0.08],["antares","Antares",16.4901,-26.4320,1.06]
@@ -64,6 +73,9 @@
     {name:"Corvus",garou:"Corvus",story:"The raven is significant in the Changing Breeds' star lore.",path:["gienah","algorab","minkar","kraz","gienah"]},
     {name:"Crux",garou:"Yaraan-Doo · The Dying One",story:"The Southern Cross is linked to mourning and loss in Garou accounts.",path:["gacrux","acrux"],extra:[["mimosa","deltacru"]]},
     {name:"Corona Borealis",garou:"Arianrhod (Fianna tradition)",story:"A northern crown given a mythic identity.",path:["nusakan","alphecca","gammacrb","deltacrb","epscrb"]},
+    {name:"Ursa Minor",garou:"The northern watch",story:"Polaris is honored as Vegarda; several northern tribes watch the Lesser Bear.",path:["polaris","yildun","epsilonumi","zetaumi","etaumi","pherkad","kochab"],extra:[["pherkad","zetaumi"]]},
+    {name:"Hydra",garou:"Tiamat · The Water Serpent",story:"In the Babylonian traditions honored by several tribes, Hydra is associated with Tiamat.",path:["epsilonhya","zetahya","alphard","gammahya"]},
+    {name:"Leo",garou:"Leo",story:"The Lion is the conventional zodiac counterpart of Katanka-Sonnak's lunar month; the lunar month is not defined by this constellation.",path:["rasalas","adhafera","algieba","regulus","denebola","zosma","adhafera"]},
     {name:"Pleiades",garou:"Izarra Tarana · The Star Singers",story:"The Star Singers are a bright cluster in Taurus.",path:["electra","maia","taygeta","alcyone","merope"]}
   ];
   const starLore = {

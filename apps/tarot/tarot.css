@@ -504,3 +504,10 @@ button:focus-visible, select:focus-visible, input:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .slot, .card, .slot-label { transition: none; }
 }
+
+.darkpack-footer{padding:12px 20px;background:#130c1e;border-top:1px solid #3b2a4d;color:#bfcacf}
+.darkpack-footer .darkpack-notice{display:flex;align-items:center;gap:16px;margin:0 auto;max-width:750px}
+.darkpack-footer .darkpack-notice img{display:block;width:58px;height:58px;object-fit:contain}
+.darkpack-footer .darkpack-notice strong{font-size:13px;color:#d6b25e}
+.darkpack-footer .darkpack-notice p{font-size:11px;line-height:1.6;margin:3px 0}
+.darkpack-footer a{color:#d6b25e}

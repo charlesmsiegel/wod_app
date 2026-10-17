@@ -5,11 +5,12 @@ import { test } from 'node:test';
 
 const root = new URL('../apps/garou/', import.meta.url);
 const context = vm.createContext({Date, Math, Number, console, Map, Set, RangeError, TypeError});
-for (const file of ['vendor/astronomy.browser.min.js', 'sky-data.js', 'garou-astro.js']) {
+for (const file of ['vendor/astronomy.browser.min.js', 'sky-data.js', 'umbral-data.js', 'garou-astro.js']) {
   vm.runInContext(fs.readFileSync(new URL(file, root), 'utf8'), context, {filename:file,timeout:20000});
 }
 const A = context.GarouAstro;
 const D = context.GarouData;
+const U = context.GarouUmbral;
 
 test('twelve patrons, with Rorg outside the named months', () => {
   assert.equal(D.patrons.length, 12);
@@ -65,4 +66,28 @@ test('physical planet and star coordinates are finite and valid',()=>{
 test('input validation rejects invalid coordinates',()=>{
   assert.throws(()=>A.observer(91,0),RangeError);
   assert.throws(()=>A.observer(0,-181),RangeError);
+});
+test('Aetherial overlay maps physical sky culture without fictional ephemerides',()=>{
+  assert.ok(Object.keys(U.constellations).length>=12);
+  assert.equal(U.constellations['Orion'].title,'Diana · the Huntress');
+  assert.equal(U.constellations['Ursa Major'].names['Fianna'],'The Plough');
+  assert.equal(U.starLore.polaris.title,'Vegarda · Lady of the North');
+  assert.equal(U.starLore.sirius.title,'Matagar · Lord of Beginnings');
+  assert.equal(U.phenomena.find(p=>p.id==='vulcan').canMap,undefined);
+  assert.equal(U.phenomena.find(p=>p.id==='anthelios').canMap,true);
+  assert.equal(U.phenomena.find(p=>p.id==='rorg').placement.includes('not a fixed star'),true);
+  assert.equal(U.relevant(U.constellations['Orion'],'Fianna'),false);
+  assert.equal(U.relevant(U.constellations['Orion'],'Black Furies'),true);
+});
+test('Milky Way is a real projected galactic great circle',()=>{
+  const observer=A.observer(-33.9,151.2);
+  const date=new Date('2026-08-05T12:00:00Z');
+  const path=U.galacticEquator(A,date,observer);
+  assert.equal(path.length,73);
+  for(const point of path){
+    assert.ok(Number.isFinite(point.alt)&&Number.isFinite(point.az));
+    assert.ok(point.alt>=-90&&point.alt<=90);
+  }
+  const region=U.antiSunSector(A,date,observer);
+  assert.ok(Number.isFinite(region.alt));
 });

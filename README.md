@@ -28,36 +28,38 @@ no build step and no restart.
 
 ## Garou Astrology
 
-The `apps/garou/` app contains three small experiences:
+The `apps/garou/` app is a compact astronomical almanac inspired by
+*Rage Across the Heavens* (1999), with a scalable howling-wolf/moon emblem
+in `icon.svg` that also serves as its browser favicon.
 
-- **Night sky:** enter a local date/time and coordinates, or permit browser
-  geolocation, to see the actual star positions, Moon, Sun, and planets on a
-  north-up azimuth/altitude chart. Tap named figures and bright stars to learn
-  their Garou names and associations. The plotted catalogue is deliberately
-  selective, **not** a complete celestial atlas.
-- **Lunar calendar:** the Garou year starts at the first full moon *after* the
-  northern spring equinox. Exactly 12 full-to-full lunar months receive the
-  published patrons Nerigal through Shantar. If there is a 13th full-to-full
-  lunation before the next equinox-derived year, it appears as an *unnamed*
-  intercalary interval; Rorg is a 13th sign **outside** the named calendar,
-  not a canonical extra month's patron.
-- **Read the heavens:** an original brief storytelling prompt from the current
-  patron, lunar phase, and prominent sky figures; optional natal readings for
-  birth and First Change dates. These are not reproduced book text or rules.
+- **Physical sky:** Enter any supported date, local time and coordinates
+  (or optionally grant browser geolocation) to plot actual bright stars,
+  constellations, Sun, Moon and planets in azimuth/altitude coordinates.
+- **Step sideways:** Toggle an **Umbral overlay** without changing physical
+  sky coordinates. The overlay adds tribe-specific constellation traditions
+  (e.g., Orion/Diana for the Black Furies, Ursa Major/Fenris for the Get,
+  Ursa Major/The Plough for the Fianna), Garou star names such as
+  Vegarda/Polaris and Matagar/Sirius, and the ancestral Milky Way for
+  Uktena and Wendigo. A tribal filter highlights relevant stories.
+- **Umbral phenomena:** Anthelios appears only on request, represented by
+  an explicitly **symbolic region** near Ursa Major and Leo, not an invented
+  star with physical astronomical coordinates. Hakahe's Vulcan, Rorg,
+  Songan and Yakecen are available as Umbral lore entries, not falsely
+  plotted celestial bodies.
+- **Lunisolar Garou calendar:** The first full moon after the northern
+  spring equinox opens Nerigal's month. Twelve consecutive full-to-full
+  intervals correspond to the patrons Nerigal–Shantar; any extra lunation
+  before the following equinox-derived year is clearly left unnamed.
+  Rorg is an unofficial *thirteenth sign*, not a canonical leap month.
+- **Read the heavens:** Short original Storyteller prompts, current lunar
+  auspice, and optional birth/First Change readings.
 
-All calculations run in the browser. Geolocation is **opt-in**, and coordinates
-are kept in browser localStorage only. A sample New York location is used until
-you provide your own. Event times use your device's timezone, while boundaries
-are determined by exact astronomical instants. This is a **northern-hemisphere
-spring-equinox convention** even when the observer is in the southern hemisphere.
-
-The app bundles [Astronomy Engine](https://github.com/cosinekitty/astronomy)
-under its MIT license, so the astronomical calculations run offline and on
-GitHub Pages. Stars are transformed from approximate J2000 positions using
-Astronomy Engine. The constellation catalogue is a first pass; names,
-additional tribal traditions, and interpretive details should be checked
-against a personal copy of *Rage Across the Heavens* before expanding them.
-No fictitious Umbral bodies are presented as physical astronomical objects.
+The astronomical engine runs entirely in the browser via the bundled MIT
+[Astronomy Engine](https://github.com/cosinekitty/astronomy). The chart
+catalogue is curated, not a complete stellar atlas. Constellation and
+spirit lore is based on the book's printed pages 63–81; atmospheric prompts
+are original. The app does not contact a location API and keeps optional
+location preferences in local browser storage.
 
 ## Tarot Reader
 
@@ -195,7 +197,7 @@ apps/tarot/
   data.py                 reads decks and spreads, returns one JSON-ready dict
   decks/mage-the-ascension/ meanings.md, deck.json, images/
   spreads/*.json          one file per spread
-apps/garou/              static calendar / chart / reading; vendored Astronomy Engine
+apps/garou/              interactive sky, Umbral overlay, icon.svg, calendar; vendor Astronomy Engine
 tests/                   Python + Node astronomical tests
 .github/workflows/pages.yml  test, build, and deploy
 ```
@@ -220,16 +222,14 @@ The workflow at `.github/workflows/pages.yml` runs the Python suite and
 astronomical Node tests, builds the static site and (on `main`) uploads and
 deploys the generated `dist/` folder.
 
-To enable publishing, go to **Settings → Pages → Build and deployment**
-and choose **GitHub Actions** as the source. The published pages will be
-under `https://charlesmsiegel.github.io/wod_app/` if your GitHub plan and
-Pages settings permit it.
+GitHub Pages is configured to publish the static build from `main` using
+GitHub Actions. The site is available at
+`https://charlesmsiegel.github.io/wod_app/`.
 
-**Important:** GitHub Free permits Pages from public repositories; Pages
-from a **private source repository** requires GitHub Pro, Team, or Enterprise.
-For a personal repository, GitHub Pages is normally **publicly accessible
-even when the source repository is private**. The artwork permissions and
-any other published data must allow public distribution.
+The repository and deployed site are public. The 78 Mage Tarot card faces
+and back are already tracked under
+`apps/tarot/decks/mage-the-ascension/images/`. Do not add the full original
+uncompressed TIFF archive to Git history.
 
 You can inspect the production output locally:
 
@@ -243,5 +243,14 @@ python -m http.server --directory dist 8001
 ```sh
 python -m unittest discover -s tests
 node --test tests/test_garou.mjs
+node --test tests/test_garou_ui.mjs
 ```
 
+
+## Dark Pack
+
+All pages display the official Dark Pack logo and required legal notice,
+with a statement that this is an unofficial, free fan project. The logo is
+loaded from Paradox's asset CDN. This project is not endorsed by Paradox;
+users of the site should follow the [Dark Pack agreement](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement)
+and its limits on the reproduction and distribution of copyrighted art.

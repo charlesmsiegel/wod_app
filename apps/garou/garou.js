@@ -3,6 +3,8 @@
   "use strict";
   const A = window.GarouAstro;
   const D = window.GarouData;
+  const U = window.GarouUmbral;
+  if (!U) throw new Error("Umbral lore must load before the Garou sky reader.");
   const $ = id => document.getElementById(id);
   const esc = value => String(value).replace(/[&<>"']/g,
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -24,6 +26,10 @@
     $("when").value = inputDate(new Date());
     try {
       const saved = JSON.parse(localStorage.getItem(settingsKey) || "{}");
+      if (typeof saved.umbra === "boolean") $("umbral-toggle").checked = saved.umbra;
+      if (typeof $("umbral-toggle").checked !== "boolean") $("umbral-toggle").checked = true;
+      if (typeof saved.anthelios === "boolean") $("anthelios-toggle").checked = saved.anthelios;
+      if (saved.lens && ["all",...U.tribes].includes(saved.lens)) $("tribe-lens").value = saved.lens;
       if (Number.isFinite(saved.lat) && Number.isFinite(saved.lon)) {
         $("latitude").value = saved.lat;
         $("longitude").value = saved.lon;
@@ -32,7 +38,7 @@
     } catch { /* storage may be unavailable */ }
   }
   function save(lat,lon) {
-    try { localStorage.setItem(settingsKey,JSON.stringify({lat,lon})); } catch { /* private browsing */ }
+    try { localStorage.setItem(settingsKey,JSON.stringify({lat,lon,umbra:$("umbral-toggle").checked,lens:$("tribe-lens").value,anthelios:$("anthelios-toggle").checked})); } catch { /* private browsing */ }
   }
   function showError(message) {
     $("error").hidden = !message;
@@ -58,7 +64,26 @@
   function svgText(x,y,text,css) {
     return '<text x="'+x+'" y="'+y+'" class="'+css+'">'+esc(text)+'</text>';
   }
-  function drawChart(sky) {
+  function overlayOn() { return $("umbral-toggle").checked; }
+  function tribalLens() { return $("tribe-lens").value || "all"; }
+  function constellationName(name) {
+    const c=U.constellations[name];
+    if (!overlayOn() || !c || !U.relevant(c,tribalLens())) return name;
+    return c.names?.[tribalLens()] || c.title;
+  }
+  function galacticSegments(path) {
+    const segments=[];
+    for(let i=1;i<path.length;i++){
+      if(path[i-1].alt<=0||path[i].alt<=0)continue;
+      const a=point(path[i-1]),b=point(path[i]);
+      segments.push("M"+a.x.toFixed(1)+" "+a.y.toFixed(1)+
+        " L"+b.x.toFixed(1)+" "+b.y.toFixed(1));
+    }
+    return segments.join(" ");
+  }
+  function drawChart(sky,date,place) {
+    const veil=overlayOn(),lens=tribalLens();
+    $("sky").classList.toggle("umbral",veil);
     const parts = [
       '<circle class="horizon" r="220"/>',
       '<circle class="ring" r="73.33"/><circle class="ring" r="146.67"/>',
@@ -66,79 +91,160 @@
       svgText(0,-240,"N","cardinal"),svgText(240,4,"E","cardinal"),
       svgText(0,247,"S","cardinal"),svgText(-240,4,"W","cardinal")
     ];
+    if(veil && (lens==="all"||U.relevant(U.milkyWay,lens))) {
+      const ancestral=U.galacticEquator(A,date,place);
+      const path=galacticSegments(ancestral);
+      if(path) {
+        parts.push('<path class="ancestor-path" d="'+path+'"/>');
+        parts.push('<path class="ancestor-path-core" d="'+path+'"/>');
+        const labelPoint=ancestral.filter(p=>p.alt>30&&p.alt<70)
+          .sort((a,b)=>b.alt-a.alt)[0];
+        if(labelPoint) {
+          const p=point(labelPoint);
+          parts.push(svgText(p.x.toFixed(1),(p.y-10).toFixed(1),
+            "Ancestors' Path","umbral-name"));
+        }
+      }
+    }
     for (const c of D.constellations) {
+      const lore=U.constellations[c.name];
+      const emphasized=veil && lore && U.relevant(lore,lens);
+      const selectedClass = selected && selected.type==="constellation" && selected.key===c.name ? " selected" : "";
+      const cls="constellation"+(emphasized?" lore-relevant":"")+selectedClass;
       const segments = c.path.slice(1).map((key,i)=>[c.path[i],key]).concat(c.extra||[]);
       for (const [a,b] of segments) {
         const sa=sky.stars.get(a),sb=sky.stars.get(b);
         if (!sa||!sb||sa.alt<0||sb.alt<0) continue;
         const p1=point(sa),p2=point(sb);
-        const selectedClass = selected && selected.type==="constellation" && selected.key===c.name ? " selected" : "";
-        parts.push('<path class="constellation'+selectedClass+'" d="M'+p1.x.toFixed(1)+' '+p1.y.toFixed(1)+
-          'L'+p2.x.toFixed(1)+' '+p2.y.toFixed(1)+'"/>');
+        parts.push('<path class="'+cls+'" d="M'+p1.x.toFixed(1)+' '+p1.y.toFixed(1)+
+          ' L'+p2.x.toFixed(1)+' '+p2.y.toFixed(1)+'"/>');
+      }
+      if(emphasized){
+        const seen=c.path.map(k=>sky.stars.get(k)).filter(p=>p&&p.alt>7);
+        if(seen.length>=2){
+          const center=seen.reduce((a,p)=>{
+            const xy=point(p);return {x:a.x+xy.x,y:a.y+xy.y};
+          },{x:0,y:0});
+          const px=center.x/seen.length,py=center.y/seen.length;
+          parts.push('<g data-target="constellation:'+esc(c.name)+'" tabindex="0" role="button" aria-label="'+
+            esc(constellationName(c.name))+'"><circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+
+            '" r="14" fill="transparent"/>'+svgText(px.toFixed(1),(py-12).toFixed(1),
+              constellationName(c.name),"umbral-name")+'</g>');
+        }
       }
     }
     for (const star of sky.stars.values()) {
       if (star.alt < 0) continue;
       const p=point(star), r=Math.max(1.45,4.0-star.mag*0.65);
-      const garou=D.starLore[star.key];
+      const lore=veil&&U.starLore[star.key];
+      const isHighlighted=!!lore&&U.relevant(lore,lens);
       parts.push('<g data-target="star:'+esc(star.key)+'" tabindex="0" role="button" aria-label="'+esc(star.name)+
-        '" ><circle class="star-dot" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+r.toFixed(1)+'"/>'+
-        ((garou||star.mag<1.4)?svgText((p.x+5).toFixed(1),(p.y-6).toFixed(1),garou?garou.garou:star.name,"object-label"):"")+'</g>');
+        '"><circle class="star-dot" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+r.toFixed(1)+'"/>'+
+        ((isHighlighted||star.mag<1.4)?
+          svgText((p.x+5).toFixed(1),(p.y-6).toFixed(1),
+            isHighlighted?lore.title:star.name,isHighlighted?"object-label umbral-name":"object-label"):"")+'</g>');
     }
     const names={Sun:"Sun",Moon:"Moon",Mercury:"Mercury",Venus:"Venus",
       Mars:"Mars",Jupiter:"Jupiter",Saturn:"Saturn",Uranus:"Uranus",Neptune:"Neptune",Pluto:"Pluto"};
     for (const body of sky.bodies.values()) {
       if (body.alt<0) continue;
       const p=point(body),radius=body.name==="Moon"?6:body.name==="Sun"?7:4.2;
+      const patron=veil&&D.patrons.find(x=>x.body===body.name);
       parts.push('<g data-target="body:'+body.name+'" tabindex="0" role="button" aria-label="'+body.name+
         '"><circle class="planet-dot" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+radius+
-        '"/>'+svgText((p.x+8).toFixed(1),(p.y-6).toFixed(1),names[body.name],"object-label planet-label")+'</g>');
+        '"/>'+svgText((p.x+8).toFixed(1),(p.y-6).toFixed(1),
+          patron?patron.name:names[body.name],"object-label planet-label")+'</g>');
+    }
+    if(veil && $("anthelios-toggle").checked) {
+      const anti=U.antiSunSector(A,date,place);
+      if(anti.alt>0) {
+        const p=point(anti);
+        parts.push('<g data-target="umbral:anthelios" tabindex="0" role="button" aria-label="Anthelios, symbolic location">'+
+          '<circle class="anthelios-sigil" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+
+          '" r="6"/>'+svgText((p.x+12).toFixed(1),(p.y-7).toFixed(1),"Anthelios †","anti-label")+'</g>');
+      }
     }
     $("sky").innerHTML=parts.join("");
   }
   function visibleFigures(sky) {
-    const figs=D.constellations.map(c=>{
+    const veil=overlayOn(),lens=tribalLens();
+    const all=D.constellations.map(c=>{
       const visible=c.path.filter(k=>sky.stars.get(k)?.alt>0);
       return {c,n:visible.length,highest:Math.max(-90,...visible.map(k=>sky.stars.get(k).alt))};
     }).filter(v=>v.n>0).sort((a,b)=>b.highest-a.highest);
-    const constellations=figs.map(v=>'<button data-target="constellation:'+esc(v.c.name)+
-      '" type="button">'+esc(v.c.name)+' <span>· '+esc(v.c.garou)+'</span></button>');
-    const solos=Object.keys(D.starLore).filter(k=>sky.stars.get(k)?.alt>0).map(k=>{
-      const s=sky.stars.get(k);
-      return '<button type="button" data-target="star:'+k+'">'+esc(s.name)+' <span>· '+
-        esc(D.starLore[k].garou)+'</span></button>';
+    const focused=all.filter(v=>!veil||lens==="all"||
+      (U.constellations[v.c.name]&&U.relevant(U.constellations[v.c.name],lens)));
+    const constellations=focused.map(v=>{
+      const lore=veil&&U.constellations[v.c.name];
+      const label=lore&&U.relevant(lore,lens)?constellationName(v.c.name):v.c.name;
+      return '<button data-target="constellation:'+esc(v.c.name)+'" type="button">'+
+        esc(v.c.name)+(veil&&lore?' <span>· '+esc(label)+'</span>':'')+'</button>';
     });
-    $("visible-list").innerHTML=[...solos,...constellations].join("")||"<p>No named figures from the initial catalogue are currently above the horizon.</p>";
-    return figs;
+    const keys=veil?Object.keys(U.starLore):Object.keys(D.starLore);
+    const solos=keys.filter(k=>sky.stars.get(k)?.alt>0 &&
+      (!veil||lens==="all"||U.relevant(U.starLore[k],lens))).map(k=>{
+      const star=sky.stars.get(k),lore=U.starLore[k];
+      return '<button type="button" data-target="star:'+k+'">'+esc(star.name)+
+        (veil&&lore?' <span>· '+esc(lore.title)+'</span>':'')+'</button>';
+    });
+    $("visible-list").innerHTML=[...solos,...constellations].join("") ||
+      "<p>No matching figures from the initial catalogue are above the horizon. Try another time or tradition.</p>";
+    return all;
+  }
+  function drawUmbralFeatures(){
+    const veil=overlayOn();
+    $("umbral-features").hidden=!veil;
+    $("umbra-context").hidden=!veil;
+    $("veil-legend").hidden=!veil;
+    $("tradition-field").hidden=!veil;
+    $("anthelios-control").hidden=!veil;
+    $("visible-heading").textContent=veil?"Stories above the horizon":"Constellations above the horizon";
+    if(!veil){$("umbral-list").innerHTML="";return;}
+    $("umbral-list").innerHTML=U.phenomena.map(p=>'<button type="button" data-target="umbral:'+p.id+
+      '"><strong>'+esc(p.name)+'</strong><small>'+esc(p.kind)+
+      (p.id==="anthelios"?" · chronicle-dependent":"")+'</small></button>').join("");
   }
   function details(sky,calendar) {
     const selectedItem=selected || {type:"month"};
+    const veil=overlayOn();
     const pairs=(items)=>'<dl>'+items.map(([k,v])=>'<dt>'+esc(k)+'</dt><dd>'+esc(v)+'</dd>').join("")+'</dl>';
     let title,body;
-    if (selectedItem.type==="star") {
-      const star=sky.stars.get(selectedItem.key);
-      const lore=D.starLore[selectedItem.key];
+    if (selectedItem.type==="umbral") {
+      const p=U.phenomena.find(v=>v.id===selectedItem.key);
+      if (!p) return;
+      title=p.name;
+      body='<p>'+esc(p.detail)+'</p>'+pairs([["Nature",p.kind],["Sky placement",p.placement],
+        ["Source","Rage Across the Heavens, pp. 17, 63, 75, 80–81"]]);
+    } else if (selectedItem.type==="star") {
+      const star=sky.stars.get(selectedItem.key),lore=veil&&U.starLore[selectedItem.key];
       if (!star) return;
-      title=lore?lore.garou:star.name;
-      body='<p>'+esc(lore?lore.story:star.name+" is a star in the physical night sky.")+'</p>'+
-        pairs([["Astronomical name",star.name],["Altitude",star.alt.toFixed(1)+"°"],["Azimuth",star.az.toFixed(1)+"°"]]);
+      title=lore?lore.title:star.name;
+      body='<p>'+esc(lore?lore.detail:star.name+" is a star in the physical night sky.")+'</p>'+
+        pairs([["Astronomical name",star.name],["Altitude",star.alt.toFixed(1)+"°"],
+          ["Azimuth",star.az.toFixed(1)+"°"],...(lore?[["Tribal connections",lore.tribes.join(", ")]]:[])]);
     } else if (selectedItem.type==="constellation") {
       const c=D.constellations.find(v=>v.name===selectedItem.key);
       if (!c) return;
-      title=c.garou;
-      body='<p>'+esc(c.story)+'</p>'+pairs([["Sky figure",c.name],["Basis","Real constellation; Garou cultural interpretation"]]);
+      const lore=veil&&U.constellations[c.name];
+      title=lore?constellationName(c.name):c.name;
+      body='<p>'+esc(lore?lore.detail:c.name+" is a constellation in the real sky.")+'</p>'+
+        pairs([["Physical pattern",c.name],
+          ...(lore?[["Tribal connections",lore.tribes.join(", ")||"Western zodiac correspondence"]]:[]),
+          ["Position","Mapped to actual stars; interpretations are cultural"]]);
     } else if (selectedItem.type==="body") {
       const b=sky.bodies.get(selectedItem.key);
       if (!b) return;
-      const p=D.patrons.find(v=>v.body===b.name);
+      const p=veil&&D.patrons.find(v=>v.body===b.name);
       title=p?p.name:b.name;
       body='<p>'+esc(p?(p.title+" · "+p.quality+". "+p.question):
-        b.name+" in the real sky.")+'</p>'+pairs([["Physical body",b.name],["Altitude",b.alt.toFixed(1)+"°"],["Azimuth",b.az.toFixed(1)+"°"]]);
+        b.name+" in the real sky.")+'</p>'+
+        pairs([["Physical body",b.name],["Altitude",b.alt.toFixed(1)+"°"],["Azimuth",b.az.toFixed(1)+"°"]]);
     } else {
       const patron=D.patrons[calendar.index];
       title=patron?patron.name+" · "+patron.title:"Between the years";
       body=patron?'<p>'+esc(patron.quality+". "+patron.question)+'</p>'+
-        pairs([["Realm",patron.body],["Tribe",patron.tribe],["Auspice",patron.auspice],["Traditional zodiac",patron.zodiac]]):
+        pairs([["Realm",patron.body],["Tribe",patron.tribe],["Auspice",patron.auspice],
+          ["Traditional zodiac",patron.zodiac]]):
         '<p>The twelve named months have ended. This extra lunation has no assigned patron in the sourcebook. Rorg is a thirteenth sign, not an established leap-month ruler.</p>';
     }
     $("detail-title").textContent=title;
@@ -210,7 +316,8 @@
       $("next-full-caption").textContent=next?fmt(next):"";
       const sun=sky.bodies.get("Sun");
       $("sky-condition").textContent=sun.alt>=-6?"Daylight / twilight: stars are plotted, not necessarily visible":"Sky above local horizon";
-      drawChart(sky);
+      drawUmbralFeatures();
+      drawChart(sky,date,place);
       const figs=visibleFigures(sky);
       details(sky,cal);
       drawCalendar(cal);
@@ -232,6 +339,13 @@
 
   restore();
   $("when").addEventListener("change",update);
+  for(const field of ["umbral-toggle","anthelios-toggle","tribe-lens"]){
+    $(field).addEventListener("change",()=>{
+      save(Number($("latitude").value),Number($("longitude").value));
+      if(field==="umbral-toggle")selected=null;
+      update();
+    });
+  }
   for(const field of ["latitude","longitude"]){$(field).addEventListener("change",()=>{
     const lat=Number($("latitude").value),lon=Number($("longitude").value);
     if (Number.isFinite(lat)&&Number.isFinite(lon)&&lat>=-90&&lat<=90&&lon>=-180&&lon<=180) save(lat,lon);

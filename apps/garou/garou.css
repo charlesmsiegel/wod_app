@@ -75,3 +75,38 @@ footer{margin-top:40px;color:#adbec3;text-align:center;font:12px/1.7 Arial,sans-
 footer a{color:var(--gold)}
 @media(max-width:760px){.sky-layout,.reading-grid{grid-template-columns:1fr}.overview{gap:7px}.fact{padding:12px}.fact-value{font-size:19px}.fact-value.smaller{font-size:17px}.months{grid-template-columns:repeat(2,minmax(0,1fr))}.topbar .subtitle{display:none}}
 @media(max-width:500px){main{padding:18px 12px 40px}.controls{padding:12px}.controls .date-control{width:100%}.controls .date-control input{width:100%}.controls input[type=number]{width:100%}.controls label:not(.date-control){flex:1;min-width:100px}.months{grid-template-columns:1fr}.overview{grid-template-columns:1fr 1fr}.overview .fact:last-child{grid-column:span 2}.chart-shell,.detail{padding:12px}.sky .object-label{font-size:10px}}
+
+/* The real sky remains geometrically unchanged when the veil is lifted. */
+.veil-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0 5px}
+.veil-switch{display:inline-flex;gap:9px;align-items:center;color:#efd3a0;font:15px Georgia,serif;cursor:pointer}
+.veil-switch input,.anthelios-control input{accent-color:#a27bc7;width:18px;height:18px}
+.tradition-field{display:flex;align-items:center;gap:10px;color:#cfccd7;font:13px Arial,sans-serif}
+.tradition-field select{border-radius:6px;border:1px solid #587181;background:#10232c;color:#f7ece8;padding:6px}
+.umbra-context{font:13px/1.55 Georgia,serif;color:#c6b8cf;background:linear-gradient(100deg,#30263d,#222d43);padding:12px 16px;border-radius:8px;margin:15px 0}
+.anthelios-control{display:flex;align-items:center;flex-wrap:wrap;gap:6px;color:#e0b5b5;margin-bottom:10px;font-size:14px;cursor:pointer}
+.anthelios-control span{font-size:12px;color:#c8b5b5}
+.swatch.umbral-swatch{background:#ad86db;box-shadow:0 0 8px #ad86db}
+.sky.umbral .horizon{fill:#100f2b;stroke:#8b75b7}
+.sky.umbral .ring{stroke:#8f68ac}
+.sky.umbral .constellation{stroke:#a48ac4;opacity:.34}
+.sky.umbral .constellation.lore-relevant{stroke:#c6a3ed;stroke-width:1.7;opacity:.7}
+.sky.umbral .constellation.selected{stroke:#ffd68b;opacity:1;stroke-width:2.3}
+.sky.umbral .star-dot{fill:#f1f1f9}
+.sky .ancestor-path{stroke:#92a6f6;fill:none;stroke-width:6;opacity:.12;stroke-linecap:round}
+.sky .ancestor-path-core{stroke:#c3b3f2;fill:none;stroke-width:1.6;stroke-dasharray:2 5;opacity:.8}
+.sky .umbral-name{fill:#efc8ff;font:italic 11px Georgia,serif;pointer-events:none;text-anchor:middle}
+.sky .anthelios-sigil{fill:#d62e49;stroke:#f5aac2;stroke-width:1.4;filter:drop-shadow(0 0 9px #de2440)}
+.sky .anti-label{fill:#f6a6b2;font:11px Georgia,serif;pointer-events:none}
+.umbral-features{padding:14px 0 30px;border-top:1px solid #3d4966}
+.phenomena{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.phenomena button{text-align:left;background:linear-gradient(145deg,#30283f,#182c3d);min-height:95px}
+.phenomena button:focus-visible{outline-color:#ebc8ff}
+.phenomena strong{display:block;color:#f0c5dc;font-weight:normal;font-size:17px}
+.phenomena small{display:block;color:#b4bdd5;line-height:1.4}
+.darkpack-notice{display:flex;align-items:center;text-align:left;max-width:750px;margin:0 auto 14px;gap:16px}
+.darkpack-notice img{display:block;width:75px;height:75px;object-fit:contain}
+.darkpack-notice p{margin:4px 0;font:12px/1.5 Arial,sans-serif;color:#bfcacf}
+@media(max-width:500px){.veil-controls{flex-direction:column;align-items:flex-start}.darkpack-notice img{width:60px;height:60px}}
+
+/* Distinctive scalable Garou icon for app header and favicon. */
+.garou-emblem{display:block;width:clamp(92px,13vw,128px);height:auto;margin:0 auto 14px;filter:drop-shadow(0 0 20px rgba(182,89,85,.18));}

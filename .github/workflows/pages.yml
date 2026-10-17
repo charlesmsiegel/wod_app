@@ -28,6 +28,7 @@ jobs:
           node --check apps/garou/garou.js
           node --check apps/garou/garou-astro.js
           node --check apps/garou/sky-data.js
+          node --check apps/garou/umbral-data.js
       - name: Build static site
         run: python serve.py --build dist
       - name: Assert both apps are bundled

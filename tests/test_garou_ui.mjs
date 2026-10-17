@@ -18,6 +18,9 @@ function loadPage(){
     if (!elements.has(id)) elements.set(id,new Element(id));
     return elements.get(id);
   };
+  el('umbral-toggle').checked=true;
+  el('anthelios-toggle').checked=false;
+  el('tribe-lens').value='all';
   el('latitude').value='40.7128';
   el('longitude').value='-74.0060';
   const tabs=['sky','calendar','reading'].map(name=>{
@@ -35,7 +38,7 @@ function loadPage(){
   });
   context.window=context;
   const root=new URL('../apps/garou/',import.meta.url);
-  for(const file of ['vendor/astronomy.browser.min.js','sky-data.js','garou-astro.js','garou.js']){
+  for(const file of ['vendor/astronomy.browser.min.js','sky-data.js','umbral-data.js','garou-astro.js','garou.js']){
     vm.runInContext(fs.readFileSync(new URL(file,root),'utf8'),context,{filename:file,timeout:20000});
   }
   return {el,context};
@@ -58,4 +61,35 @@ test('changing to a 13th lunation never assigns Rorg as the month',()=>{
   assert.equal(el('month-name').textContent,'Unnamed lunation');
   assert.match(el('calendar-note').textContent,/unassigned|unnamed/);
   assert.equal(el('error').textContent,'');
+});
+
+test('step sideways reveals and hides the Umbral sky',()=>{
+  const {el}=loadPage();
+  assert.match(el('sky').innerHTML,/ancestor-path/);
+  assert.match(el('umbral-list').innerHTML,/Anthelios/);
+  assert.equal(el('umbral-features').hidden,false);
+  el('umbral-toggle').checked=false;
+  el('umbral-toggle').handlers.get('change')();
+  assert.doesNotMatch(el('sky').innerHTML,/ancestor-path/);
+  assert.doesNotMatch(el('sky').innerHTML,/Anthelios/);
+  assert.equal(el('umbral-features').hidden,true);
+  assert.equal(el('error').textContent,'');
+});
+test('changing tribe lens filters the visible lore without changing the astronomical sky',()=>{
+  const {el}=loadPage();
+  el('tribe-lens').value='Fianna';
+  el('tribe-lens').handlers.get('change')();
+  assert.equal(el('error').textContent,'');
+  assert.match(el('sky').innerHTML,/horizon/);
+  assert.match(el('umbral-list').innerHTML,/Rorg/);
+  assert.doesNotMatch(el('visible-list').innerHTML,/Diana/);
+});
+test('Anthelios can be requested only as an explicit optional omen',()=>{
+  const {el}=loadPage();
+  assert.match(el('anthelios-control').textContent||'', /^$|./);
+  assert.equal(el('anthelios-toggle').checked,false);
+  el('anthelios-toggle').checked=true;
+  el('anthelios-toggle').handlers.get('change')();
+  assert.equal(el('error').textContent,'');
+  assert.match(el('umbral-list').innerHTML,/Anthelios/);
 });
