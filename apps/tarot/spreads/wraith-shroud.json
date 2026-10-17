@@ -1,0 +1,38 @@
+{
+  "name": "Wraith: The Shroud",
+  "order": 60,
+  "description": "A five-card consultation about one of the Restless, published in Mediums: Speakers With the Dead, pp. 32–33. Choose a significator for the departed, then deal Background, Arcanoi, Fetters and Passions from left to right beneath it. Read each card's imagery through its position's question. Mediums explicitly recommends the Mage Tarot, and its worked example uses reversed cards. These are symbolic interpretations; the spread does not assign exact wraith statistics or invent messages from a ghost.",
+  "positions": [
+    {
+      "label": "Significator",
+      "significator": true,
+      "x": 1.71,
+      "y": 0,
+      "meaning": "The departed soul at the centre of the consultation. Choose a card that represents the wraith; the source usually suggests a court card. This card presides over the four cards below."
+    },
+    {
+      "label": "Background",
+      "x": 0,
+      "y": 1.35,
+      "meaning": "The wraith's place in the society of the dead: social standing, resources and wealth in oboli. What does this card suggest about the circumstances of the departed?"
+    },
+    {
+      "label": "Arcanoi",
+      "x": 1.14,
+      "y": 1.35,
+      "meaning": "The special talents and arts the wraith practises or has mastered. Imagery may suggest a Guild; a numbered card may suggest the degree of a power. Interpret the symbols without treating every card as an exact rules rating."
+    },
+    {
+      "label": "Fetters",
+      "x": 2.28,
+      "y": 1.35,
+      "meaning": "The ties that hold the wraith to a former life: physical objects, places or people. What living connection does this card bring into focus?"
+    },
+    {
+      "label": "Passions",
+      "x": 3.42,
+      "y": 1.35,
+      "meaning": "What currently motivates the wraith, and the probable path those motivations suggest in the Shadowlands. This is the reading's outcome-like position, especially significant to the medium and inquirer."
+    }
+  ]
+}
