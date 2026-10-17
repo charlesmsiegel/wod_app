@@ -182,14 +182,14 @@ class BuildDataTests(unittest.TestCase):
             images.mkdir(parents=True)
             shutil.copy(MAGE / "meanings.md", images.parent / "meanings.md")
             (images / "The Fool.jpg").write_bytes(b"")
-            (images / "The#Star?.jpg").write_bytes(b"")
+            (images / "The#Star%.jpg").write_bytes(b"")
             (app / "spreads").mkdir()
             shutil.copy(data.APP_DIR / "spreads" / "single-card.json", app / "spreads")
             deck = data.build_data(app)["decks"][0]
             cards = {c["id"]: c for c in deck["cards"]}
             self.assertEqual(cards["the-fool"]["image"], "decks/mage/images/The%20Fool.jpg")
-            # Reserved URL characters in a file name are encoded, not read as a fragment or query.
-            self.assertEqual(cards["the-star"]["image"], "decks/mage/images/The%23Star%3F.jpg")
+            # Use Windows-safe names while still testing fragments and literal percent signs.
+            self.assertEqual(cards["the-star"]["image"], "decks/mage/images/The%23Star%25.jpg")
             self.assertEqual(deck["aspect"], 0.575)
 
 
